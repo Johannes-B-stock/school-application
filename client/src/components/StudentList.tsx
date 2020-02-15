@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { gql } from "apollo-boost";
-import { graphql } from "react-apollo";
+import { graphql, DataProps } from "react-apollo";
 
 //book list query
 const getStudentsQuery = gql`
@@ -13,7 +13,7 @@ const getStudentsQuery = gql`
   }
 `;
 
-class StudentList extends Component {
+class StudentList extends Component<DataProps> {
   getStudents() {
     var datas = this.props.data;
 

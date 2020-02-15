@@ -4,9 +4,13 @@ import { graphql } from "react-apollo";
 
 const getSchoolDetails = gql``;
 
-class SchoolDetails extends Component {
+export class SchoolDetails extends Component {
+  constructor(props: { data: any }) {
+    super(props);
+  }
+
   getSchoolDetails(schoolId) {
-    var datas = this.props.datas;
+    var datas = this.props.data;
     if (datas.loading) {
       return <div>Is loading</div>;
     } else {
