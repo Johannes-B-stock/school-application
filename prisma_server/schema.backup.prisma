@@ -1,0 +1,327 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root:@localhost:3306/prisma"
+}
+
+model address {
+  address   String?
+  city      String?
+  country   String?
+  email     String?
+  id        Int     @default(autoincrement()) @id
+  name      String?
+  phone     String?
+  phone2    String?
+  skype     String?
+  state     String?
+  type      Int
+  zip       String?
+  nation_id nation
+  user_id   user?
+}
+
+model application {
+  accepted                   String?
+  accepted_date              DateTime?
+  app_for_text               String?
+  arrived_date               DateTime?
+  canceled_date              DateTime?
+  created                    DateTime?
+  id                         Int                      @default(autoincrement()) @id
+  in_review_date             DateTime?
+  packet_sent                String?
+  position                   String?
+  postcard_sent              String?
+  progress                   String?
+  retired_date               DateTime?
+  status                     String?
+  submit_date                DateTime?
+  type                       String?
+  school_id                  school                   @relation("application_school_idToschool")
+  transferred_from_school_id school?                  @relation("application_transferred_from_school_idToschool")
+  user_id                    user
+  application_admin_notes    application_admin_note[] @relation(references: [application_id])
+  application_histories      application_historie[]   @relation(references: [application_id])
+  emails                     email[]                  @relation(references: [application_id])
+  references                 reference[]              @relation(references: [application_id])
+  school_answers             school_answer[]          @relation(references: [application_id])
+}
+
+model application_admin_note {
+  created        DateTime?
+  id             Int         @default(autoincrement()) @id
+  modified       DateTime?
+  note           String?
+  application_id application
+  author_id      user
+}
+
+model application_historie {
+  action         String?
+  created        DateTime?
+  error          String?
+  field          String?
+  id             Int         @default(autoincrement()) @id
+  status_num     String?
+  value          String?
+  application_id application
+  school_id      school?
+  user_id        user?
+}
+
+model attachments {
+  created        String?
+  download_count String?
+  ext            String?
+  file           String?
+  height         String?
+  id             Int     @default(autoincrement()) @id
+  modified       String?
+  name           String?
+  size           String?
+  teaching       String?
+  type           String?
+  width          String
+  school_id      school
+  user_id        user
+}
+
+model children {
+  birthday String?
+  gender   String?
+  id       Int     @default(autoincrement()) @id
+  name     String?
+  user_id  user
+}
+
+model email {
+  all_staff      Boolean
+  contents       String?
+  created        DateTime?
+  group_id       Int?
+  id             Int          @default(autoincrement()) @id
+  modified       DateTime?
+  send_at        DateTime?
+  sent_date      DateTime?
+  subject        String?
+  to             String?
+  type           String
+  application_id application?
+  school_id      school?
+}
+
+model nation {
+  deu_visa        Boolean
+  deu_visa_before Boolean
+  extra_q         Int
+  id              Int        @default(autoincrement()) @id
+  iso2            String
+  iso3            String
+  name_deu        String?
+  name_en         String
+  addresses       address[]
+  passports       passport[] @relation(references: [nation_id])
+}
+
+model passport {
+  authority   String?
+  birth_city  String?
+  expire      DateTime?
+  first_name  String?
+  id          Int       @default(autoincrement()) @id
+  issue       DateTime?
+  last_name   String?
+  middle_name String
+  number      String?
+  nation_id   nation
+  user_id     user?
+}
+
+model permissions {
+  created     DateTime?
+  description String
+  id          Int       @default(autoincrement()) @id
+  modified    DateTime?
+  name        String?
+}
+
+model reference {
+  ambition            Int
+  christian           String
+  church_life         String
+  communication       Int
+  conflict            String
+  created             DateTime?
+  email               String
+  email_by            Int
+  email_date          DateTime?
+  emotion             Int
+  family              String
+  for_adventure       Boolean
+  form_in             Boolean
+  get_equipped        Boolean
+  get_help            Boolean
+  hash                String
+  how_well            String
+  id                  Int         @default(autoincrement()) @id
+  initiative          Int
+  ip_address          String
+  lang                String
+  leadership          Int
+  modified            DateTime?
+  moral               Int
+  name                String
+  organization        Int
+  other               String
+  phone               String
+  punctual            Int
+  received            Int
+  received_date       DateTime?
+  ref_num             Int
+  relation            String
+  reliable            Int
+  self_dis            Int
+  servanthood         Int
+  status              Int
+  strengths           String
+  support             String
+  teachability        Int
+  teamwork            Int
+  to_escape           Boolean
+  to_grow             Boolean
+  user_given_relation String
+  weakness            String
+  why_school          String
+  application_id      application
+}
+
+model school {
+  accepted_count                                              Int                    @default(0)
+  accounting_name                                             String?
+  acronym                                                     String?
+  app_fee                                                     Float                  @default(0)
+  arrived_count                                               Int                    @default(0)
+  canceled_count                                              Int                    @default(0)
+  created                                                     DateTime?
+  currency                                                    String?
+  denied_count                                                Int                    @default(0)
+  description                                                 String?
+  end_date                                                    DateTime?
+  extra1_answer                                               String?
+  extra1_question                                             String?
+  female_count                                                Int                    @default(0)
+  food_day_student                                            Float                  @default(0)
+  graduated_count                                             Int                    @default(0)
+  hashtag                                                     String?
+  id                                                          Int                    @default(autoincrement()) @id
+  male_count                                                  Int                    @default(0)
+  mini_outreach_end_date                                      DateTime?
+  mini_outreach_fee                                           Float                  @default(0)
+  mini_outreach_start_date                                    DateTime?
+  modified                                                    DateTime?
+  name                                                        String?
+  online                                                      Boolean?               @default(true)
+  outreach_end_date                                           DateTime?
+  outreach_fee                                                Float                  @default(0)
+  outreach_start_date                                         DateTime?
+  process_count                                               Int                    @default(0)
+  school_email                                                String?
+  school_fee                                                  Float                  @default(0)
+  secondary                                                   Boolean?
+  start_date                                                  DateTime?
+  started_count                                               Int                    @default(0)
+  submited_count                                              Int                    @default(0)
+  total_count                                                 Int                    @default(0)
+  track_count                                                 Int                    @default(0)
+  travel_notice                                               String?
+  url                                                         String?
+  applications_application_school_idToschool                  application[]          @relation("application_school_idToschool")
+  applications_application_transferred_from_school_idToschool application[]          @relation("application_transferred_from_school_idToschool")
+  application_histories                                       application_historie[]
+  attachmentses                                               attachments[]
+  emails                                                      email[]
+  school_questions                                            school_question[]      @relation(references: [school_id])
+  students                                                    student[]              @relation(references: [school_id])
+}
+
+model school_answer {
+  answer         String?
+  id             Int         @default(autoincrement()) @id
+  question       String?
+  application_id application
+}
+
+model school_question {
+  id        Int     @default(autoincrement()) @id
+  question  String?
+  school_id school
+}
+
+model student {
+  arrived   Boolean?
+  canceled  Boolean?
+  graduated Boolean?
+  id        Int      @default(autoincrement()) @id
+  school_id school
+  user_id   user
+}
+
+model user {
+  avatar_set_num          Int?
+  birthday                DateTime?
+  children                Int?
+  created                 DateTime?
+  em_relation             String?
+  email                   String?
+  email_activated         Boolean?                 @default(false)
+  eye_color               String?
+  facebook                String?
+  first_name              String?
+  full_name               String?
+  gender                  String?
+  gluten_allergy          Boolean                  @default(false)
+  health                  String?
+  height                  Int?
+  id                      Int                      @default(autoincrement()) @id
+  ip_address              String?
+  lactose_allergy         Boolean                  @default(false)
+  lang_deu                Boolean?
+  lang_en                 Boolean?
+  lang_native             String?
+  lang_other              String?
+  lang_other_pro          Int?
+  lang_second             String?
+  lang_second_pro         Int?
+  lang_third              String?
+  lang_third_pro          Int?
+  last_log_date           DateTime?
+  last_name               String?
+  life                    String?
+  marital_status_date     DateTime?
+  marriage                String?
+  meds                    String?
+  modified                DateTime?
+  mold_allergy            Boolean                  @default(false)
+  on_medication           Boolean                  @default(false)
+  other_food_allergy      String?
+  password                String?
+  physical_disability     Boolean                  @default(false)
+  shots                   String?
+  spouse_name             String?
+  talents                 String?
+  tokenhash               String?
+  website                 String?
+  youtube                 String?
+  addresses               address[]
+  applications            application[]
+  application_admin_notes application_admin_note[]
+  application_histories   application_historie[]
+  attachmentses           attachments[]
+  childrens               children[]
+  passports               passport[]
+  students                student[]
+}

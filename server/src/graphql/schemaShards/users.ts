@@ -6,7 +6,7 @@ const typeDefs = gql`
     " login as a user "
     loginUser(input: InputLogin!): User
     " get a user's public data"
-    getUser(id: ID!): PublicUser
+    getUser(id: Int!): PublicUser
   }
 
   extend type Mutation {
@@ -31,7 +31,7 @@ const typeDefs = gql`
 
   " used for creating a new user "
   input InputUpdateUser {
-    id: ID!
+    id: Int!
     firstName: String!
     lastName: String!
     email: String!
@@ -39,14 +39,14 @@ const typeDefs = gql`
 
   " a type defining a user's public data "
   type PublicUser {
-    id: ID
+    id: Int
     name: String
     email: String
   }
 
   " a type defining a user  "
   type User {
-    id: ID
+    id: Int
     firstName: String
     lastName: String
     email: String

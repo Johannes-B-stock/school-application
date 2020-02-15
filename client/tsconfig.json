@@ -1,9 +1,13 @@
 {
   "compilerOptions": {
     "outDir": "build/dist",
-    "module": "commonjs",
+    "module": "esnext",
     "target": "es2015",
-    "lib": ["es2015", "dom", "esnext.asynciterable"],
+    "lib": [
+      "es2015",
+      "dom",
+      "esnext.asynciterable"
+    ],
     "sourceMap": true,
     "allowJs": true,
     "jsx": "react",
@@ -16,7 +20,13 @@
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true
   },
   "exclude": [
     "node_modules",
@@ -27,6 +37,10 @@
     "jest",
     "src/setupTests.ts"
   ],
-  "types": ["typePatches"],
-  "include": ["src"]
+  "types": [
+    "typePatches"
+  ],
+  "include": [
+    "src"
+  ]
 }

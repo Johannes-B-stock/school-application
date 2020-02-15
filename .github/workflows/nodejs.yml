@@ -1,0 +1,56 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build-client:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./client
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: yarn install --frozen-lockfile
+        working-directory: ${{env.working-directory}}
+      - run: yarn build --if-present
+        working-directory: ${{env.working-directory}}
+      - run: yarn test
+        working-directory: ${{env.working-directory}}
+        env:
+          CI: true
+
+  build-server:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./prisma_server
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: yarn install --frozen-lockfile
+        working-directory: ${{env.working-directory}}
+      - run: yarn build --if-present
+        working-directory: ${{env.working-directory}}
+        env:
+          CI: true

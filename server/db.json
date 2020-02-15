@@ -57,6 +57,14 @@
       "password": "$2a$10$7h/0SQ4FXRG5eX3602o3/.kGW.cgmHlJN5YgoHLHd4Cc683iiu4Nm",
       "id": "0f199bd0-71a7-42c4-a1a9-27786793df5d",
       "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBmMTk5YmQwLTcxYTctNDJjNC1hMWE5LTI3Nzg2NzkzZGY1ZCIsImlhdCI6MTU3MjY4MzAzNn0.QIiWT_OGhc4VfAI2O9BD81FPVvBXEwTNNi8im7gfE4o"
+    },
+    {
+      "firstName": "fritz",
+      "lastName": "walter",
+      "email": "liwen@test.com",
+      "password": "$2a$10$7h/0SQ4FXRG5eX3602o3/.kGW.cgmHlJN5YgoHLHd4Cc683iiu4Nm",
+      "id": "645cdbe4-1c6a-4892-86f9-c6baea6f6d6e",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NWNkYmU0LTFjNmEtNDg5Mi04NmY5LWM2YmFlYTZmNmQ2ZSIsImlhdCI6MTU4MjMwMTgyMn0.Col82DE7B-kQhBKrMLyjcNg1ACO_uvFQwri0G_WksPY"
     }
   ],
   "schools": [

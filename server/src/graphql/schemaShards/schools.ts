@@ -45,7 +45,7 @@ const typeDefs = gql`
 
   " input to update an existing school "
   input InputUpdateSchool {
-    id: ID
+    id: Int
     abbreviation: String!
     name: String!
     summary: String
@@ -56,35 +56,35 @@ const typeDefs = gql`
 
   " input to delete an existing school "
   input InputDeleteSchool {
-    id: ID
+    id: Int
   }
 
   " input to add a student "
   input InputAddStudent {
-    schoolId: ID
-    userId: ID
+    schoolId: Int
+    userId: Int
   }
 
   " input to add a staff "
   input InputAddStaff {
-    schoolId: ID
-    userId: ID
+    schoolId: Int
+    userId: Int
   }
 
   " input to add a student "
   input InputRemoveStudent {
-    schoolId: ID
-    userId: ID
+    schoolId: Int
+    userId: Int
   }
 
   " input to add a staff "
   input InputRemoveStaff {
-    schoolId: ID
-    userId: ID
+    schoolId: Int
+    userId: Int
   }
 
   type School {
-    id: ID
+    id: Int
     abbreviation: String
     name: String
     summary: String

@@ -27,24 +27,24 @@ const typeDefs = gql`
 
   " input to create a new schoolApplication "
   input InputCreateSchoolApplication {
-    userId: ID
-    schoolId: ID
+    userId: Int
+    schoolId: Int
   }
 
   " input to update an existing schoolApplication "
   input InputUpdateSchoolApplication {
-    id: ID
+    id: Int
   }
 
   " input to delete an existing schoolApplication "
   input InputDeleteSchoolApplication {
-    id: ID
+    id: Int
   }
 
   type SchoolApplication {
-    id: ID
-    applicationId: ID
-    userId: ID
+    id: Int
+    applicationId: Int
+    userId: Int
     timestamp: String
   }
 `;

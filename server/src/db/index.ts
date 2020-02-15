@@ -131,14 +131,7 @@ export async function updateSchool(
   return db
     .get('schools')
     .find({ id: schoolInput.id })
-    .assign({
-      abbreviation: schoolInput.abbreviation,
-      name: schoolInput.name,
-      description: schoolInput.description,
-      startDateTimestamp: schoolInput.startDateTimestamp,
-      endDateTimestamp: schoolInput.endDateTimestamp,
-      summary: schoolInput.summary,
-    }).value;
+    .assign({ ...schoolInput }).value;
 }
 
 export async function addStudent(

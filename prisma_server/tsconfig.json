@@ -1,9 +1,17 @@
 {
   "compilerOptions": {
+    "sourceMap": true,
     "outDir": "dist",
-    "rootDir": "src",
-    "lib": ["esnext"],
-    "strict": true
+    "strict": false,
+    "lib": ["esnext", "dom"],
+    "esModuleInterop": true,
+    "baseUrl": "./",
+    "paths": {
+      "src": ["src/"]
+  }
   },
+  "files": [
+    "./node_modules/@types/node/index.d.ts"
+  ],
   "include": ["src/**/*"]
 }

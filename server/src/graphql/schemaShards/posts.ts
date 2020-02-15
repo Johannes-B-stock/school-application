@@ -1,7 +1,7 @@
-import { createPost, getPosts, getPublicUser } from "src/db";
-import { gql } from "apollo-server";
-import { pubsub } from "src/graphql/subscriptionManager";
-import { authenticateContext } from "src/auth";
+import { createPost, getPosts, getPublicUser } from 'src/db';
+import { gql } from 'apollo-server';
+import { pubsub } from 'src/graphql/subscriptionManager';
+import { authenticateContext } from 'src/auth';
 
 const typeDefs = gql`
   extend type Query {
@@ -25,8 +25,8 @@ const typeDefs = gql`
   }
 
   type Post {
-    id: ID
-    userId: ID
+    id: Int
+    userId: Int
     text: String
     user: PublicUser
     timestamp: String
@@ -51,7 +51,7 @@ export default {
         // create a new post in the database
         const post = await createPost(input, user.id);
         // publish the post to the subscribers
-        pubsub.publish("postCreated", {
+        pubsub.publish('postCreated', {
           postCreated: post,
         });
         return post;
@@ -60,7 +60,7 @@ export default {
     Subscription: {
       postCreated: {
         subscribe: (root, args, context) => {
-          return pubsub.asyncIterator("postCreated");
+          return pubsub.asyncIterator('postCreated');
         },
       },
     },
