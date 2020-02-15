@@ -1,0 +1,69 @@
+{
+  "posts": [
+    {
+      "userId": "ccf4107f-8c8c-40a7-8719-8df3c6294706",
+      "text": "hello john",
+      "id": "043d7b8d-3724-4b29-b834-164a18814623",
+      "timestamp": "Sun, 03 Feb 2019 18:50:05 GMT"
+    },
+    {
+      "userId": "ccf4107f-8c8c-40a7-8719-8df3c6294706",
+      "text": "hello world",
+      "id": "b13e06e5-fbbd-4a33-8b52-fbd0147fae03",
+      "timestamp": "Sun, 03 Feb 2019 18:50:17 GMT"
+    },
+    {
+      "userId": "ccf4107f-8c8c-40a7-8719-8df3c6294706",
+      "text": "hello world",
+      "id": "bb1ce8ca-ddc3-4f95-b8cd-c34ac426b6b4",
+      "timestamp": "Sun, 03 Feb 2019 18:52:29 GMT"
+    },
+    {
+      "userId": "0f199bd0-71a7-42c4-a1a9-27786793df5d",
+      "text": "Hallo dies ist ein Post von mir",
+      "id": "08716034-6150-452e-b6f5-f10a62552f5c",
+      "timestamp": "Sun, 05 Jan 2020 21:43:35 GMT"
+    },
+    {
+      "userId": "0f199bd0-71a7-42c4-a1a9-27786793df5d",
+      "text": "dieser Post wurde für eine Subscription erstellt",
+      "id": "0087b42f-312e-4e96-83ff-27419caf8693",
+      "timestamp": "Sun, 05 Jan 2020 21:46:31 GMT"
+    },
+    {
+      "userId": "0f199bd0-71a7-42c4-a1a9-27786793df5d",
+      "text": "dieser Post wurde für eine Subscription erstellt",
+      "id": "5b25a90f-be6d-414c-86e7-69f58317a5b2",
+      "timestamp": "Sun, 05 Jan 2020 21:46:55 GMT"
+    },
+    {
+      "userId": "0f199bd0-71a7-42c4-a1a9-27786793df5d",
+      "text": "dieser Post wurde für eine Subscription erstellt 4",
+      "id": "a6ca2f87-c0e5-451b-8600-7a94f9276fac",
+      "timestamp": "Sun, 05 Jan 2020 21:50:23 GMT"
+    }
+  ],
+  "users": [
+    {
+      "name": "john doe",
+      "email": "john.doe@gmail.com",
+      "password": "$2a$10$7h/0SQ4FXRG5eX3602o3/.Ak08EEuruI..iDU01gijGxnExUJPjZW",
+      "id": "ccf4107f-8c8c-40a7-8719-8df3c6294706",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRjNTVmYjQyLTVkZDktNDFlNS1hYzczLTdhODNlMWVmY2Y2NiIsImlhdCI6MTU0OTQ0NjY1Mn0.E1VEyE4gvv7jb151JICl6YcndVSveWpEkjTHKtOm0pA"
+    },
+    {
+      "name": "Johannes Birkenstock",
+      "email": "test@test.com",
+      "password": "$2a$10$7h/0SQ4FXRG5eX3602o3/.kGW.cgmHlJN5YgoHLHd4Cc683iiu4Nm",
+      "id": "0f199bd0-71a7-42c4-a1a9-27786793df5d",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBmMTk5YmQwLTcxYTctNDJjNC1hMWE5LTI3Nzg2NzkzZGY1ZCIsImlhdCI6MTU3MjY4MzAzNn0.QIiWT_OGhc4VfAI2O9BD81FPVvBXEwTNNi8im7gfE4o"
+    }
+  ],
+  "schools": [
+    {
+      "name": "SOW",
+      "summary": "School of Worship",
+      "id": "b2ab93f8-c825-4616-a4fc-402e337c5709"
+    }
+  ]
+}

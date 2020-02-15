@@ -1,0 +1,162 @@
+# source: http://localhost:3000/graphql
+# timestamp: Mon Jan 06 2020 22:30:22 GMT+0100 (GMT+01:00)
+
+""" input to add a staff """
+input InputAddStaff {
+  schoolId: ID
+  userId: ID
+}
+
+""" input to add a student """
+input InputAddStudent {
+  schoolId: ID
+  userId: ID
+}
+
+""" input to create a new post """
+input InputCreatePost {
+  text: String
+}
+
+""" input to create a new school """
+input InputCreateSchool {
+  abbreviation: String!
+  name: String!
+  summary: String
+  description: String
+  startDateTimestamp: String
+  endDateTimestamp: String
+}
+
+""" input to delete an existing school """
+input InputDeleteSchool {
+  id: ID
+}
+
+""" used for logging in """
+input InputLogin {
+  email: String!
+  password: String!
+}
+
+""" used for creating a new user """
+input InputRegisterUser {
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+}
+
+""" input to add a staff """
+input InputRemoveStaff {
+  schoolId: ID
+  userId: ID
+}
+
+""" input to add a student """
+input InputRemoveStudent {
+  schoolId: ID
+  userId: ID
+}
+
+""" input to update an existing school """
+input InputUpdateSchool {
+  id: ID
+  abbreviation: String!
+  name: String!
+  summary: String
+  description: String
+  startDateTimestamp: String
+  endDateTimestamp: String
+}
+
+""" used for creating a new user """
+input InputUpdateUser {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String!
+}
+
+type Mutation {
+  _empty: String
+
+  """ register a new user """
+  registerUser(input: InputRegisterUser!): User
+  updateUser(input: InputUpdateUser!): User
+
+  """ create a new post """
+  createPost(input: InputCreatePost!): Post
+
+  """ create a new school """
+  createSchool(input: InputCreateSchool!): School
+  updateSchool(input: InputUpdateSchool!): School
+  deleteSchool(input: InputDeleteSchool!): Boolean
+  addStudent(input: InputAddStudent!): School
+  addStaff(input: InputAddStaff): School
+  removeStudent(input: InputRemoveStudent!): School
+  removeStaff(input: InputRemoveStaff): School
+}
+
+type Post {
+  id: ID
+  userId: ID
+  text: String
+  user: PublicUser
+  timestamp: String
+}
+
+""" a type defining a user's public data """
+type PublicUser {
+  id: ID
+  name: String
+  email: String
+}
+
+type Query {
+  _empty: String
+
+  """ login as a user """
+  loginUser(input: InputLogin!): User
+
+  """ get a user's public data"""
+  getUser(id: ID!): PublicUser
+
+  """ get all posts """
+  getPosts: [Post]
+
+  """ get all schools """
+  getSchools: [School]
+}
+
+type School {
+  id: ID
+  abbreviation: String
+  name: String
+  summary: String
+  description: String
+  students: [PublicUser]
+  staffs: [PublicUser]
+  startDateTimestamp: String
+  endDateTimestamp: String
+  timestamp: String
+}
+
+type Subscription {
+  _empty: String
+
+  """ called when a new post is created """
+  postCreated: Post
+
+  """ called when a new school is created """
+  schoolCreated: School
+}
+
+""" a type defining a user  """
+type User {
+  id: ID
+  firstName: String
+  lastName: String
+  email: String
+  token: String
+}

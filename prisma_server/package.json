@@ -1,0 +1,13 @@
+{
+  "name": "prisma-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Johannes Birkenstock",
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "^2.0.0-preview021",
+    "prisma2": "^2.0.0-preview021",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
+  }
+}
