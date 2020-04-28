@@ -24,7 +24,7 @@ const token = storedUser?.token;
 
 //Accessing the address for graphql queries
 const client = new ApolloClient({
-  uri: 'http://localhost:3000/graphql',
+  uri: '/graphql',
   headers: {
     token: token,
   },

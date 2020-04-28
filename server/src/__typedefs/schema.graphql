@@ -1,36 +1,122 @@
 # source: http://localhost:3000/graphql
-# timestamp: Mon Jan 06 2020 22:30:22 GMT+0100 (GMT+01:00)
+# timestamp: Mon Apr 27 2020 01:49:30 GMT+0200 (GMT+02:00)
+
+type Address {
+  id: Int!
+  user: User
+  street: String
+  city: String
+  state: String
+  zip: String
+  country: String
+  nation: String
+  phone: String
+  phone2: String
+}
+
+type ApplicationAnswer {
+  id: Int!
+  schoolApplication: SchoolApplication
+  answer: String
+  question: ApplicationQuestion
+}
+
+type ApplicationQuestion {
+  id: Int!
+  question: String!
+  questionCollection: ApplicationQuestionCollection!
+}
+
+type ApplicationQuestionCollection {
+  id: Int!
+  name: String!
+  description: String
+  type: String
+  questions: [ApplicationQuestion]
+}
+
+scalar Date
 
 """ input to add a staff """
 input InputAddStaff {
-  schoolId: ID
-  userId: ID
+  schoolId: Int
+  userId: Int
+  admin: Boolean
 }
 
 """ input to add a student """
 input InputAddStudent {
-  schoolId: ID
-  userId: ID
+  schoolId: Int
+  userId: Int
 }
 
-""" input to create a new post """
-input InputCreatePost {
-  text: String
+input InputApplicationAnswer {
+  answer: String!
+  questionId: Int!
+  question: String!
+}
+
+input InputCreateAddress {
+  street: String
+  city: String
+  state: String
+  zip: String
+  nation: Int!
+  phone: String
+  phone2: String
+}
+
+input InputCreateApplicationQuestion {
+  questionCollection: Int!
+  question: String
+}
+
+input InputCreateApplicationQuestionCollection {
+  name: String!
+  description: String
+  type: String
+  questions: [String]
 }
 
 """ input to create a new school """
 input InputCreateSchool {
-  abbreviation: String!
+  acronym: String!
   name: String!
-  summary: String
+  online: Boolean
+  hashtag: String
   description: String
-  startDateTimestamp: String
-  endDateTimestamp: String
+  startDate: Date
+  endDate: Date
+  outreachStartDate: Date
+  outreachEndDate: Date
+  miniOutreachStartDate: Date
+  miniOutreachEndDate: Date
+  schoolEmail: String
+  timestamp: String
+  currency: String
+  secondary: Boolean
+  applicationFee: Int
+  schoolFee: Int
+  miniOutreachFee: Int
+  outreachFee: Int
+  questionCollection: Int
+}
+
+""" input to create a new schoolApplication """
+input InputCreateSchoolApplication {
+  userId: Int!
+  schoolId: Int!
+  answers: [InputApplicationAnswer]
 }
 
 """ input to delete an existing school """
 input InputDeleteSchool {
-  id: ID
+  id: Int
+}
+
+""" input to delete an existing schoolApplication """
+input InputDeleteSchoolApplication {
+  id: Int
 }
 
 """ used for logging in """
@@ -49,44 +135,98 @@ input InputRegisterUser {
 
 """ input to add a staff """
 input InputRemoveStaff {
-  schoolId: ID
-  userId: ID
+  schoolId: Int
+  userId: Int
 }
 
 """ input to add a student """
 input InputRemoveStudent {
-  schoolId: ID
-  userId: ID
+  schoolId: Int
+  userId: Int
+}
+
+input InputUpdateAddress {
+  id: Int!
+  street: String
+  city: String
+  state: String
+  zip: String
+  nation: Int!
+  phone: String
+  phone2: String
 }
 
 """ input to update an existing school """
 input InputUpdateSchool {
-  id: ID
-  abbreviation: String!
-  name: String!
-  summary: String
+  id: Int
+  acronym: String
+  name: String
+  online: Boolean
+  hashtag: String
   description: String
-  startDateTimestamp: String
-  endDateTimestamp: String
+  startDate: Date
+  endDate: Date
+  outreachStartDate: Date
+  outreachEndDate: Date
+  miniOutreachStartDate: Date
+  miniOutreachEndDate: Date
+  schoolEmail: String
+  timestamp: String
+  currency: String
+  secondary: Boolean
+  applicationFee: Int
+  schoolFee: Int
+  miniOutreachFee: Int
+  outreachFee: Int
+  questionCollection: Int
 }
 
-""" used for creating a new user """
+""" input to update an existing schoolApplication """
+input InputUpdateSchoolApplication {
+  id: Int
+  status: String
+  progress: String
+  answers: [InputApplicationAnswer]
+}
+
+""" used for updating an existing user """
 input InputUpdateUser {
-  id: ID!
-  firstName: String!
-  lastName: String!
-  email: String!
+  id: Int!
+  firstName: String
+  lastName: String
+  gender: String
+  marriage: String
+  maritalStatusDate: Date
+  spouseName: String
+  children: Int
+  birthday: Date
+  website: String
+  youtube: String
+  facebook: String
+  talents: String
+  firstLanguage: String
+  nativeLanguage: String
+  secondLanguage: String
+  secondLanguagePro: Int
+  thirdLanguage: String
+  thirdLanguagePro: Int
+  otherLanguage: String
+  otherLanguagePro: Int
+  life: String
 }
 
 type Mutation {
   _empty: String
 
   """ register a new user """
-  registerUser(input: InputRegisterUser!): User
+  createAdmin(input: InputRegisterUser!): UserLogin!
+  registerUser(input: InputRegisterUser!): UserLogin!
+
+  """ update User properties """
   updateUser(input: InputUpdateUser!): User
 
-  """ create a new post """
-  createPost(input: InputCreatePost!): Post
+  """ login as a user """
+  loginUser(input: InputLogin!): UserLogin!
 
   """ create a new school """
   createSchool(input: InputCreateSchool!): School
@@ -96,67 +236,138 @@ type Mutation {
   addStaff(input: InputAddStaff): School
   removeStudent(input: InputRemoveStudent!): School
   removeStaff(input: InputRemoveStaff): School
-}
 
-type Post {
-  id: ID
-  userId: ID
-  text: String
-  user: PublicUser
-  timestamp: String
+  """ create a new schoolApplication """
+  createSchoolApplication(input: InputCreateSchoolApplication!): SchoolApplication
+  updateSchoolApplication(input: InputUpdateSchoolApplication!): SchoolApplication
+  deleteSchoolApplication(input: InputDeleteSchoolApplication!): Boolean
+  cancelSchoolApplication(input: InputDeleteSchoolApplication!): SchoolApplication
+  acceptApplication(appId: Int!): SchoolApplication
+  createApplicationQuestion(input: InputCreateApplicationQuestion!): ApplicationQuestion
+  createApplicationQuestionCollection(input: InputCreateApplicationQuestionCollection!): ApplicationQuestionCollection
+  updateAddress(input: InputUpdateAddress!): Address
+  createAddress(input: InputCreateAddress!): Address
+  deleteAddress(id: Int!): Address
 }
 
 """ a type defining a user's public data """
 type PublicUser {
-  id: ID
-  name: String
-  email: String
+  id: Int!
+  fullName: String
+  email: String!
 }
 
 type Query {
   _empty: String
 
-  """ login as a user """
-  loginUser(input: InputLogin!): User
-
   """ get a user's public data"""
-  getUser(id: ID!): PublicUser
-
-  """ get all posts """
-  getPosts: [Post]
+  getPublicUser(id: Int!): PublicUser
+  getUser(id: Int): User
 
   """ get all schools """
   getSchools: [School]
+  getSchoolInfoForApplication(schoolId: Int!): School
+
+  """ get all schoolApplications """
+  getSchoolApplications: [SchoolApplication]
+  getApplications(schoolId: Int!): [SchoolApplication]
+  getMyApplications: [SchoolApplication]
+  getMyAddresses: [Address]
+}
+
+enum Role {
+  USER
+  STUDENT
+  STAFF
+  SCHOOLADMIN
+  ADMIN
 }
 
 type School {
-  id: ID
-  abbreviation: String
+  id: Int
+  acronym: String
   name: String
-  summary: String
+  online: Boolean
+  hashtag: String
   description: String
-  students: [PublicUser]
-  staffs: [PublicUser]
-  startDateTimestamp: String
-  endDateTimestamp: String
+  students: [PublicUser!]
+  staffs: [PublicUser!]
+  applications: [SchoolApplication!]
+  questions: [ApplicationQuestion!]
+  startDate: Date
+  endDate: Date
+  outreachStartDate: Date
+  outreachEndDate: Date
+  miniOutreachStartDate: Date
+  miniOutreachEndDate: Date
+  schoolEmail: String
   timestamp: String
+  currency: String
+  secondary: Boolean
+  applicationFee: Int
+  schoolFee: Int
+  miniOutreachFee: Int
+  outreachFee: Int
+}
+
+type SchoolApplication {
+  id: Int
+  status: String
+  progress: String
+  accepted: Boolean
+  acceptedDate: Date
+  school: School
+  transferredFrom: School
+  answers: [ApplicationAnswer]
+  user: PublicUser
+  created: Date
+  submitted: Date
 }
 
 type Subscription {
   _empty: String
 
-  """ called when a new post is created """
-  postCreated: Post
-
   """ called when a new school is created """
   schoolCreated: School
+
+  """ called when a new schoolApplication is created """
+  schoolApplicationCreated: SchoolApplication
 }
 
 """ a type defining a user  """
 type User {
-  id: ID
+  id: Int!
   firstName: String
   lastName: String
-  email: String
-  token: String
+  fullName: String
+  gender: String
+  role: Role
+  marriage: String
+  maritalStatusDate: Date
+  spouseName: String
+  children: Int
+  birthday: Date
+  email: String!
+  website: String
+  youtube: String
+  facebook: String
+  emailActivated: Boolean
+  talents: String
+  firstLanguage: String
+  nativeLanguage: String
+  secondLanguage: String
+  secondLanguagePro: Int
+  thirdLanguage: String
+  thirdLanguagePro: Int
+  otherLanguage: String
+  otherLanguagePro: Int
+  life: String
+  addresses: [Address]
+}
+
+type UserLogin {
+  id: Int!
+  role: Role!
+  firstName: String
+  token: String!
 }

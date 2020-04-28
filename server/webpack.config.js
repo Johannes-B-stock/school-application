@@ -10,42 +10,42 @@ const dist = path.join(__dirname, 'dist');
 const filterUndefined = p => p === undefined;
 
 module.exports = {
-    mode: isDev ? 'development' : 'production' ,
-    target: 'node',
-    externals: [nodeExternals()],
-    devtool: "source-map",
-    entry: "./src/index.ts",
-    stats: "verbose",
-    plugins: [
-        isProd && new CleanWebpackPlugin({}),
-        isDev && new webpack.HotModuleReplacementPlugin({}),
-    ].filter(filterUndefined),
-    output: {
-        path: dist,
-        filename: "server.js"
+  mode: isDev ? 'development' : 'production',
+  target: 'node',
+  externals: [nodeExternals()],
+  devtool: 'source-map',
+  entry: './src/index.ts',
+  stats: 'verbose',
+  plugins: [
+    isProd && new CleanWebpackPlugin({}),
+    isDev && new webpack.HotModuleReplacementPlugin({}),
+  ].filter(filterUndefined),
+  output: {
+    path: dist,
+    filename: 'server.js',
+  },
+  resolve: {
+    extensions: ['.ts', '.js', '.json'],
+    alias: {
+      src: path.resolve(__dirname, 'src/'),
     },
-    resolve: {
-        extensions: [".ts", ".js", ".json"],
-        alias: {
-            src: path.resolve(__dirname, 'src/')
-        }
-    },
-    module: {
-        rules: [
-            {
-                test: /\.ts$/,
-                enforce: 'pre',
-                use: [
-                    {
-                        loader: 'tslint-loader',
-                        options: {}
-                    }
-                ]
-            },
-            {
-                test: /\.ts$/,
-                loader: "ts-loader"
-            },
-        ]
-    }
+  },
+  module: {
+    rules: [
+      {
+        test: /\.ts$/,
+        enforce: 'pre',
+        use: [
+          {
+            loader: 'tslint-loader',
+            options: {},
+          },
+        ],
+      },
+      {
+        test: /\.ts$/,
+        loader: 'ts-loader',
+      },
+    ],
+  },
 };

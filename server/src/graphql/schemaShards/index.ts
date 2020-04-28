@@ -1,9 +1,17 @@
 /**
  * This file merges all of the schemas that belong to different parts of the shards
  */
-import users from "src/graphql/schemaShards/users";
-import posts from "src/graphql/schemaShards/posts";
-import schools from "src/graphql/schemaShards/schools";
-import { mergeRawSchemas } from "src/graphql/utils/mergeRawSchemas";
+import users from './users';
+import schools from './schools';
+import schoolApplications from './schoolApplication';
+import { mergeRawSchemas } from '../utils/mergeRawSchemas';
+import applicationQuestions from './applicationQuestions';
+import address from './address';
 
-export default mergeRawSchemas(users, posts, schools);
+export default mergeRawSchemas(
+  users,
+  schools,
+  schoolApplications,
+  applicationQuestions,
+  address
+);

@@ -1,0 +1,14 @@
+{
+  "name": "root",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^3.20.2",
+    "shx": "^0.3.2"
+  },
+  "scripts": {
+    "build": "lerna run build && yarn copy-client",
+    "copy-client": "shx cp -r client/build/* server/public/",
+    "start": "lerna run --scope prisma-server start",
+    "start-all": "lerna run start"
+  }
+}

@@ -1,11 +1,10 @@
-# Graphql-ts-tutorial
+# Server
 
-You can find the tutorial on hashnode, [here](https://hashnode.com/post/building-a-nodejs-api-with-typescript-and-graphql-cjrrojjx200uqrxs1ngtitx9p)
+This project contains the backend which is built upon prisma and GraphQL.
 
-### Getting started
+## Get it running
 
-- Run in development mode with hot reloading `npm run dev`
+This is using mysql as a database so you need to have mysql installed somewhere and execute the [schema.sql](./schema.sql) script. Make it publicly available so you can access the database from your backend.
 
-- Build `npm run build`
-
-- Generate types and schemas `npm run generate-typedefs`. do this after changes to the api to keep the types in sync.
+To get this running you need to create a ".env" file and declare 3 environment variables: `HASH_SALT`, `JWT_SECRET` and `DB_URL`.<br />
+`DB_URL` is going to be the connection string that tells prisma where to look for the database. The Syntax for this url looks like `mysql://user:password@host:port/database`. If your mysql instance is running on your localhost than it could look like this: `mysql://user:password@localhost:3306/prisma`

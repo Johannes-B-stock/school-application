@@ -16,7 +16,6 @@
   "requirePragma": false,
   "useTabs": false,
   "vueIndentScriptAndStyle": false,
-  "filepath": "d:\\privateCode\\school-application\\server\\src\\db\\index.ts",
-  "parser": "typescript",
+  "parser": "typescript"
   
 }

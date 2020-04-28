@@ -1,20 +1,24 @@
 import {
-  createSchool,
+  prisma,
   getSchools,
   addStudent,
   addStaff,
   removeStudent,
-  updateSchool,
   removeStaff,
-} from 'src/db';
-import { gql } from 'apollo-server';
-import { pubsub } from 'src/graphql/subscriptionManager';
-import { authenticateContext } from 'src/auth';
+} from '../../db';
+import { gql, AuthenticationError } from 'apollo-server-express';
+import { pubsub } from '../subscriptionManager';
+import { authenticateContext, IContext } from '../../auth';
+
+import { GraphQLDate } from 'graphql-iso-date';
 
 const typeDefs = gql`
+  scalar Date
+
   extend type Query {
     " get all schools "
     getSchools: [School]
+    getSchoolInfoForApplication(schoolId: Int!): School
   }
 
   extend type Mutation {
@@ -35,23 +39,51 @@ const typeDefs = gql`
 
   " input to create a new school "
   input InputCreateSchool {
-    abbreviation: String!
+    acronym: String!
     name: String!
-    summary: String
+    online: Boolean
+    hashtag: String
     description: String
-    startDateTimestamp: String
-    endDateTimestamp: String
+    startDate: Date
+    endDate: Date
+    outreachStartDate: Date
+    outreachEndDate: Date
+    miniOutreachStartDate: Date
+    miniOutreachEndDate: Date
+    schoolEmail: String
+    timestamp: String
+    currency: String
+    secondary: Boolean
+    applicationFee: Int
+    schoolFee: Int
+    miniOutreachFee: Int
+    outreachFee: Int
+    questionCollection: Int
   }
 
   " input to update an existing school "
   input InputUpdateSchool {
     id: Int
-    abbreviation: String!
-    name: String!
-    summary: String
+    acronym: String
+    name: String
+    online: Boolean
+    hashtag: String
     description: String
-    startDateTimestamp: String
-    endDateTimestamp: String
+    startDate: Date
+    endDate: Date
+    outreachStartDate: Date
+    outreachEndDate: Date
+    miniOutreachStartDate: Date
+    miniOutreachEndDate: Date
+    schoolEmail: String
+    timestamp: String
+    currency: String
+    secondary: Boolean
+    applicationFee: Int
+    schoolFee: Int
+    miniOutreachFee: Int
+    outreachFee: Int
+    questionCollection: Int
   }
 
   " input to delete an existing school "
@@ -69,6 +101,7 @@ const typeDefs = gql`
   input InputAddStaff {
     schoolId: Int
     userId: Int
+    admin: Boolean
   }
 
   " input to add a student "
@@ -85,33 +118,92 @@ const typeDefs = gql`
 
   type School {
     id: Int
-    abbreviation: String
+    acronym: String
     name: String
-    summary: String
+    online: Boolean
+    hashtag: String
     description: String
-    students: [PublicUser]
-    staffs: [PublicUser]
-    startDateTimestamp: String
-    endDateTimestamp: String
+    students: [PublicUser!]
+    staffs: [PublicUser!]
+    applications: [SchoolApplication!]
+    questions: [ApplicationQuestion!]
+    startDate: Date
+    endDate: Date
+    outreachStartDate: Date
+    outreachEndDate: Date
+    miniOutreachStartDate: Date
+    miniOutreachEndDate: Date
+    schoolEmail: String
     timestamp: String
+    currency: String
+    secondary: Boolean
+    applicationFee: Int
+    schoolFee: Int
+    miniOutreachFee: Int
+    outreachFee: Int
   }
 `;
 
 export default {
   resolvers: {
+    // Date: GraphQLDate,
     Query: {
       // get all schools
       getSchools: () => getSchools(),
+      getSchoolInfoForApplication: async (
+        root: any,
+        { schoolId }: { schoolId: number },
+        context: IContext
+      ): Promise<GQL.School> => {
+        const user = authenticateContext(context);
+        if (user === undefined || user === null) {
+          throw new AuthenticationError(
+            'You have to be signed in to apply for a school.'
+          );
+        }
+        const school = await prisma.school.findOne({
+          where: {
+            id: schoolId,
+          },
+          include: {
+            application_question_collection: {
+              include: {
+                application_question: true,
+              },
+            },
+          },
+        });
+        const questions: GQL.ApplicationQuestion[] = school.application_question_collection?.application_question?.map(
+          dbQuestion => {
+            return {
+              ...dbQuestion,
+              questionCollection: school.application_question_collection,
+            };
+          }
+        );
+        return {
+          ...school,
+          questions,
+        };
+      },
     },
     Mutation: {
       // create a school
       createSchool: async (
-        root,
+        root: any,
         { input }: GQL.MutationToCreateSchoolArgs,
-        context
+        context: IContext
       ) => {
         // get the user from the context
         const user = await authenticateContext(context);
+        if (
+          user.role !== GQL.Role.ADMIN &&
+          user.role !== GQL.Role.SCHOOLADMIN
+        ) {
+          throw new AuthenticationError(
+            "user doesn't have the rights to create schools"
+          );
+        }
         // create a new school in the database
         const school = await createSchool(input);
         // publish the school to the subscribers
@@ -121,50 +213,96 @@ export default {
         return school;
       },
       updateSchool: async (
-        root,
+        root: any,
         { input }: GQL.MutationToUpdateSchoolArgs,
-        context
+        context: IContext
       ) => {
         // get the user from the context
         const user = await authenticateContext(context);
+        if (
+          user.role !== GQL.Role.ADMIN &&
+          user.role !== GQL.Role.SCHOOLADMIN
+        ) {
+          throw new AuthenticationError(
+            "user doesn't have the rights to update schools"
+          );
+        }
         // create a new school in the database
         const school = await updateSchool(input);
         return school;
       },
-      addStudent: async ({ input }: GQL.MutationToAddStudentArgs, context) => {
+      addStudent: async (
+        { input }: GQL.MutationToAddStudentArgs,
+        context: IContext
+      ) => {
         // get the user from the context
         const user = await authenticateContext(context);
-        const school = await addStudent(input);
-        return school;
+        if (
+          user.role !== GQL.Role.ADMIN &&
+          user.role !== GQL.Role.SCHOOLADMIN
+        ) {
+          throw new AuthenticationError(
+            "user doesn't have the rights to update schools"
+          );
+        }
+        const student = await addStudent(input);
+        return student;
       },
-      addStaff: async ({ input }: GQL.MutationToAddStaffArgs, context) => {
+      addStaff: async (
+        { input }: GQL.MutationToAddStaffArgs,
+        context: IContext
+      ) => {
         // get the user from the context
         const user = await authenticateContext(context);
+        if (
+          user.role !== GQL.Role.ADMIN &&
+          user.role !== GQL.Role.SCHOOLADMIN
+        ) {
+          throw new AuthenticationError(
+            "user doesn't have the rights to update schools"
+          );
+        }
         const school = await addStaff(input);
         return school;
       },
       removeStudent: async (
         { input }: GQL.MutationToRemoveStudentArgs,
-        context
+        context: IContext
       ) => {
         // get the user from the context
         const user = await authenticateContext(context);
+        if (
+          user.role !== GQL.Role.ADMIN &&
+          user.role !== GQL.Role.SCHOOLADMIN
+        ) {
+          throw new AuthenticationError(
+            "user doesn't have the rights to update schools"
+          );
+        }
         const school = await removeStudent(input);
         return school;
       },
       removeStaff: async (
         { input }: GQL.MutationToRemoveStaffArgs,
-        context
+        context: IContext
       ) => {
         // get the user from the context
         const user = await authenticateContext(context);
+        if (
+          user.role !== GQL.Role.ADMIN &&
+          user.role !== GQL.Role.SCHOOLADMIN
+        ) {
+          throw new AuthenticationError(
+            "user doesn't have the rights to update schools"
+          );
+        }
         const school = await removeStaff(input);
         return school;
       },
     },
     Subscription: {
       schoolCreated: {
-        subscribe: (root, args, context) => {
+        subscribe: (root: any, args: any, context: any) => {
           return pubsub.asyncIterator('schoolCreated');
         },
       },
@@ -172,3 +310,69 @@ export default {
   },
   typeDefs: [typeDefs],
 };
+
+async function createSchool(
+  schoolInput: GQL.InputCreateSchool
+): Promise<Partial<GQL.School>> {
+  let dbSchool = null;
+  const cleanSchoolInput = {
+    ...schoolInput,
+    startDate: new Date(schoolInput.startDate ?? 0),
+    endDate: new Date(schoolInput.endDate ?? 0),
+    outreachEndDate: new Date(schoolInput.outreachEndDate ?? 0),
+    outreachStartDate: new Date(schoolInput.outreachStartDate ?? 0),
+  };
+  if (schoolInput.questionCollection) {
+    dbSchool = await prisma.school.create({
+      data: {
+        ...cleanSchoolInput,
+        application_question_collection: {
+          connect: {
+            id: schoolInput.questionCollection,
+          },
+        },
+      },
+    });
+  } else {
+    dbSchool = await prisma.school.create({
+      data: {
+        ...cleanSchoolInput,
+      },
+    });
+  }
+  return { ...dbSchool };
+}
+
+async function updateSchool(
+  schoolInput: GQL.InputUpdateSchool
+): Promise<Partial<GQL.School>> {
+  const collectionId = schoolInput.questionCollection;
+  const { questionCollection, ...cleanInput } = schoolInput;
+  let dbSchool = await prisma.school.update({
+    where: {
+      id: schoolInput.id,
+    },
+    data: {
+      ...cleanInput,
+      startDate: new Date(schoolInput.startDate ?? 0),
+      endDate: new Date(schoolInput.endDate ?? 0),
+      outreachEndDate: new Date(schoolInput.outreachEndDate ?? 0),
+      outreachStartDate: new Date(schoolInput.outreachStartDate ?? 0),
+    },
+  });
+  if (collectionId) {
+    dbSchool = await prisma.school.update({
+      where: {
+        id: schoolInput.id,
+      },
+      data: {
+        application_question_collection: {
+          connect: {
+            id: collectionId,
+          },
+        },
+      },
+    });
+  }
+  return { ...dbSchool };
+}

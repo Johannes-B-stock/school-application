@@ -36,7 +36,7 @@ jobs:
   build-server:
     runs-on: ubuntu-latest
     env:
-      working-directory: ./prisma_server
+      working-directory: ./server
 
     strategy:
       matrix:
