@@ -1,30 +1,31 @@
-import React, { useState, Dispatch } from "react";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import { Link } from "react-router-dom";
-import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import { gql } from "apollo-boost";
-import { useMutation } from "react-apollo";
-import { History } from "history";
-import { User } from "../types/User";
-import { registerUserVariables, registerUser } from "../graphql/registerUser";
-import MuiAlert from "@material-ui/lab/Alert";
+/* eslint-disable @typescript-eslint/camelcase */
+import React, { useState, Dispatch } from 'react';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import { Link } from 'react-router-dom';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import { gql } from 'apollo-boost';
+import { useMutation } from 'react-apollo';
+import { History } from 'history';
+import { User } from '../types/User';
+import { registerUserVariables, registerUser_registerUser } from '../graphql/registerUser';
+import MuiAlert from '@material-ui/lab/Alert';
 
-function Copyright() {
+function Copyright(): React.ReactElement {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
+      {'Copyright © '}
       <Link color="inherit" to="https://material-ui.com/">
         Your Website
-      </Link>{" "}
+      </Link>{' '}
       {new Date().getFullYear()}
-      {"."}
+      {'.'}
     </Typography>
   );
 }
@@ -32,16 +33,16 @@ function Copyright() {
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -68,27 +69,25 @@ export default function Register({
   user: User | undefined;
   setUser: Dispatch<React.SetStateAction<User | undefined>>;
   history: History<History.PoorMansUnknown>;
-}) {
+}): React.ReactElement {
   if (user) {
     history.goBack();
   }
   const classes = useStyles();
   const [error, setError] = useState<string | undefined>(undefined);
 
-  const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [password, setPassword] = useState('');
 
-  function validateForm() {
-    return email.length > 0 && password.length > 0 && email.includes("@");
+  function validateForm(): boolean {
+    return email.length > 0 && password.length > 0 && email.includes('@');
   }
 
-  const [registerUser] = useMutation<registerUser, registerUserVariables>(
-    registerMutation
-  );
+  const [registerUser] = useMutation<registerUser_registerUser, registerUserVariables>(registerMutation);
 
-  async function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent): Promise<void> {
     event.preventDefault();
     setError(undefined);
     try {
@@ -103,15 +102,15 @@ export default function Register({
         },
       });
       if (user.errors) {
-        setError(user.errors.join(","));
+        setError(user.errors.join(','));
       }
       if (user?.data === undefined) {
-        setError("No User data arrived from server.");
+        setError('No User data arrived from server.');
       } else {
         const newUser: User = {
-          ...user.data.registerUser,
+          ...user.data,
         };
-        localStorage.setItem("user", JSON.stringify(newUser));
+        localStorage.setItem('user', JSON.stringify(newUser));
         setUser(newUser);
       }
     } catch (e) {
@@ -146,7 +145,7 @@ export default function Register({
             autoComplete="firstName"
             autoFocus
             value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            onChange={(e): void => setFirstName(e.target.value)}
           />
           <TextField
             variant="outlined"
@@ -158,7 +157,7 @@ export default function Register({
             name="lastName"
             autoComplete="lastName"
             value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            onChange={(e): void => setLastName(e.target.value)}
           />
           <TextField
             variant="outlined"
@@ -170,7 +169,7 @@ export default function Register({
             name="email"
             autoComplete="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e): void => setEmail(e.target.value)}
           />
           <TextField
             variant="outlined"
@@ -183,7 +182,7 @@ export default function Register({
             id="password"
             autoComplete="current-password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e): void => setPassword(e.target.value)}
           />
           <Button
             type="submit"

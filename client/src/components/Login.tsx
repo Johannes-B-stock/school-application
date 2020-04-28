@@ -1,33 +1,34 @@
-import React, { useState, Dispatch } from "react";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import { Link } from "react-router-dom";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import { gql } from "apollo-boost";
-import { useMutation } from "react-apollo";
-import { History } from "history";
-import { loginUser, loginUserVariables } from "../graphql/loginUser";
-import MuiAlert from "@material-ui/lab/Alert";
-import { User } from "../types/User";
+import React, { useState, Dispatch } from 'react';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import { Link } from 'react-router-dom';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import { gql } from 'apollo-boost';
+import { useMutation } from 'react-apollo';
+import { History } from 'history';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { loginUser, loginUserVariables } from '../graphql/loginUser';
+import MuiAlert from '@material-ui/lab/Alert';
+import { User } from '../types/User';
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
+      {'Copyright © '}
       <Link color="inherit" to="https://material-ui.com/">
         Your Website
-      </Link>{" "}
+      </Link>{' '}
       {new Date().getFullYear()}
-      {"."}
+      {'.'}
     </Typography>
   );
 }
@@ -35,16 +36,16 @@ function Copyright() {
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -77,8 +78,8 @@ export default function Login({
   }
   const classes = useStyles();
   const [error, setError] = useState<string | undefined>(undefined);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   function validateForm() {
     return email.length > 0 && password.length > 0;
@@ -93,15 +94,15 @@ export default function Login({
         variables: { input: { email: email, password: password } },
       });
       if (user.errors) {
-        setError(user.errors.join(","));
+        setError(user.errors.join(','));
       }
       if (user.data === undefined) {
-        setError("no user data arrived from server.");
+        setError('no user data arrived from server.');
       } else {
         const newUser: User = {
           ...user.data.loginUser,
         };
-        localStorage.setItem("user", JSON.stringify(newUser));
+        localStorage.setItem('user', JSON.stringify(newUser));
         setUser(newUser);
       }
     } catch (e) {
@@ -151,10 +152,7 @@ export default function Login({
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
+          <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
           <Button
             type="submit"
             fullWidth

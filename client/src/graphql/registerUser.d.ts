@@ -3,14 +3,14 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { InputRegisterUser, Role } from "./../types/globalTypes";
+import { InputRegisterUser, Role } from './../types/globalTypes';
 
 // ====================================================
 // GraphQL mutation operation: registerUser
 // ====================================================
 
 export interface registerUser_registerUser {
-  __typename: "UserLogin";
+  __typename: 'UserLogin';
   id: number;
   token: string;
   firstName: string | null;

@@ -1,45 +1,39 @@
-import React, { useState } from "react";
-import "./App.css";
-import { SchoolList } from "./components/SchoolList";
+import React, { useState } from 'react';
+import './App.css';
+import { SchoolList } from './components/SchoolList';
 //use create client
-import ApolloClient from "apollo-boost";
+import ApolloClient from 'apollo-boost';
 //use create provider
-import { ApolloProvider } from "react-apollo";
-import Navigation from "./components/Navigation";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import { blueGrey } from "@material-ui/core/colors";
-import { grey } from "@material-ui/core/colors";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import { createBrowserHistory } from "history";
-import { Profile } from "./components/Profile";
-import { User } from "./types/User";
-import { Application } from "./components/Application";
+import { ApolloProvider } from 'react-apollo';
+import Navigation from './components/Navigation';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { blueGrey } from '@material-ui/core/colors';
+import { grey } from '@material-ui/core/colors';
+import Login from './components/Login';
+import Register from './components/Register';
+import { createBrowserHistory } from 'history';
+import { Profile } from './components/Profile';
+import { User } from './types/User';
+import { Application } from './components/Application';
 
 // get the authentication token from local storage if it exists
-const storageUser = localStorage.getItem("user");
-const storedUser: User =
-  storageUser === null ? undefined : JSON.parse(storageUser);
+const storageUser = localStorage.getItem('user');
+const storedUser: User = storageUser === null ? undefined : JSON.parse(storageUser);
 const token = storedUser?.token;
 
 //Accessing the address for graphql queries
 const client = new ApolloClient({
-  uri: "http://localhost:3000/graphql",
+  uri: 'http://localhost:3000/graphql',
   headers: {
     token: token,
   },
   onError: ({ graphQLErrors, networkError, operation, forward }) => {
     if (graphQLErrors) {
-      for (let err of graphQLErrors) {
+      for (const err of graphQLErrors) {
         // handle errors differently based on its error code
         switch (err.extensions?.code) {
-          case "UNAUTHENTICATED":
+          case 'UNAUTHENTICATED':
             // old token has expired throwing AuthenticationError,
             // one way to handle is to obtain a new token and
             // add it to the operation context
@@ -50,14 +44,14 @@ const client = new ApolloClient({
                 //getNewToken(),
               },
             });
-            localStorage.removeItem("user");
+            localStorage.removeItem('user');
             // Now, pass the modified operation to the next link
             // in the chain. This effectively intercepts the old
             // failed request, and retries it with a new token
             return forward(operation);
 
           // handle other errors
-          case "ANOTHER_ERROR_CODE":
+          case 'ANOTHER_ERROR_CODE':
             break;
           // ...
           default:
@@ -83,9 +77,8 @@ const theme = createMuiTheme({
 });
 
 function App() {
-  const storageUser = localStorage.getItem("user");
-  const storedUser: User =
-    storageUser === null ? undefined : JSON.parse(storageUser);
+  const storageUser = localStorage.getItem('user');
+  const storedUser: User = storageUser === null ? undefined : JSON.parse(storageUser);
   const [user, setUser] = useState<User | undefined>(storedUser);
 
   return (
@@ -105,11 +98,7 @@ function App() {
               <Login user={user} setUser={setUser} history={browserHistory} />
             </Route>
             <Route path="/register" exact>
-              <Register
-                user={user}
-                setUser={setUser}
-                history={browserHistory}
-              />
+              <Register user={user} setUser={setUser} history={browserHistory} />
             </Route>
             <Route path="/profile" exact>
               <Profile user={user} />

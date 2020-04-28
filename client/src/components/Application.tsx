@@ -1,26 +1,25 @@
-import { Redirect } from "react-router-dom";
-import React, { useState } from "react";
-import { gql } from "apollo-boost";
-import { useParams } from "react-router-dom";
-import { User } from "../types/User";
-import { useQuery, useMutation } from "react-apollo";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import MuiAlert from "@material-ui/lab/Alert";
-import Container from "@material-ui/core/Container";
+/* eslint-disable @typescript-eslint/camelcase */
+import { Redirect } from 'react-router-dom';
+import React, { useState } from 'react';
+import { gql } from 'apollo-boost';
+import { useParams } from 'react-router-dom';
+import { User } from '../types/User';
+import { useQuery, useMutation } from 'react-apollo';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import MuiAlert from '@material-ui/lab/Alert';
+import Container from '@material-ui/core/Container';
 import {
   getSchoolInfoVariables,
   getSchoolInfo,
   getSchoolInfo_getSchoolInfoForApplication_questions,
-} from "../graphql/getSchoolInfo";
-import TextField from "@material-ui/core/TextField";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import {
-  createApplication,
-  createApplicationVariables,
-} from "../graphql/createApplication";
-import { GraphQLError } from "graphql";
-import Typography from "@material-ui/core/Typography";
+} from '../graphql/getSchoolInfo';
+import TextField from '@material-ui/core/TextField';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { createApplication, createApplicationVariables } from '../graphql/createApplication';
+import { GraphQLError } from 'graphql';
+import Typography from '@material-ui/core/Typography';
 
 // const getUserQuery = gql`
 //   query getUserDetail {
@@ -34,7 +33,7 @@ import Typography from "@material-ui/core/Typography";
 //   }
 // `;
 
-interface answer {
+interface Answer {
   questionId: number;
   question: string;
   answer: string;
@@ -68,21 +67,21 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       marginTop: theme.spacing(8),
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
     },
 
     textField: {
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
       marginTop: theme.spacing(3),
-      width: "150ch",
+      width: '150ch',
     },
     submit: {
       margin: theme.spacing(3, 1, 2),
     },
-  })
+  }),
 );
 
 export function Application({ user }: { user: User | undefined }) {
@@ -90,24 +89,23 @@ export function Application({ user }: { user: User | undefined }) {
   const classes = useStyles();
 
   const [formError, setFormError] = useState<string | undefined>(undefined);
-  const [applicationId, setApplicationId] = useState<number | undefined>(
-    undefined
-  );
+  const [applicationId, setApplicationId] = useState<number | undefined>(undefined);
   let questions: getSchoolInfo_getSchoolInfoForApplication_questions[] = [];
-  let loadedAnswers: answer[] = [];
 
-  const [createApplication] = useMutation<
-    createApplication,
-    createApplicationVariables
-  >(createApplicationMutation);
+  const [answers, setAnswers] = useState<Answer[]>([]);
+  const [createApplication] = useMutation<createApplication, createApplicationVariables>(createApplicationMutation);
+
+  function inputValidated(): boolean {
+    return (
+      answers.length > 0 && answers.every((a) => a.answer && a.answer.length > 0) && answers.length === questions.length
+    );
+  }
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     setFormError(undefined);
     if (!inputValidated()) {
-      setFormError(
-        "you have to fill out all questions before you can continue"
-      );
+      setFormError('you have to fill out all questions before you can continue');
       return;
     }
     try {
@@ -125,7 +123,7 @@ export function Application({ user }: { user: User | undefined }) {
         },
       });
       if (errors) {
-        setFormError(errors.map((e: GraphQLError) => e.message).join(";"));
+        setFormError(errors.map((e: GraphQLError) => e.message).join(';'));
       }
       if (data?.createSchoolApplication?.id) {
         setApplicationId(data.createSchoolApplication.id);
@@ -136,31 +134,15 @@ export function Application({ user }: { user: User | undefined }) {
   }
 
   function setAnswer(questionId: number, question: string, answer: string) {
-    setAnswers((answ) => [
-      ...answ.filter((a) => a.questionId !== questionId),
-      { questionId, answer, question },
-    ]);
+    setAnswers((answ) => [...answ.filter((a) => a.questionId !== questionId), { questionId, answer, question }]);
   }
 
-  const [answers, setAnswers] = useState<answer[]>(loadedAnswers);
-
-  const { loading, error, data } = useQuery<
-    getSchoolInfo,
-    getSchoolInfoVariables
-  >(getSchoolQuery, {
+  const { loading, error, data } = useQuery<getSchoolInfo, getSchoolInfoVariables>(getSchoolQuery, {
     variables: { schoolId: Number(id) },
   });
 
   if (data?.getSchoolInfoForApplication?.questions) {
     questions = data.getSchoolInfoForApplication.questions;
-  }
-
-  function inputValidated(): boolean {
-    return (
-      answers.length > 0 &&
-      answers.every((a) => a.answer && a.answer.length > 0) &&
-      answers.length === questions.length
-    );
   }
 
   if (user === undefined) {
@@ -186,8 +168,7 @@ export function Application({ user }: { user: User | undefined }) {
           </MuiAlert>
         )}
         <Typography component="h1" variant="h5">
-          Application for {data?.getSchoolInfoForApplication?.name} (
-          {data?.getSchoolInfoForApplication?.acronym})
+          Application for {data?.getSchoolInfoForApplication?.name} ({data?.getSchoolInfoForApplication?.acronym})
         </Typography>
         <Typography variant="subtitle1" gutterBottom>
           Start your adventure now!
@@ -204,21 +185,12 @@ export function Application({ user }: { user: User | undefined }) {
                     <TextField
                       key={question.id.toString()}
                       id={question.id.toString()}
-                      label={question.question ?? ""}
+                      label={question.question ?? ''}
                       multiline
                       required
                       fullWidth
-                      value={
-                        answers.find((a) => a.questionId === question.id)
-                          ?.answer
-                      }
-                      onChange={(e) =>
-                        setAnswer(
-                          question.id,
-                          question.question,
-                          e.target.value
-                        )
-                      }
+                      value={answers.find((a) => a.questionId === question.id)?.answer}
+                      onChange={(e) => setAnswer(question.id, question.question, e.target.value)}
                       variant="outlined"
                       className={classes.textField}
                     />
@@ -227,12 +199,7 @@ export function Application({ user }: { user: User | undefined }) {
               );
             })}
 
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
+            <Button type="submit" variant="contained" color="primary" className={classes.submit}>
               Create Application
             </Button>
           </form>

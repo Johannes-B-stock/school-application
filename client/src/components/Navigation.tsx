@@ -1,19 +1,13 @@
-import * as React from "react";
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-  Button,
-} from "@material-ui/core";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import MenuIcon from "@material-ui/icons/Menu";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { User } from "../types/User";
+import * as React from 'react';
+import { AppBar, Toolbar, IconButton, Typography, Button } from '@material-ui/core';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import MenuIcon from '@material-ui/icons/Menu';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { User } from '../types/User';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
     link: {
       margin: theme.spacing(1, 1.5),
     },
-  })
+  }),
 );
 
 // interface drawer {
@@ -64,7 +58,7 @@ export default function Navigation({
   user: User | undefined;
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
   resetStore: () => void;
-}) {
+}): React.ReactElement {
   // const location = useLocation();
   const classes = useStyles();
   const loggedIn = user !== undefined;
@@ -81,7 +75,7 @@ export default function Navigation({
 
   function logout() {
     handleClose();
-    localStorage.removeItem("user");
+    localStorage.removeItem('user');
     setUser(undefined);
     resetStore();
   }
@@ -90,33 +84,18 @@ export default function Navigation({
     <div className={classes.root}>
       <AppBar position="static" color="primary">
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
             School Application
           </Typography>
           <nav>
-            <Button
-              component={Link}
-              to="/home"
-              color="inherit"
-              className={classes.link}
-            >
+            <Button component={Link} to="/home" color="inherit" className={classes.link}>
               Home
             </Button>
-            {user && user?.role === "ADMIN" && (
-              <Button
-                component={Link}
-                color="inherit"
-                to="/admin"
-                className={classes.link}
-              >
+            {user && user?.role === 'ADMIN' && (
+              <Button component={Link} color="inherit" to="/admin" className={classes.link}>
                 Admin
               </Button>
             )}
@@ -137,13 +116,13 @@ export default function Navigation({
                 id="menu-appbar"
                 anchorEl={anchorEl}
                 anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
+                  vertical: 'top',
+                  horizontal: 'right',
                 }}
                 keepMounted
                 transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
+                  vertical: 'top',
+                  horizontal: 'right',
                 }}
                 open={open}
                 onClose={handleClose}
