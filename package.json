@@ -6,9 +6,14 @@
     "shx": "^0.3.2"
   },
   "scripts": {
+    "postinstall": "lerna run prisma:generate",
     "build": "lerna run build && yarn copy-client",
     "copy-client": "shx cp -r client/build/* server/public/",
     "start": "lerna run --scope prisma-server start",
     "start-all": "lerna run start"
-  }
+  },
+  "workspaces": [
+    "client",
+    "server"
+  ]
 }

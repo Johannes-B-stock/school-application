@@ -25,7 +25,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "generate-client": "npx apollo client:codegen ../graphql --localSchemaFile=../prisma_server/src/__typedefs/schema.graphql --target=typescript --globalTypesFile=./src/types/globalTypes.d.ts --tsFileExtension=d.ts"
+    "generate-client": "npx apollo client:codegen ../graphql --localSchemaFile=../server/src/__typedefs/schema.graphql --target=typescript --globalTypesFile=./src/types/globalTypes.d.ts --tsFileExtension=d.ts"
   },
   "eslintConfig": {
     "extends": "react-app"
