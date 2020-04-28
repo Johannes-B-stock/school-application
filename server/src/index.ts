@@ -8,7 +8,6 @@ import {
 import { rawSchema } from './graphql';
 import { prisma } from './db';
 import express from 'express';
-import cors from 'cors';
 import path from 'path';
 
 // handle graphql
@@ -18,7 +17,10 @@ const schema = makeExecutableSchema(rawSchema);
 // configure the server here
 const serverConfig: Config = {
   schema,
-  formatError: err => {
+  formatError: (err: {
+    originalError: { message: string };
+    message: string;
+  }) => {
     console.log('original: ' + err.originalError.message);
     // Don't give the specific errors to the client.
     if (err.message.startsWith('Database Error: ')) {
@@ -49,9 +51,10 @@ const app = express();
 // app.use(cors);
 server.applyMiddleware({ app });
 app.use(express.static('public'));
+app.use(express.static('react-app'));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+  res.sendFile(path.resolve(__dirname, 'react-app', 'index.html'));
 });
 
 // A `main` function so that we can use async/await

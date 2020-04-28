@@ -1,5 +1,5 @@
 import { mergeWith, isArray, merge } from 'lodash';
-import { IExecutableSchemaDefinition } from 'apollo-server-express';
+import { IExecutableSchemaDefinition } from 'graphql-tools';
 
 function withArraysConcatination(objValue: any, srcValue: any) {
   // if an array, concat it

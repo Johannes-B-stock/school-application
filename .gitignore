@@ -6,6 +6,8 @@
 /.pnp
 .pnp.js
 
+**/react-app
+
 # misc
 .env
 .DS_Store

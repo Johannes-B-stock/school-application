@@ -1,6 +1,6 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const webpack = require('webpack');
 
 const env = process.env.NODE_ENV || 'development';
@@ -12,7 +12,12 @@ const filterUndefined = p => p === undefined;
 module.exports = {
   mode: isDev ? 'development' : 'production',
   target: 'node',
-  externals: [nodeExternals()],
+  externals: [
+    nodeExternals(),
+    nodeExternals({
+      modulesDir: path.resolve(__dirname, '../node_modules'),
+    }),
+  ],
   devtool: 'source-map',
   entry: './src/index.ts',
   stats: 'verbose',
