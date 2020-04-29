@@ -1,5 +1,5 @@
 # source: http://localhost:3000/graphql
-# timestamp: Wed Apr 29 2020 15:49:10 GMT+0200 (GMT+02:00)
+# timestamp: Wed Apr 29 2020 23:45:23 GMT+0200 (GMT+02:00)
 
 type Address {
   id: Int!
@@ -35,6 +35,11 @@ type ApplicationQuestionCollection {
   questions: [ApplicationQuestion]
 }
 
+"""
+A date string, such as 2007-12-03, compliant with the `full-date` format
+outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for
+representation of dates and times using the Gregorian calendar.
+"""
 scalar Date
 
 """ input to add a staff """
@@ -92,7 +97,6 @@ input InputCreateSchool {
   miniOutreachStartDate: Date
   miniOutreachEndDate: Date
   schoolEmail: String
-  timestamp: String
   currency: String
   secondary: Boolean
   applicationFee: Int
@@ -171,7 +175,6 @@ input InputUpdateSchool {
   miniOutreachStartDate: Date
   miniOutreachEndDate: Date
   schoolEmail: String
-  timestamp: String
   currency: String
   secondary: Boolean
   applicationFee: Int
@@ -263,6 +266,7 @@ type Query {
   """ get a user's public data"""
   getPublicUser(id: Int!): PublicUser
   getUser(id: Int): User
+  hasAdmin: Boolean
 
   """ get all schools """
   getSchools: [School]
@@ -284,9 +288,9 @@ enum Role {
 }
 
 type School {
-  id: Int
-  acronym: String
-  name: String
+  id: Int!
+  acronym: String!
+  name: String!
   online: Boolean
   hashtag: String
   description: String

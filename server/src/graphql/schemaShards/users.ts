@@ -11,6 +11,7 @@ const typeDefs = gql`
     " get a user's public data"
     getPublicUser(id: Int!): PublicUser
     getUser(id: Int): User
+    hasAdmin: Boolean
   }
 
   extend type Mutation {
@@ -152,6 +153,10 @@ export default {
           dbUser = await getDbUser(id);
         }
         return { ...dbUser, role: convertRole(dbUser.role) };
+      },
+      hasAdmin: async (_root: any): Promise<boolean> => {
+        const admins = await prisma.user.count({ where: { role: 4 } });
+        return admins > 0;
       },
     },
     Mutation: {

@@ -43,6 +43,10 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
     },
+
+    alert: {
+      margin: theme.spacing(2),
+    },
   }),
 );
 
@@ -57,7 +61,7 @@ export function Profile({ user }: { user: User | undefined }) {
   if (data?.getUser?.id !== user?.id && user?.role !== 'ADMIN') {
     return (
       <Container component="main" maxWidth="md">
-        <MuiAlert elevation={6} variant="filled" severity="warning">
+        <MuiAlert className={classes.alert} elevation={6} variant="filled" severity="warning">
           You don&apos;t have the rights to see this profile. (id:{user?.id})
         </MuiAlert>
       </Container>
@@ -68,7 +72,7 @@ export function Profile({ user }: { user: User | undefined }) {
     <Container component="main" maxWidth="md">
       <div className={classes.root}>
         {error && (
-          <MuiAlert elevation={6} variant="filled" severity="error">
+          <MuiAlert className={classes.alert} elevation={6} variant="filled" severity="error">
             {error.message}
           </MuiAlert>
         )}

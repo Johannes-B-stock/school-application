@@ -10,7 +10,7 @@ import { gql, AuthenticationError } from 'apollo-server-express';
 import { pubsub } from '../subscriptionManager';
 import { authenticateContext, IContext } from '../../auth';
 
-import { GraphQLDate } from 'graphql-iso-date';
+import { GraphQLDateTime } from 'graphql-iso-date';
 
 const typeDefs = gql`
   scalar Date
@@ -51,7 +51,6 @@ const typeDefs = gql`
     miniOutreachStartDate: Date
     miniOutreachEndDate: Date
     schoolEmail: String
-    timestamp: String
     currency: String
     secondary: Boolean
     applicationFee: Int
@@ -76,7 +75,6 @@ const typeDefs = gql`
     miniOutreachStartDate: Date
     miniOutreachEndDate: Date
     schoolEmail: String
-    timestamp: String
     currency: String
     secondary: Boolean
     applicationFee: Int
@@ -117,9 +115,9 @@ const typeDefs = gql`
   }
 
   type School {
-    id: Int
-    acronym: String
-    name: String
+    id: Int!
+    acronym: String!
+    name: String!
     online: Boolean
     hashtag: String
     description: String
@@ -146,7 +144,7 @@ const typeDefs = gql`
 
 export default {
   resolvers: {
-    // Date: GraphQLDate,
+    Date: GraphQLDateTime,
     Query: {
       // get all schools
       getSchools: () => getSchools(),
@@ -195,6 +193,7 @@ export default {
         context: IContext
       ) => {
         // get the user from the context
+        //test
         const user = await authenticateContext(context);
         if (
           user.role !== GQL.Role.ADMIN &&

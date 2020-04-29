@@ -16,6 +16,8 @@ import { createBrowserHistory } from 'history';
 import { Profile } from './components/Profile';
 import { User } from './types/User';
 import { Application } from './components/Application';
+// import CssBaseline from '@material-ui/core/CssBaseline';
+import { Admin } from './components/Admin';
 
 //Accessing the address for graphql queries
 const client = new ApolloClient({
@@ -108,6 +110,9 @@ function App() {
             </Route>
             <Route path="/school/:id/apply">
               <Application user={user} />
+            </Route>
+            <Route path="/admin" exact>
+              <Admin user={user} />
             </Route>
           </Switch>
         </ApolloProvider>

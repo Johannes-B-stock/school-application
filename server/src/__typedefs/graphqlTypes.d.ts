@@ -24,6 +24,7 @@ declare global {
        */
       getPublicUser?: PublicUser;
       getUser?: User;
+      hasAdmin?: boolean;
       
       /**
        *  get all schools 
@@ -90,6 +91,11 @@ declare global {
       ADMIN = 'ADMIN'
     }
     
+    /**
+     * A date string, such as 2007-12-03, compliant with the `full-date` format
+     * outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for
+     * representation of dates and times using the Gregorian calendar.
+     */
     export type Date = any;
     
     export interface Address {
@@ -106,9 +112,9 @@ declare global {
     }
     
     export interface School {
-      id?: number;
-      acronym?: string;
-      name?: string;
+      id: number;
+      acronym: string;
+      name: string;
       online?: boolean;
       hashtag?: string;
       description?: string;
@@ -279,7 +285,6 @@ declare global {
       miniOutreachStartDate?: Date;
       miniOutreachEndDate?: Date;
       schoolEmail?: string;
-      timestamp?: string;
       currency?: string;
       secondary?: boolean;
       applicationFee?: number;
@@ -306,7 +311,6 @@ declare global {
       miniOutreachStartDate?: Date;
       miniOutreachEndDate?: Date;
       schoolEmail?: string;
-      timestamp?: string;
       currency?: string;
       secondary?: boolean;
       applicationFee?: number;
@@ -464,6 +468,7 @@ declare global {
       _empty?: QueryTo_emptyResolver<TParent>;
       getPublicUser?: QueryToGetPublicUserResolver<TParent>;
       getUser?: QueryToGetUserResolver<TParent>;
+      hasAdmin?: QueryToHasAdminResolver<TParent>;
       getSchools?: QueryToGetSchoolsResolver<TParent>;
       getSchoolInfoForApplication?: QueryToGetSchoolInfoForApplicationResolver<TParent>;
       getSchoolApplications?: QueryToGetSchoolApplicationsResolver<TParent>;
@@ -488,6 +493,10 @@ declare global {
     }
     export interface QueryToGetUserResolver<TParent = any, TResult = any> {
       (parent: TParent, args: QueryToGetUserArgs, context: any, info: GraphQLResolveInfo): TResult;
+    }
+    
+    export interface QueryToHasAdminResolver<TParent = any, TResult = any> {
+      (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
     }
     
     export interface QueryToGetSchoolsResolver<TParent = any, TResult = any> {

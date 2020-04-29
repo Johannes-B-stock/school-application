@@ -15,9 +15,9 @@ export interface getSchoolInfo_getSchoolInfoForApplication_questions {
 
 export interface getSchoolInfo_getSchoolInfoForApplication {
   __typename: "School";
-  id: number | null;
-  acronym: string | null;
-  name: string | null;
+  id: number;
+  acronym: string;
+  name: string;
   online: boolean | null;
   description: string | null;
   questions: getSchoolInfo_getSchoolInfoForApplication_questions[] | null;

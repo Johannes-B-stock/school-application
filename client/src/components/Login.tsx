@@ -51,6 +51,9 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  alert: {
+    marginTop: theme.spacing(2),
+  },
 }));
 
 const loginMutation = gql`
@@ -116,7 +119,7 @@ export default function Login({
   return (
     <Container component="main" maxWidth="xs">
       {error && (
-        <MuiAlert elevation={6} variant="filled" severity="warning">
+        <MuiAlert className={classes.alert} elevation={6} variant="filled" severity="warning">
           {error}
         </MuiAlert>
       )}

@@ -22,6 +22,31 @@ export interface InputApplicationAnswer {
 }
 
 /**
+ *  input to create a new school 
+ */
+export interface InputCreateSchool {
+  acronym: string;
+  name: string;
+  online?: boolean | null;
+  hashtag?: string | null;
+  description?: string | null;
+  startDate?: any | null;
+  endDate?: any | null;
+  outreachStartDate?: any | null;
+  outreachEndDate?: any | null;
+  miniOutreachStartDate?: any | null;
+  miniOutreachEndDate?: any | null;
+  schoolEmail?: string | null;
+  currency?: string | null;
+  secondary?: boolean | null;
+  applicationFee?: number | null;
+  schoolFee?: number | null;
+  miniOutreachFee?: number | null;
+  outreachFee?: number | null;
+  questionCollection?: number | null;
+}
+
+/**
  *  input to create a new schoolApplication 
  */
 export interface InputCreateSchoolApplication {

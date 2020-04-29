@@ -3,26 +3,29 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { InputCreateSchool } from "./../types/globalTypes";
+
 // ====================================================
-// GraphQL query operation: getSchools
+// GraphQL mutation operation: createSchool
 // ====================================================
 
-export interface getSchools_getSchools {
+export interface createSchool_createSchool {
   __typename: "School";
   id: number;
+  acronym: string;
   name: string;
   description: string | null;
   startDate: any | null;
   endDate: any | null;
-  acronym: string;
-  schoolEmail: string | null;
-  outreachStartDate: any | null;
-  outreachEndDate: any | null;
 }
 
-export interface getSchools {
+export interface createSchool {
   /**
-   *  get all schools 
+   *  create a new school 
    */
-  getSchools: (getSchools_getSchools | null)[] | null;
+  createSchool: createSchool_createSchool | null;
+}
+
+export interface createSchoolVariables {
+  input: InputCreateSchool;
 }
