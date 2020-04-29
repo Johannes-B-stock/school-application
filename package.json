@@ -4,7 +4,6 @@
   "author": "Johannes Birkenstock",
   "license": "MIT",
   "devDependencies": {
-    "lerna": "^3.20.2",
     "shx": "^0.3.2"
   },
   "scripts": {
@@ -19,6 +18,9 @@
     "server"
   ],
   "engines": {
-    "node": "10.16.x"
+    "node": "10.x"
+  },
+  "dependencies": {
+    "lerna": "^3.20.2"
   }
 }
