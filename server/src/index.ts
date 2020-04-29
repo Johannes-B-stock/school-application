@@ -35,6 +35,7 @@ const serverConfig: Config = {
   subscriptions: {
     onConnect: handleGraphQLSubscriptionContext,
   },
+  introspection: true,
   playground: {
     settings: {
       'editor.theme': 'dark', // change to light if you prefer
