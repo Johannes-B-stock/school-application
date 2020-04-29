@@ -56,10 +56,12 @@ const useStyles = makeStyles((theme) => ({
 const loginMutation = gql`
   mutation loginUser($input: InputLogin!) {
     loginUser(input: $input) {
-      id
-      firstName
+      user {
+        id
+        firstName
+        role
+      }
       token
-      role
     }
   }
 `;
@@ -96,11 +98,12 @@ export default function Login({
       if (user.errors) {
         setError(user.errors.join(','));
       }
-      if (user.data === undefined) {
+      if (!user?.data?.loginUser || user?.data?.loginUser === null) {
         setError('no user data arrived from server.');
       } else {
         const newUser: User = {
-          ...user.data.loginUser,
+          ...user.data.loginUser.user,
+          token: user.data.loginUser.token,
         };
         localStorage.setItem('user', JSON.stringify(newUser));
         setUser(newUser);

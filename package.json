@@ -9,7 +9,8 @@
   "scripts": {
     "postinstall": "lerna run prisma:generate",
     "build": "lerna run build && yarn copy-client",
-    "copy-client": "shx mkdir server/react-app/ && shx cp -r client/build/* server/react-app/",
+    "build-client": "lerna run --scope client build && yarn copy-client",
+    "copy-client": "shx mkdir -p server/react-app/ && shx cp -r client/build/* server/react-app/",
     "start": "yarn postinstall && lerna run --scope prisma-server start",
     "start-all": "lerna run start"
   },

@@ -14,7 +14,8 @@ import { gql } from 'apollo-boost';
 import { useMutation } from 'react-apollo';
 import { History } from 'history';
 import { User } from '../types/User';
-import { registerUserVariables, registerUser_registerUser } from '../graphql/registerUser';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { registerUserVariables, registerUser } from '../graphql/registerUser';
 import MuiAlert from '@material-ui/lab/Alert';
 
 function Copyright(): React.ReactElement {
@@ -53,10 +54,12 @@ const useStyles = makeStyles((theme) => ({
 const registerMutation = gql`
   mutation registerUser($input: InputRegisterUser!) {
     registerUser(input: $input) {
-      id
+      user {
+        id
+        firstName
+        role
+      }
       token
-      firstName
-      role
     }
   }
 `;
@@ -85,11 +88,10 @@ export default function Register({
     return email.length > 0 && password.length > 0 && email.includes('@');
   }
 
-  const [registerUser] = useMutation<registerUser_registerUser, registerUserVariables>(registerMutation);
+  const [registerUser] = useMutation<registerUser, registerUserVariables>(registerMutation);
 
   async function handleSubmit(event: React.FormEvent): Promise<void> {
     event.preventDefault();
-    setError(undefined);
     try {
       const user = await registerUser({
         variables: {
@@ -103,16 +105,19 @@ export default function Register({
       });
       if (user.errors) {
         setError(user.errors.join(','));
+        return;
       }
-      if (user?.data === undefined) {
+      if (!user?.data?.registerUser || user?.data?.registerUser === null) {
         setError('No User data arrived from server.');
-      } else {
-        const newUser: User = {
-          ...user.data,
-        };
-        localStorage.setItem('user', JSON.stringify(newUser));
-        setUser(newUser);
+        return;
       }
+      const newUser: User = {
+        ...user.data.registerUser.user,
+        token: user.data.registerUser.token,
+      };
+      localStorage.setItem('user', JSON.stringify(newUser));
+      setUser(newUser);
+      setError(undefined);
     } catch (e) {
       setError(e.toString());
     }

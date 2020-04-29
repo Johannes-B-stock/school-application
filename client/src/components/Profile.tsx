@@ -1,16 +1,16 @@
-import React from "react";
-import { gql } from "apollo-boost";
-import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { useQuery } from "react-apollo";
-import MuiAlert from "@material-ui/lab/Alert";
-import { Redirect } from "react-router-dom";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { getUser } from "../graphql/getUser";
-import { User } from "../types/User";
-import Typography from "@material-ui/core/Typography";
+import React from 'react';
+import { gql } from 'apollo-boost';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { useQuery } from 'react-apollo';
+import MuiAlert from '@material-ui/lab/Alert';
+import { Redirect } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { getUser } from '../graphql/getUser';
+import { User } from '../types/User';
+import Typography from '@material-ui/core/Typography';
 
 const userQuery = gql`
   query getUser {
@@ -28,22 +28,22 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       marginTop: theme.spacing(8),
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
     },
     textField: {
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
       marginTop: theme.spacing(3),
-      width: "25ch",
+      width: '25ch',
     },
     errorMessage: {
       marginTop: theme.spacing(10),
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
     },
-  })
+  }),
 );
 
 export function Profile({ user }: { user: User | undefined }) {
@@ -54,11 +54,11 @@ export function Profile({ user }: { user: User | undefined }) {
   if (!user) {
     return <Redirect to="/login"></Redirect>;
   }
-  if (data?.getUser?.id !== user?.id && user?.role !== "ADMIN") {
+  if (data?.getUser?.id !== user?.id && user?.role !== 'ADMIN') {
     return (
       <Container component="main" maxWidth="md">
         <MuiAlert elevation={6} variant="filled" severity="warning">
-          You don't have the rights to see this profile.
+          You don&apos;t have the rights to see this profile. (id:{user?.id})
         </MuiAlert>
       </Container>
     );

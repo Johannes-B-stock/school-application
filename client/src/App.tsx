@@ -17,18 +17,21 @@ import { Profile } from './components/Profile';
 import { User } from './types/User';
 import { Application } from './components/Application';
 
-// get the authentication token from local storage if it exists
-const storageUser = localStorage.getItem('user');
-const storedUser: User = storageUser === null ? undefined : JSON.parse(storageUser);
-const token = storedUser?.token;
-
 //Accessing the address for graphql queries
 const client = new ApolloClient({
   uri: '/graphql',
-  headers: {
-    token: token,
+  request: (operation) => {
+    const storageUser = localStorage.getItem('user');
+    const storedUser: User = storageUser === null ? undefined : JSON.parse(storageUser);
+    if (storedUser) {
+      operation.setContext({
+        headers: {
+          token: storedUser.token,
+        },
+      });
+    }
   },
-  onError: ({ graphQLErrors, networkError, operation, forward }) => {
+  onError: ({ graphQLErrors, operation, forward }) => {
     if (graphQLErrors) {
       for (const err of graphQLErrors) {
         // handle errors differently based on its error code

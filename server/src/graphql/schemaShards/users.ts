@@ -1,8 +1,10 @@
-import { getPublicUser, prisma } from '../../db';
+import { getDbUser, prisma } from '../../db';
 import { gql, AuthenticationError } from 'apollo-server-express';
 import { authenticateContext, IContext } from 'src/auth';
 import { hashSalt, createToken } from 'src/auth/secrets';
 import * as bcrypt from 'bcrypt';
+import { user } from '@prisma/client';
+import { AuthorizationError } from 'src/auth/errors';
 
 const typeDefs = gql`
   extend type Query {
@@ -100,10 +102,8 @@ const typeDefs = gql`
   }
 
   type UserLogin {
-    id: Int!
-    role: Role!
-    firstName: String
     token: String!
+    user: User!
   }
 
   enum Role {
@@ -124,57 +124,49 @@ export default {
         { id }: GQL.QueryToGetUserArgs,
         context: IContext
       ): Promise<GQL.PublicUser> => {
-        const user = await authenticateContext(context);
+        const userAuth = await authenticateContext(context);
         if (
-          (user.role === GQL.Role.STUDENT || user.role === GQL.Role.USER) &&
-          user.id !== id
+          (userAuth.role === GQL.Role.STUDENT ||
+            userAuth.role === GQL.Role.USER) &&
+          userAuth.id !== id
         ) {
-          throw new AuthenticationError(
+          throw new AuthorizationError(
             'user is not allowed to view information about this user.'
           );
         }
-        return getPublicUser(id);
+        return { ...getDbUser(id) };
       },
       getUser: async (
         _root: any,
         { id }: GQL.QueryToGetUserArgs,
         context: IContext
       ): Promise<GQL.User> => {
-        const user = await authenticateContext(context);
-        if (id && user.id !== id && user.role !== GQL.Role.ADMIN) {
-          throw new AuthenticationError(
+        const userAuth = await authenticateContext(context);
+        let dbUser = await getDbUser(userAuth.id);
+        if (id && dbUser.id !== id && dbUser.role !== 4) {
+          throw new AuthorizationError(
             "user doesn't have the rights view this user"
           );
         }
-        if (!id) {
-          id = user.id;
+        if (id && id !== userAuth.id) {
+          dbUser = await getDbUser(id);
         }
-        const dbUser = await prisma.user.findOne({ where: { id } });
         return { ...dbUser, role: convertRole(dbUser.role) };
       },
     },
     Mutation: {
+      // use this for creating your first main admin!
       createAdmin: async (
         _root: any,
         { input }: GQL.MutationToRegisterUserArgs
-      ) => {
+      ): Promise<GQL.UserLogin> => {
         const userCount = await prisma.user.count({ where: { role: 4 } });
         if (userCount > 0) {
           throw new Error(
-            'admin exists already. Please use that admin account to create new admins.'
+            'admin exists already. Please use existing admin account to create new admins.'
           );
         }
-        const user = await registerUser(input);
-        await prisma.user.update({
-          where: {
-            id: user.id,
-          },
-          data: {
-            role: 4,
-          },
-        });
-        user.role = GQL.Role.ADMIN;
-        return user;
+        return registerNewUser(input, 4);
       },
       // login
       loginUser: async (
@@ -182,17 +174,27 @@ export default {
         { input }: GQL.MutationToLoginUserArgs
       ): Promise<GQL.UserLogin> => await loginUser(input),
       // register
-      registerUser: (_root: any, { input }: GQL.MutationToRegisterUserArgs) =>
-        registerUser(input),
+      registerUser: async (
+        _root: any,
+        { input }: GQL.MutationToRegisterUserArgs
+      ): Promise<GQL.UserLogin> => {
+        return registerNewUser(input);
+      },
     },
   },
   typeDefs: [typeDefs],
 };
 
-async function registerUser(
+async function registerNewUser(input: GQL.InputRegisterUser, role: number = 0) {
+  const newUser = await createDbUser(input, role);
+  const token = createToken(newUser);
+  return { user: { ...newUser, role: convertRole(newUser.role) }, token };
+}
+
+async function createDbUser(
   userInput: GQL.InputRegisterUser,
   role: number = 0
-): Promise<GQL.UserLogin> {
+): Promise<user> {
   const existingUser = await prisma.user.count({
     where: {
       email: userInput.email,
@@ -200,21 +202,20 @@ async function registerUser(
   });
 
   if (existingUser > 0) {
-    throw new Error('user already exist');
+    throw new Error('user exists already');
   }
   const hash = createPasswordHash(userInput.password);
   const newUser = await prisma.user.create({
     data: {
       ...userInput,
       password: hash,
+      role,
       user_information: {
         create: {},
       },
     },
   });
-  const token = createToken(newUser.id);
-  const graphRole = convertRole(role);
-  return { ...newUser, token, role: graphRole };
+  return newUser;
 }
 
 function createPasswordHash(password: string) {
@@ -244,10 +245,12 @@ export async function loginUser(input: GQL.InputLogin): Promise<GQL.UserLogin> {
   const token = createToken(foundUser);
 
   return {
-    ...foundUser,
-    ...foundUser.user_information,
+    user: {
+      ...foundUser,
+      ...foundUser.user_information,
+      role: convertRole(foundUser.role),
+    },
     token,
-    role: convertRole(foundUser.role),
   };
 }
 

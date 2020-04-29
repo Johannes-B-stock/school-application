@@ -223,10 +223,8 @@ declare global {
     }
     
     export interface UserLogin {
-      id: number;
-      role: Role;
-      firstName?: string;
       token: string;
+      user: User;
     }
     
     /**
@@ -1158,25 +1156,15 @@ declare global {
     }
     
     export interface UserLoginTypeResolver<TParent = any> {
-      id?: UserLoginToIdResolver<TParent>;
-      role?: UserLoginToRoleResolver<TParent>;
-      firstName?: UserLoginToFirstNameResolver<TParent>;
       token?: UserLoginToTokenResolver<TParent>;
-    }
-    
-    export interface UserLoginToIdResolver<TParent = any, TResult = any> {
-      (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
-    }
-    
-    export interface UserLoginToRoleResolver<TParent = any, TResult = any> {
-      (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
-    }
-    
-    export interface UserLoginToFirstNameResolver<TParent = any, TResult = any> {
-      (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+      user?: UserLoginToUserResolver<TParent>;
     }
     
     export interface UserLoginToTokenResolver<TParent = any, TResult = any> {
+      (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+    }
+    
+    export interface UserLoginToUserResolver<TParent = any, TResult = any> {
       (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
     }
     

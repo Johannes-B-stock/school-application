@@ -38,11 +38,9 @@ export function handleGraphQLContext(ctx: {
 }
 
 // handle authentication for socket connections
-export function handleGraphQLSubscriptionContext(
-  connectionParams: { authToken: string },
-  websocket: WebSocket,
-  context: ConnectionContext
-) {
+export function handleGraphQLSubscriptionContext(connectionParams: {
+  authToken: string;
+}) {
   const token = connectionParams.authToken;
   return createContext(token);
 }
@@ -51,10 +49,11 @@ export function handleGraphQLSubscriptionContext(
 export async function authenticateContext(
   context: IContext
 ): Promise<GQL.User> {
-  if (!context.token) {
+  if (!context.token || context.token === undefined) {
     throw new AuthenticationError('user is not logged in');
   }
   try {
+    console.log(context.token);
     const userFromToken = jsonwebtoken.verify(context.token, jwtSecret) as user;
     if (!userFromToken) {
       throw new AuthenticationError('invalid token');

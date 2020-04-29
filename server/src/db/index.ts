@@ -1,19 +1,16 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, user } from '@prisma/client';
 
 export const prisma = new PrismaClient({
   errorFormat: 'minimal',
 });
 
-// get a user's public data by it's id.
-export async function getPublicUser(id: number): Promise<GQL.PublicUser> {
+export async function getDbUser(id: number): Promise<user> {
   const foundUser = await prisma.user.findOne({
     where: {
       id,
     },
   });
-  return {
-    ...foundUser,
-  };
+  return foundUser;
 }
 
 export async function getSchools(

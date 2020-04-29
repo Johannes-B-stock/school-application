@@ -55,7 +55,7 @@ app.use(express.static('public'));
 app.use(express.static('react-app'));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'react-app', 'index.html'));
+  res.sendFile(path.resolve('react-app', 'index.html'));
 });
 
 // A `main` function so that we can use async/await

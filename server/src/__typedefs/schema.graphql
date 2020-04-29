@@ -1,5 +1,5 @@
 # source: http://localhost:3000/graphql
-# timestamp: Mon Apr 27 2020 01:49:30 GMT+0200 (GMT+02:00)
+# timestamp: Wed Apr 29 2020 15:49:10 GMT+0200 (GMT+02:00)
 
 type Address {
   id: Int!
@@ -366,8 +366,6 @@ type User {
 }
 
 type UserLogin {
-  id: Int!
-  role: Role!
-  firstName: String
   token: String!
+  user: User!
 }
