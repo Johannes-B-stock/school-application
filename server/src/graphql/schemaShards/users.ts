@@ -163,7 +163,7 @@ export default {
       // use this for creating your first main admin!
       createAdmin: async (
         _root: any,
-        { input }: GQL.MutationToRegisterUserArgs
+        { input }: GQL.MutationToCreateAdminArgs
       ): Promise<GQL.UserLogin> => {
         const userCount = await prisma.user.count({ where: { role: 4 } });
         if (userCount > 0) {

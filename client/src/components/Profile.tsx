@@ -67,7 +67,6 @@ export function Profile({ user }: { user: User | undefined }) {
       </Container>
     );
   }
-  console.log(data);
   return (
     <Container component="main" maxWidth="md">
       <div className={classes.root}>

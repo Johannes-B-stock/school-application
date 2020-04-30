@@ -1,8 +1,12 @@
-import { prisma } from '../../db';
+import { prisma, getDbUser } from '../../db';
 import { gql, AuthenticationError } from 'apollo-server-express';
 import { authenticateContext, IContext } from 'src/auth';
+import { AuthorizationError } from 'src/auth/errors';
 
 const typeDefs = gql`
+  extend type Query {
+    getApplicationQuestionCollections: [ApplicationQuestionCollection]
+  }
   extend type Mutation {
     createApplicationQuestion(
       input: InputCreateApplicationQuestion!
@@ -54,18 +58,38 @@ const typeDefs = gql`
 
 export default {
   resolvers: {
+    Query: {
+      getApplicationQuestionCollections: async (
+        _root: any,
+        context: IContext
+      ): Promise<GQL.ApplicationQuestionCollection[]> => {
+        const tokenUser = await authenticateContext(context);
+        if (!tokenUser) {
+          throw new AuthenticationError('You need to log in to see this page.');
+        }
+        const user = await getDbUser(tokenUser.id);
+        if (user.role < 3) {
+          throw new AuthorizationError(
+            'Only school admins or admins can see the questionCollections for schools'
+          );
+        }
+        const questions = await prisma.application_question_collection.findMany();
+        return questions;
+      },
+    },
     Mutation: {
       createApplicationQuestion: async (
         _root: any,
         { input }: GQL.MutationToCreateApplicationQuestionArgs,
         context: IContext
       ): Promise<GQL.ApplicationQuestion> => {
-        const user = await authenticateContext(context);
-        if (
-          user.role !== GQL.Role.ADMIN &&
-          user.role !== GQL.Role.SCHOOLADMIN
-        ) {
-          throw new AuthenticationError(
+        const tokenUser = await authenticateContext(context);
+        if (!tokenUser) {
+          throw new AuthenticationError('You need to log in to see this page.');
+        }
+        const user = await getDbUser(tokenUser.id);
+        if (user.role < 3) {
+          throw new AuthorizationError(
             'Only school admins or admins can edit schools'
           );
         }
@@ -90,12 +114,13 @@ export default {
         { input }: GQL.MutationToCreateApplicationQuestionCollectionArgs,
         context: IContext
       ): Promise<GQL.ApplicationQuestionCollection> => {
-        const user = await authenticateContext(context);
-        if (
-          user.role !== GQL.Role.ADMIN &&
-          user.role !== GQL.Role.SCHOOLADMIN
-        ) {
-          throw new AuthenticationError(
+        const tokenUser = await authenticateContext(context);
+        if (!tokenUser) {
+          throw new AuthenticationError('You need to log in to see this page.');
+        }
+        const user = await getDbUser(tokenUser.id);
+        if (user.role < 3) {
+          throw new AuthorizationError(
             'Only school admins or admins can edit application questions'
           );
         }

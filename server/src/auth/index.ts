@@ -53,7 +53,6 @@ export async function authenticateContext(
     throw new AuthenticationError('user is not logged in');
   }
   try {
-    console.log(context.token);
     const userFromToken = jsonwebtoken.verify(context.token, jwtSecret) as user;
     if (!userFromToken) {
       throw new AuthenticationError('invalid token');

@@ -1,5 +1,5 @@
 # source: http://localhost:3000/graphql
-# timestamp: Wed Apr 29 2020 23:45:23 GMT+0200 (GMT+02:00)
+# timestamp: Thu Apr 30 2020 19:06:29 GMT+0200 (GMT+02:00)
 
 type Address {
   id: Int!
@@ -36,11 +36,11 @@ type ApplicationQuestionCollection {
 }
 
 """
-A date string, such as 2007-12-03, compliant with the `full-date` format
-outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for
-representation of dates and times using the Gregorian calendar.
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
+`date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO
+8601 standard for representation of dates and times using the Gregorian calendar.
 """
-scalar Date
+scalar DateTime
 
 """ input to add a staff """
 input InputAddStaff {
@@ -90,12 +90,12 @@ input InputCreateSchool {
   online: Boolean
   hashtag: String
   description: String
-  startDate: Date
-  endDate: Date
-  outreachStartDate: Date
-  outreachEndDate: Date
-  miniOutreachStartDate: Date
-  miniOutreachEndDate: Date
+  startDate: DateTime
+  endDate: DateTime
+  outreachStartDate: DateTime
+  outreachEndDate: DateTime
+  miniOutreachStartDate: DateTime
+  miniOutreachEndDate: DateTime
   schoolEmail: String
   currency: String
   secondary: Boolean
@@ -168,12 +168,12 @@ input InputUpdateSchool {
   online: Boolean
   hashtag: String
   description: String
-  startDate: Date
-  endDate: Date
-  outreachStartDate: Date
-  outreachEndDate: Date
-  miniOutreachStartDate: Date
-  miniOutreachEndDate: Date
+  startDate: DateTime
+  endDate: DateTime
+  outreachStartDate: DateTime
+  outreachEndDate: DateTime
+  miniOutreachStartDate: DateTime
+  miniOutreachEndDate: DateTime
   schoolEmail: String
   currency: String
   secondary: Boolean
@@ -199,10 +199,10 @@ input InputUpdateUser {
   lastName: String
   gender: String
   marriage: String
-  maritalStatusDate: Date
+  maritalStatusDate: DateTime
   spouseName: String
   children: Int
-  birthday: Date
+  birthday: DateTime
   website: String
   youtube: String
   facebook: String
@@ -276,6 +276,7 @@ type Query {
   getSchoolApplications: [SchoolApplication]
   getApplications(schoolId: Int!): [SchoolApplication]
   getMyApplications: [SchoolApplication]
+  getApplicationQuestionCollections: [ApplicationQuestionCollection]
   getMyAddresses: [Address]
 }
 
@@ -298,12 +299,12 @@ type School {
   staffs: [PublicUser!]
   applications: [SchoolApplication!]
   questions: [ApplicationQuestion!]
-  startDate: Date
-  endDate: Date
-  outreachStartDate: Date
-  outreachEndDate: Date
-  miniOutreachStartDate: Date
-  miniOutreachEndDate: Date
+  startDate: DateTime
+  endDate: DateTime
+  outreachStartDate: DateTime
+  outreachEndDate: DateTime
+  miniOutreachStartDate: DateTime
+  miniOutreachEndDate: DateTime
   schoolEmail: String
   timestamp: String
   currency: String
@@ -319,13 +320,13 @@ type SchoolApplication {
   status: String
   progress: String
   accepted: Boolean
-  acceptedDate: Date
+  acceptedDate: DateTime
   school: School
   transferredFrom: School
   answers: [ApplicationAnswer]
   user: PublicUser
-  created: Date
-  submitted: Date
+  created: DateTime
+  submitted: DateTime
 }
 
 type Subscription {
@@ -347,10 +348,10 @@ type User {
   gender: String
   role: Role
   marriage: String
-  maritalStatusDate: Date
+  maritalStatusDate: DateTime
   spouseName: String
   children: Int
-  birthday: Date
+  birthday: DateTime
   email: String!
   website: String
   youtube: String

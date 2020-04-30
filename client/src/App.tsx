@@ -112,7 +112,7 @@ function App() {
               <Application user={user} />
             </Route>
             <Route path="/admin" exact>
-              <Admin user={user} />
+              <Admin user={user} setUser={setUser} />
             </Route>
           </Switch>
         </ApolloProvider>

@@ -38,6 +38,7 @@ declare global {
       getSchoolApplications?: Array<SchoolApplication | null>;
       getApplications?: Array<SchoolApplication | null>;
       getMyApplications?: Array<SchoolApplication | null>;
+      getApplicationQuestionCollections?: Array<ApplicationQuestionCollection | null>;
       getMyAddresses?: Array<Address | null>;
     }
     
@@ -61,10 +62,10 @@ declare global {
       gender?: string;
       role?: Role;
       marriage?: string;
-      maritalStatusDate?: Date;
+      maritalStatusDate?: DateTime;
       spouseName?: string;
       children?: number;
-      birthday?: Date;
+      birthday?: DateTime;
       email: string;
       website?: string;
       youtube?: string;
@@ -92,11 +93,11 @@ declare global {
     }
     
     /**
-     * A date string, such as 2007-12-03, compliant with the `full-date` format
-     * outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for
-     * representation of dates and times using the Gregorian calendar.
+     * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
+     * `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO
+     * 8601 standard for representation of dates and times using the Gregorian calendar.
      */
-    export type Date = any;
+    export type DateTime = any;
     
     export interface Address {
       id: number;
@@ -122,12 +123,12 @@ declare global {
       staffs?: Array<PublicUser>;
       applications?: Array<SchoolApplication>;
       questions?: Array<ApplicationQuestion>;
-      startDate?: Date;
-      endDate?: Date;
-      outreachStartDate?: Date;
-      outreachEndDate?: Date;
-      miniOutreachStartDate?: Date;
-      miniOutreachEndDate?: Date;
+      startDate?: DateTime;
+      endDate?: DateTime;
+      outreachStartDate?: DateTime;
+      outreachEndDate?: DateTime;
+      miniOutreachStartDate?: DateTime;
+      miniOutreachEndDate?: DateTime;
       schoolEmail?: string;
       timestamp?: string;
       currency?: string;
@@ -143,13 +144,13 @@ declare global {
       status?: string;
       progress?: string;
       accepted?: boolean;
-      acceptedDate?: Date;
+      acceptedDate?: DateTime;
       school?: School;
       transferredFrom?: School;
       answers?: Array<ApplicationAnswer | null>;
       user?: PublicUser;
-      created?: Date;
-      submitted?: Date;
+      created?: DateTime;
+      submitted?: DateTime;
     }
     
     export interface ApplicationAnswer {
@@ -242,10 +243,10 @@ declare global {
       lastName?: string;
       gender?: string;
       marriage?: string;
-      maritalStatusDate?: Date;
+      maritalStatusDate?: DateTime;
       spouseName?: string;
       children?: number;
-      birthday?: Date;
+      birthday?: DateTime;
       website?: string;
       youtube?: string;
       facebook?: string;
@@ -278,12 +279,12 @@ declare global {
       online?: boolean;
       hashtag?: string;
       description?: string;
-      startDate?: Date;
-      endDate?: Date;
-      outreachStartDate?: Date;
-      outreachEndDate?: Date;
-      miniOutreachStartDate?: Date;
-      miniOutreachEndDate?: Date;
+      startDate?: DateTime;
+      endDate?: DateTime;
+      outreachStartDate?: DateTime;
+      outreachEndDate?: DateTime;
+      miniOutreachStartDate?: DateTime;
+      miniOutreachEndDate?: DateTime;
       schoolEmail?: string;
       currency?: string;
       secondary?: boolean;
@@ -304,12 +305,12 @@ declare global {
       online?: boolean;
       hashtag?: string;
       description?: string;
-      startDate?: Date;
-      endDate?: Date;
-      outreachStartDate?: Date;
-      outreachEndDate?: Date;
-      miniOutreachStartDate?: Date;
-      miniOutreachEndDate?: Date;
+      startDate?: DateTime;
+      endDate?: DateTime;
+      outreachStartDate?: DateTime;
+      outreachEndDate?: DateTime;
+      miniOutreachStartDate?: DateTime;
+      miniOutreachEndDate?: DateTime;
       schoolEmail?: string;
       currency?: string;
       secondary?: boolean;
@@ -453,7 +454,7 @@ declare global {
       Query?: QueryTypeResolver;
       PublicUser?: PublicUserTypeResolver;
       User?: UserTypeResolver;
-      Date?: GraphQLScalarType;
+      DateTime?: GraphQLScalarType;
       Address?: AddressTypeResolver;
       School?: SchoolTypeResolver;
       SchoolApplication?: SchoolApplicationTypeResolver;
@@ -474,6 +475,7 @@ declare global {
       getSchoolApplications?: QueryToGetSchoolApplicationsResolver<TParent>;
       getApplications?: QueryToGetApplicationsResolver<TParent>;
       getMyApplications?: QueryToGetMyApplicationsResolver<TParent>;
+      getApplicationQuestionCollections?: QueryToGetApplicationQuestionCollectionsResolver<TParent>;
       getMyAddresses?: QueryToGetMyAddressesResolver<TParent>;
     }
     
@@ -522,6 +524,10 @@ declare global {
     }
     
     export interface QueryToGetMyApplicationsResolver<TParent = any, TResult = any> {
+      (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+    }
+    
+    export interface QueryToGetApplicationQuestionCollectionsResolver<TParent = any, TResult = any> {
       (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
     }
     

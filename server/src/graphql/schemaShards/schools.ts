@@ -193,7 +193,6 @@ export default {
         context: IContext
       ) => {
         // get the user from the context
-        //test
         const user = await authenticateContext(context);
         if (
           user.role !== GQL.Role.ADMIN &&
