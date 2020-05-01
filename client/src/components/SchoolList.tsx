@@ -1,18 +1,18 @@
-import React from "react";
-import { gql } from "apollo-boost";
-import { useQuery } from "react-apollo";
+import React from 'react';
+import { gql } from 'apollo-boost';
+import { useQuery } from 'react-apollo';
 // import { Card, Elevation } from "@blueprintjs/core";
-import Card from "@material-ui/core/Card";
+import Card from '@material-ui/core/Card';
 // import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Avatar from "@material-ui/core/Avatar";
-import { lightGreen, lightBlue } from "@material-ui/core/colors";
-import { Link } from "react-router-dom";
-import CardActions from "@material-ui/core/CardActions";
-import Button from "@material-ui/core/Button";
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Avatar from '@material-ui/core/Avatar';
+import { lightGreen, lightBlue, deepOrange, red } from '@material-ui/core/colors';
+import { Link } from 'react-router-dom';
+import CardActions from '@material-ui/core/CardActions';
+import Button from '@material-ui/core/Button';
 
 const getSchoolsQuery = gql`
   query getSchools {
@@ -42,13 +42,13 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     avatar: {
-      width: theme.spacing(10),
-      height: theme.spacing(10),
+      width: theme.spacing(14),
+      height: theme.spacing(8),
       color: theme.palette.getContrastText(lightGreen[500]),
       backgroundColor: lightGreen[500],
       fontSize: 32,
-      marginLeft: "auto",
-      marginRight: "auto",
+      marginLeft: 'auto',
+      marginRight: 'auto',
     },
     lightGreen: {
       color: theme.palette.getContrastText(lightGreen[500]),
@@ -58,10 +58,22 @@ const useStyles = makeStyles((theme: Theme) =>
       color: theme.palette.getContrastText(lightBlue[500]),
       backgroundColor: lightBlue[500],
     },
+    orange: {
+      color: theme.palette.getContrastText(deepOrange[500]),
+      backgroundColor: deepOrange[500],
+    },
+    lightOrange: {
+      color: theme.palette.getContrastText(deepOrange[200]),
+      backgroundColor: deepOrange[200],
+    },
+    red: {
+      color: theme.palette.getContrastText(red[500]),
+      backgroundColor: red[500],
+    },
     description: {
       marginTop: 12,
     },
-  })
+  }),
 );
 
 // get generated types from server to use in client
@@ -69,6 +81,18 @@ const useStyles = makeStyles((theme: Theme) =>
 export function SchoolList() {
   const { loading, error, data } = useQuery(getSchoolsQuery);
   const classes = useStyles();
+
+  function calculateAvatarColor(date: Date): string {
+    const timeDifference = date.getTime() - new Date().getTime();
+    const dateDifference = timeDifference / (1000 * 3600 * 24);
+    if (dateDifference < 0) {
+      return classes.red;
+    }
+    if (dateDifference * 4 < 400) {
+      return classes.orange;
+    }
+    return classes.lightGreen;
+  }
 
   if (loading) {
     return <div>Schools Loading</div>;
@@ -92,13 +116,7 @@ export function SchoolList() {
               <Grid key={school.id} item>
                 <Card className={classes.card}>
                   <CardContent>
-                    <Avatar
-                      className={`${classes.avatar} ${
-                        school.acronym === "dts"
-                          ? classes.lightGreen
-                          : classes.blue
-                      }`}
-                    >
+                    <Avatar className={`${classes.avatar} ${calculateAvatarColor(new Date(school.startDate))}`}>
                       {school.acronym}
                     </Avatar>
                     <Typography variant="h4" align="center" gutterBottom>
@@ -106,31 +124,22 @@ export function SchoolList() {
                     </Typography>
                     <Typography variant="subtitle1" align="center">
                       {new Date(school.startDate).toLocaleDateString()} -
-                      {" " + new Date(school.endDate).toLocaleDateString()}
+                      {' ' + new Date(school.endDate).toLocaleDateString()}
                     </Typography>
                     <div className={classes.description}>
-                      <Typography
-                        variant="body2"
-                        color="textSecondary"
-                        component="p"
-                      >
+                      <Typography variant="body2" color="textSecondary" component="p">
                         {school.description}
                       </Typography>
                     </div>
                   </CardContent>
                   <CardActions>
-                    <Button
-                      component={Link}
-                      to={"/school/" + school.id + "/apply"}
-                      size="small"
-                      color="primary"
-                    >
+                    <Button component={Link} to={'/school/' + school.id + '/apply'} size="small" color="primary">
                       Apply
                     </Button>
                   </CardActions>
                 </Card>
               </Grid>
-            )
+            ),
           )}
         </Grid>
       </Grid>

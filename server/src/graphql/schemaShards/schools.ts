@@ -5,12 +5,14 @@ import {
   addStaff,
   removeStudent,
   removeStaff,
+  getDbUser,
 } from '../../db';
 import { gql, AuthenticationError } from 'apollo-server-express';
 import { pubsub } from '../subscriptionManager';
 import { authenticateContext, IContext } from '../../auth';
 
 import { GraphQLDateTime } from 'graphql-iso-date';
+import { AuthorizationError } from 'src/auth/errors';
 
 const typeDefs = gql`
   scalar Date
@@ -216,18 +218,34 @@ export default {
         context: IContext
       ) => {
         // get the user from the context
-        const user = await authenticateContext(context);
-        if (
-          user.role !== GQL.Role.ADMIN &&
-          user.role !== GQL.Role.SCHOOLADMIN
-        ) {
-          throw new AuthenticationError(
+        const authUser = await authenticateContext(context);
+        const user = await getDbUser(authUser.id);
+        if (user.role < 3) {
+          throw new AuthorizationError(
             "user doesn't have the rights to update schools"
           );
         }
         // create a new school in the database
         const school = await updateSchool(input);
         return school;
+      },
+
+      deleteSchool: async (
+        root: any,
+        { input }: GQL.MutationToDeleteSchoolArgs,
+        context: IContext
+      ) => {
+        // get the user from the context
+        const user = await authenticateContext(context);
+        const dbUser = await getDbUser(user.id);
+        if (dbUser.role < 3) {
+          throw new AuthorizationError(
+            "user doesn't have the rights to update schools"
+          );
+        }
+        // create a new school in the database
+        const school = await prisma.school.delete({ where: { id: input.id } });
+        return school !== null;
       },
       addStudent: async (
         { input }: GQL.MutationToAddStudentArgs,

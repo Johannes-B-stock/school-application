@@ -169,6 +169,13 @@ export function CreateSchool({ user }: { user: User | undefined }) {
     });
   }
 
+  function setNumberInput(event: React.ChangeEvent<HTMLInputElement>): void {
+    setSchoolInput({
+      ...schoolInput,
+      [event.target.name]: Number(event.target.value),
+    });
+  }
+
   function setDateInput(property: string, value: Date | null): void {
     setSchoolInput((school) => {
       school[property] = value === null ? null : new Date(value);
@@ -402,7 +409,7 @@ export function CreateSchool({ user }: { user: User | undefined }) {
             name="applicationFee"
             className={classes.shortTextField}
             value={schoolInput.applicationFee}
-            onChange={setInput}
+            onChange={setNumberInput}
             InputProps={{
               inputComponent: NumberFormatCustom as any,
               startAdornment: (
@@ -421,7 +428,7 @@ export function CreateSchool({ user }: { user: User | undefined }) {
             name="schoolFee"
             className={classes.shortTextField}
             value={schoolInput.schoolFee}
-            onChange={setInput}
+            onChange={setNumberInput}
             InputProps={{
               inputComponent: NumberFormatCustom as any,
               startAdornment: (
@@ -441,7 +448,7 @@ export function CreateSchool({ user }: { user: User | undefined }) {
             name="miniOutreachFee"
             className={classes.shortTextField}
             value={schoolInput.miniOutreachFee}
-            onChange={setInput}
+            onChange={setNumberInput}
             InputProps={{
               inputComponent: NumberFormatCustom as any,
               startAdornment: (
@@ -460,7 +467,7 @@ export function CreateSchool({ user }: { user: User | undefined }) {
             name="outreachFee"
             className={classes.shortTextField}
             value={schoolInput.outreachFee}
-            onChange={setInput}
+            onChange={setNumberInput}
             InputProps={{
               inputComponent: NumberFormatCustom as any,
               startAdornment: (
