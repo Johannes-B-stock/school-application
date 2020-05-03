@@ -88,6 +88,7 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
       <Router>
         <ApolloProvider client={client}>
           <Navigation user={user} setUser={setUser} resetStore={logout} />
