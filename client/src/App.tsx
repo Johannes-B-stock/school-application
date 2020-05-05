@@ -87,7 +87,7 @@ const theme = createMuiTheme({
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      marginTop: theme.spacing(10),
+      marginTop: theme.spacing(13),
     },
   }),
 );

@@ -63,6 +63,7 @@ export default function Navigation({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
+  const [hasDrawer, setHasDrawer] = useState<boolean>(false);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -93,17 +94,20 @@ export default function Navigation({
         })}
       >
         <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            onClick={handleDrawerOpen}
-            className={clsx(classes.menuButton, {
-              [classes.hide]: openDrawer,
-            })}
-          >
-            <MenuIcon />
-          </IconButton>
+          {hasDrawer && (
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={handleDrawerOpen}
+              className={clsx(classes.menuButton, {
+                [classes.hide]: openDrawer,
+              })}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+
           <Typography variant="h6" className={classes.title}>
             School Application
           </Typography>
@@ -163,7 +167,7 @@ export default function Navigation({
           )}
         </Toolbar>
       </AppBar>
-      <NavDrawer drawerOpen={openDrawer} setDrawerOpen={setOpenDrawer} />
+      <NavDrawer drawerOpen={openDrawer} setDrawerOpen={setOpenDrawer} setHasDrawer={setHasDrawer} />
     </div>
   );
 }

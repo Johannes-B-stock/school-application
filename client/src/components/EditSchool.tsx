@@ -6,10 +6,11 @@ import React, { useState, FunctionComponent } from 'react';
 import { gql, ApolloError } from 'apollo-boost';
 import Button from '@material-ui/core/Button';
 import { useMutation, useQuery } from 'react-apollo';
-import { Typography, TextField, Grid, makeStyles, CircularProgress } from '@material-ui/core';
+import { Typography, TextField, Grid, makeStyles, CircularProgress, withStyles } from '@material-ui/core';
 import NumberFormat from 'react-number-format';
 // import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
+import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -17,6 +18,8 @@ import { updateSchool, updateSchoolVariables } from '../graphql/updateSchool';
 import { useParams } from 'react-router-dom';
 import { getSchool, getSchoolVariables } from '../graphql/getSchool';
 import { InputUpdateSchool } from '../types/globalTypes';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { green } from '@material-ui/core/colors';
 
 const currencies = [
   {
@@ -36,6 +39,16 @@ const currencies = [
     label: '¥',
   },
 ];
+
+const GreenCheckbox = withStyles({
+  root: {
+    color: green[400],
+    '&$checked': {
+      color: green[600],
+    },
+  },
+  checked: {},
+})((props: CheckboxProps) => <Checkbox color="default" {...props} />);
 
 const useStyles = makeStyles((theme) => ({
   alert: {
@@ -169,6 +182,8 @@ export function EditSchool({ user }: { user: User | undefined }) {
   if (data?.getSchoolInfoForApplication && !schoolToUpdate.id) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { __typename, ...cleanSchoolToUpdate } = data?.getSchoolInfoForApplication;
+    console.log(cleanSchoolToUpdate.online);
+
     setSchoolToUpdate({ ...cleanSchoolToUpdate });
   }
 
@@ -176,6 +191,13 @@ export function EditSchool({ user }: { user: User | undefined }) {
     setSchoolToUpdate({
       ...schoolToUpdate,
       [event.target.name]: event.target.value,
+    });
+  }
+
+  function setBoolInput(event: React.ChangeEvent<HTMLInputElement>): void {
+    setSchoolToUpdate({
+      ...schoolToUpdate,
+      [event.target.name]: event.target.checked,
     });
   }
 
@@ -217,7 +239,6 @@ export function EditSchool({ user }: { user: User | undefined }) {
     } catch (e) {
       if (e instanceof ApolloError) {
         const graphQlErrors = e.graphQLErrors;
-        console.log(e);
         setErrors((err) => [...err, ...graphQlErrors.map((ge) => ge.message)]);
         setErrors((err) => [...err, e.message]);
       } else {
@@ -264,7 +285,7 @@ export function EditSchool({ user }: { user: User | undefined }) {
       </Typography>
 
       {loading && <CircularProgress />}
-      {schoolToUpdate && (
+      {!loading && schoolToUpdate && (
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <TextField
             key="name"
@@ -292,6 +313,18 @@ export function EditSchool({ user }: { user: User | undefined }) {
             onChange={setInput}
           />
           <TextField
+            key="schoolEmail"
+            variant="outlined"
+            required
+            id="schoolEmail"
+            label="School Email"
+            name="schoolEmail"
+            InputLabelProps={{ shrink: true }}
+            className={classes.halfTextField}
+            value={schoolToUpdate.schoolEmail}
+            onChange={setInput}
+          />
+          <TextField
             key="description"
             variant="outlined"
             required
@@ -304,6 +337,30 @@ export function EditSchool({ user }: { user: User | undefined }) {
             className={classes.textField}
             value={schoolToUpdate.description}
             onChange={setInput}
+          />
+          <FormControlLabel
+            control={
+              <GreenCheckbox
+                checked={schoolToUpdate.online ?? undefined}
+                color="primary"
+                onChange={setBoolInput}
+                value={schoolToUpdate.online ? 'on' : 'off'}
+                name="online"
+              />
+            }
+            label="Show online (open applying)"
+          />
+
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={schoolToUpdate.secondary ?? undefined}
+                color="primary"
+                onChange={setBoolInput}
+                name="secondary"
+              />
+            }
+            label="Secondary School?"
           />
           <Typography component="h4" className={classes.formSection}>
             School Dates:

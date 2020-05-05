@@ -146,9 +146,11 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function NavDrawer({
   drawerOpen,
   setDrawerOpen,
+  setHasDrawer,
 }: {
   drawerOpen: boolean;
   setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setHasDrawer: React.Dispatch<React.SetStateAction<boolean>>;
 }): React.ReactElement {
   const location = useLocation();
   const classes = useStyles();
@@ -160,8 +162,10 @@ export default function NavDrawer({
     setDrawerOpen(false);
   }
   if (!currentMenu) {
+    setHasDrawer(false);
     return <span></span>;
   }
+  setHasDrawer(true);
 
   return (
     <Drawer
