@@ -21,13 +21,6 @@ export interface InputApplicationAnswer {
   question: string;
 }
 
-export interface InputCreateApplicationQuestionCollection {
-  name: string;
-  description?: string | null;
-  type?: string | null;
-  questions?: (string | null)[] | null;
-}
-
 /**
  *  input to create a new school 
  */
@@ -78,6 +71,32 @@ export interface InputRegisterUser {
   lastName: string;
   email: string;
   password: string;
+}
+
+/**
+ *  input to update an existing school 
+ */
+export interface InputUpdateSchool {
+  id: number;
+  acronym?: string | null;
+  name?: string | null;
+  online?: boolean | null;
+  hashtag?: string | null;
+  description?: string | null;
+  startDate?: any | null;
+  endDate?: any | null;
+  outreachStartDate?: any | null;
+  outreachEndDate?: any | null;
+  miniOutreachStartDate?: any | null;
+  miniOutreachEndDate?: any | null;
+  schoolEmail?: string | null;
+  currency?: string | null;
+  secondary?: boolean | null;
+  applicationFee?: number | null;
+  schoolFee?: number | null;
+  miniOutreachFee?: number | null;
+  outreachFee?: number | null;
+  questionCollection?: number | null;
 }
 
 //==============================================================

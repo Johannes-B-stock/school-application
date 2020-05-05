@@ -13,10 +13,11 @@ import { lightGreen, lightBlue, deepOrange, red } from '@material-ui/core/colors
 import { Link } from 'react-router-dom';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
+import { getSchools, getSchoolsVariables } from '../graphql/getSchools';
 
 const getSchoolsQuery = gql`
-  query getSchools {
-    getSchools {
+  query getSchools($online: Boolean) {
+    getSchools(online: $online) {
       id
       name
       description
@@ -78,8 +79,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 // get generated types from server to use in client
 
-export function SchoolList() {
-  const { loading, error, data } = useQuery(getSchoolsQuery);
+export function SchoolList({ online, allowEdit }: { online: boolean; allowEdit: boolean }) {
+  const { loading, error, data } = useQuery<getSchools, getSchoolsVariables>(getSchoolsQuery, {
+    variables: { online: online },
+  });
   const classes = useStyles();
 
   function calculateAvatarColor(date: Date): string {
@@ -103,16 +106,8 @@ export function SchoolList() {
     <Grid container className={classes.root} spacing={1}>
       <Grid item xs={12}>
         <Grid container justify="center" spacing={1}>
-          {data.getSchools.map(
-            (school: {
-              id: number;
-              name: string;
-              acronym: string;
-              description: string;
-              startDate: string;
-              endDate: string;
-            }) => (
-              // <Card interactive={true} elevation={Elevation.TWO}>
+          {data?.getSchools &&
+            data.getSchools.map((school) => (
               <Grid key={school.id} item>
                 <Card className={classes.card}>
                   <CardContent>
@@ -136,13 +131,22 @@ export function SchoolList() {
                     <Button component={Link} to={'/school/' + school.id + '/apply'} size="small" color="primary">
                       Apply
                     </Button>
+                    {allowEdit && (
+                      <Button component={Link} to={'/admin/school/' + school.id + '/edit'} size="small" color="primary">
+                        Edit
+                      </Button>
+                    )}
                   </CardActions>
                 </Card>
               </Grid>
-            ),
-          )}
+            ))}
         </Grid>
       </Grid>
     </Grid>
   );
 }
+
+SchoolList.defaultProps = {
+  online: true,
+  allowEdit: false,
+};

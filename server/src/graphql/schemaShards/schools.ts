@@ -19,7 +19,7 @@ const typeDefs = gql`
 
   extend type Query {
     " get all schools "
-    getSchools: [School]
+    getSchools(online: Boolean): [School!]
     getSchoolInfoForApplication(schoolId: Int!): School
   }
 
@@ -64,7 +64,7 @@ const typeDefs = gql`
 
   " input to update an existing school "
   input InputUpdateSchool {
-    id: Int
+    id: Int!
     acronym: String
     name: String
     online: Boolean
@@ -149,13 +149,28 @@ export default {
     Date: GraphQLDateTime,
     Query: {
       // get all schools
-      getSchools: () => getSchools(),
+      getSchools: async (
+        root: any,
+        { online = true }: { online: boolean },
+        context: IContext
+      ) => {
+        if (!online) {
+          const user = await authenticateContext(context);
+          const dbUser = await getDbUser(user.id);
+          if (dbUser.role < 3) {
+            throw new AuthorizationError(
+              'Only admins or school admins are allowed to see schools that are not online!'
+            );
+          }
+        }
+        return getSchools(online);
+      },
       getSchoolInfoForApplication: async (
         root: any,
         { schoolId }: { schoolId: number },
         context: IContext
       ): Promise<GQL.School> => {
-        const user = authenticateContext(context);
+        const user = await authenticateContext(context);
         if (user === undefined || user === null) {
           throw new AuthenticationError(
             'You have to be signed in to apply for a school.'

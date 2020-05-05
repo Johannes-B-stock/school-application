@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { gql } from 'apollo-boost';
 import { useQuery } from 'react-apollo';
 import { hasAdmin } from '../graphql/hasAdmin';
-import { CreateSchool } from './CreateSchool';
 import { Container, Typography } from '@material-ui/core';
 import { CreateAdmin } from './CreateAdmin';
 
@@ -39,12 +38,19 @@ export function Admin({
 }) {
   const classes = useStyles();
   const errors: string[] = [];
-
   const { error, data } = useQuery<hasAdmin>(hasAdminQuery);
   const needsAdmin = !(data?.hasAdmin ?? true);
 
   if (user?.role !== 'ADMIN') {
-    errors.push('Only Admins can see the admin section.');
+    return (
+      <Container component="main" maxWidth="md">
+        <div className={classes.root}>
+          <MuiAlert className={classes.alert} elevation={6} variant="filled" severity="error">
+            Only Admins can see the admin section.
+          </MuiAlert>
+        </div>
+      </Container>
+    );
   }
   if (!user) {
     if (error && error.graphQLErrors) {
@@ -69,15 +75,20 @@ export function Admin({
   return (
     <Container component="main" maxWidth="md">
       <div className={classes.root}>
-        {errors && errors.length > 0 ? (
+        {errors &&
+          errors.length > 0 &&
           errors.map((err, index) => (
             <MuiAlert key={index} className={classes.alert} elevation={6} variant="filled" severity="error">
               {err}
             </MuiAlert>
-          ))
-        ) : (
-          <CreateSchool user={user} />
-        )}
+          ))}
+        <Typography component="h4" variant="h4" gutterBottom>
+          Hello Admin
+        </Typography>
+        <Typography variant="body1">
+          Here you can administrate the application. Check the Navigation Drawer to see all the different options like
+          creating schools, etc.{' '}
+        </Typography>
       </div>
     </Container>
   );

@@ -29,7 +29,7 @@ declare global {
       /**
        *  get all schools 
        */
-      getSchools?: Array<School | null>;
+      getSchools?: Array<School>;
       getSchoolInfoForApplication?: School;
       
       /**
@@ -299,7 +299,7 @@ declare global {
      *  input to update an existing school 
      */
     export interface InputUpdateSchool {
-      id?: number;
+      id: number;
       acronym?: string;
       name?: string;
       online?: boolean;
@@ -501,8 +501,11 @@ declare global {
       (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
     }
     
+    export interface QueryToGetSchoolsArgs {
+      online?: boolean;
+    }
     export interface QueryToGetSchoolsResolver<TParent = any, TResult = any> {
-      (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+      (parent: TParent, args: QueryToGetSchoolsArgs, context: any, info: GraphQLResolveInfo): TResult;
     }
     
     export interface QueryToGetSchoolInfoForApplicationArgs {

@@ -152,6 +152,7 @@ function defaultSchoolInput(): InputCreateSchool {
     miniOutreachEndDate: new Date(),
     miniOutreachStartDate: new Date(),
     currency: 'EUR',
+    online: false,
   } as InputCreateSchool;
 }
 

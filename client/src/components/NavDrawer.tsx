@@ -64,6 +64,11 @@ const drawerItems: DrawerNav[] = [
         label: 'Schools',
       },
       {
+        icon: 'add_circle',
+        path: '/admin/school/create',
+        label: 'Create new School',
+      },
+      {
         icon: 'description',
         path: '/admin/applications',
         label: 'Applications',

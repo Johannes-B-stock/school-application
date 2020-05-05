@@ -24,5 +24,9 @@ export interface getSchools {
   /**
    *  get all schools 
    */
-  getSchools: (getSchools_getSchools | null)[] | null;
+  getSchools: getSchools_getSchools[] | null;
+}
+
+export interface getSchoolsVariables {
+  online?: boolean | null;
 }

@@ -7,7 +7,7 @@ import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import Navigation from './components/Navigation';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, ThemeProvider, makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { blueGrey } from '@material-ui/core/colors';
 import { grey } from '@material-ui/core/colors';
 import Login from './components/Login';
@@ -18,6 +18,9 @@ import { User } from './types/User';
 import { Application } from './components/Application';
 // import CssBaseline from '@material-ui/core/CssBaseline';
 import { Admin } from './components/Admin';
+import { EditSchool } from './components/EditSchool';
+import { CreateSchool } from './components/CreateSchool';
+import { AdminSchoolOverview } from './components/AdminSchoolOverview';
 
 //Accessing the address for graphql queries
 const client = new ApolloClient({
@@ -81,7 +84,16 @@ const theme = createMuiTheme({
   },
 });
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      marginTop: theme.spacing(10),
+    },
+  }),
+);
+
 function App() {
+  const classes = useStyles();
   const storageUser = localStorage.getItem('user');
   const storedUser: User = storageUser === null ? undefined : JSON.parse(storageUser);
   const [user, setUser] = useState<User | undefined>(storedUser);
@@ -92,30 +104,41 @@ function App() {
       <Router>
         <ApolloProvider client={client}>
           <Navigation user={user} setUser={setUser} resetStore={logout} />
-          <Switch>
-            <Redirect exact={true} from="/" to="/home"></Redirect>
-            <Route exact={true} path="/home">
-              <SchoolList />
-            </Route>
-            <Route exact={true} path="/schools">
-              <SchoolList />
-            </Route>
-            <Route path="/login" exact>
-              <Login user={user} setUser={setUser} history={browserHistory} />
-            </Route>
-            <Route path="/register" exact>
-              <Register user={user} setUser={setUser} history={browserHistory} />
-            </Route>
-            <Route path="/profile" exact>
-              <Profile user={user} />
-            </Route>
-            <Route path="/school/:id/apply">
-              <Application user={user} />
-            </Route>
-            <Route path="/admin" exact>
-              <Admin user={user} setUser={setUser} />
-            </Route>
-          </Switch>
+          <div className={classes.root}>
+            <Switch>
+              <Redirect exact={true} from="/" to="/home"></Redirect>
+              <Route exact={true} path="/home">
+                <SchoolList />
+              </Route>
+              <Route exact={true} path="/schools">
+                <SchoolList />
+              </Route>
+              <Route path="/login" exact>
+                <Login user={user} setUser={setUser} history={browserHistory} />
+              </Route>
+              <Route path="/register" exact>
+                <Register user={user} setUser={setUser} history={browserHistory} />
+              </Route>
+              <Route path="/profile" exact>
+                <Profile user={user} />
+              </Route>
+              <Route path="/admin/schools" exact>
+                <AdminSchoolOverview user={user} />
+              </Route>
+              <Route path="/admin/school/:id/edit">
+                <EditSchool user={user} />
+              </Route>
+              <Route path="/admin/school/create">
+                <CreateSchool user={user} />
+              </Route>
+              <Route path="/school/:id/apply">
+                <Application user={user} />
+              </Route>
+              <Route path="/admin" exact>
+                <Admin user={user} setUser={setUser} />
+              </Route>
+            </Switch>
+          </div>
         </ApolloProvider>
       </Router>
     </ThemeProvider>

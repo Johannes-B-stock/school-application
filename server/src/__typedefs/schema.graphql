@@ -1,5 +1,5 @@
 # source: http://localhost:3000/graphql
-# timestamp: Thu Apr 30 2020 19:06:29 GMT+0200 (GMT+02:00)
+# timestamp: Mon May 04 2020 21:46:56 GMT+0200 (GMT+02:00)
 
 type Address {
   id: Int!
@@ -162,7 +162,7 @@ input InputUpdateAddress {
 
 """ input to update an existing school """
 input InputUpdateSchool {
-  id: Int
+  id: Int!
   acronym: String
   name: String
   online: Boolean
@@ -269,7 +269,7 @@ type Query {
   hasAdmin: Boolean
 
   """ get all schools """
-  getSchools: [School]
+  getSchools(online: Boolean): [School!]
   getSchoolInfoForApplication(schoolId: Int!): School
 
   """ get all schoolApplications """
