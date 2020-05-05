@@ -57,7 +57,6 @@ export default function Navigation({
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
   resetStore: () => void;
 }): React.ReactElement {
-  // const location = useLocation();
   const classes = useStyles();
   const loggedIn = user !== undefined;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -171,22 +170,3 @@ export default function Navigation({
     </div>
   );
 }
-
-// <Navbar>
-//       <Navbar.Group align={Alignment.LEFT}>
-//         <Navbar.Heading>School Application</Navbar.Heading>
-//         <Navbar.Divider />
-//         <AnchorButton
-//           href="/home"
-//           className="bp3-minimal"
-//           icon="home"
-//           text="Home"
-//         />
-//         <AnchorButton
-//           href="/schools"
-//           className="bp3-minimal"
-//           icon="document"
-//           text="Schools"
-//         />
-//       </Navbar.Group>
-//     </Navbar>

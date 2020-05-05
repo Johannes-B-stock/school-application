@@ -87,7 +87,10 @@ const theme = createMuiTheme({
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      marginTop: theme.spacing(13),
+      marginTop: theme.spacing(10),
+    },
+    rootWithDrawer: {
+      marginLeft: theme.spacing(7),
     },
   }),
 );
@@ -104,8 +107,8 @@ function App() {
       <Router>
         <ApolloProvider client={client}>
           <Navigation user={user} setUser={setUser} resetStore={logout} />
-          <div className={classes.root}>
-            <Switch>
+          <Switch>
+            <div className={classes.root}>
               <Redirect exact={true} from="/" to="/home"></Redirect>
               <Route exact={true} path="/home">
                 <SchoolList />
@@ -119,26 +122,28 @@ function App() {
               <Route path="/register" exact>
                 <Register user={user} setUser={setUser} history={browserHistory} />
               </Route>
-              <Route path="/profile" exact>
-                <Profile user={user} />
-              </Route>
-              <Route path="/admin/schools" exact>
-                <AdminSchoolOverview user={user} />
-              </Route>
-              <Route path="/admin/school/:id/edit">
-                <EditSchool user={user} />
-              </Route>
-              <Route path="/admin/school/create">
-                <CreateSchool user={user} />
-              </Route>
-              <Route path="/school/:id/apply">
-                <Application user={user} />
-              </Route>
-              <Route path="/admin" exact>
-                <Admin user={user} setUser={setUser} />
-              </Route>
-            </Switch>
-          </div>
+              <div className={classes.rootWithDrawer}>
+                <Route path="/profile" exact>
+                  <Profile user={user} />
+                </Route>
+                <Route path="/admin/schools" exact>
+                  <AdminSchoolOverview user={user} />
+                </Route>
+                <Route path="/admin/school/:id/edit">
+                  <EditSchool user={user} />
+                </Route>
+                <Route path="/admin/school/create">
+                  <CreateSchool user={user} />
+                </Route>
+                <Route path="/school/:id/apply">
+                  <Application user={user} />
+                </Route>
+                <Route path="/admin" exact>
+                  <Admin user={user} setUser={setUser} />
+                </Route>
+              </div>
+            </div>
+          </Switch>
         </ApolloProvider>
       </Router>
     </ThemeProvider>
