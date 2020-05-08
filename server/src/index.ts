@@ -21,9 +21,6 @@ const serverConfig: Config = {
     originalError: { message: string };
     message: string;
   }) => {
-    if (err.originalError) {
-      console.log('original: ' + err.originalError.message);
-    }
     console.log(err.message);
     // Don't give the specific errors to the client.
     if (err.message.startsWith('Database Error: ')) {
