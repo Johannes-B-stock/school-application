@@ -5,7 +5,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import React, { useState, FunctionComponent } from 'react';
 import { gql } from 'apollo-boost';
 import Button from '@material-ui/core/Button';
-import { useMutation, useQuery } from 'react-apollo';
+import { useMutation } from 'react-apollo';
 import { Typography, TextField, Grid, makeStyles } from '@material-ui/core';
 import { createSchoolVariables, createSchool, createSchool_createSchool as School } from '../graphql/createSchool';
 import { InputCreateSchool } from '../types/globalTypes';
@@ -15,12 +15,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { getCollections } from '../graphql/getCollections';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
+import { QuestionCollectionDialog } from './QuestionCollectionDialog';
 
 const currencies = [
   {
@@ -138,6 +133,21 @@ export function CreateSchool({ user }: { user: User | undefined }) {
   const [createdSchool, setCreatedSchool] = useState<School | undefined>();
   const [schoolInput, setSchoolInput] = useState<InputCreateSchool>(defaultSchoolInput());
   const [newSchoolMutation] = useMutation<createSchool, createSchoolVariables>(createSchoolMutation);
+  const [openQuestionDialog, setOpenQuestionDialog] = useState(false);
+  const [questionCollectionName, setQuestionCollectionName] = useState('');
+
+  const handleClickOpenQuestionDialog = () => {
+    setOpenQuestionDialog(true);
+  };
+
+  const handleCloseQuestionDialog = (id: number | null | undefined, name: string) => {
+    setOpenQuestionDialog(false);
+    setQuestionCollectionName(name);
+    setSchoolInput({
+      ...schoolInput,
+      questionCollection: id,
+    });
+  };
 
   function setInput(event: React.ChangeEvent<HTMLInputElement>): void {
     setSchoolInput({
@@ -152,13 +162,6 @@ export function CreateSchool({ user }: { user: User | undefined }) {
       [event.target.name]: Number(event.target.value),
     });
   }
-
-  const handleQuestionCollectionChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setSchoolInput({
-      ...schoolInput,
-      questionCollection: Number(event.target.value),
-    });
-  };
 
   function setDateInput(property: string, value: Date | null): void {
     setSchoolInput((school) => {
@@ -462,25 +465,25 @@ export function CreateSchool({ user }: { user: User | undefined }) {
             }}
           />
         </Grid>
-        {!loading && !error && data && (
-          <FormControl>
-            <InputLabel id="application-questions">Application Questions:</InputLabel>
-            <Select
-              labelId="application-questions-select-label"
-              id="application-questions-select"
-              name="questionCollection"
-              value={schoolInput.questionCollection}
-              onChange={handleQuestionCollectionChange}
-            >
-              {data?.getApplicationQuestionCollections?.map(
-                (qColl) => qColl && <MenuItem value={qColl.id}>{qColl.type + ' - ' + qColl.name}</MenuItem>,
-              )}
-            </Select>
-            <Fab color="primary" aria-label="add" onClick={}>
-              <AddIcon />
-            </Fab>
-          </FormControl>
-        )}
+
+        <div>
+          <Typography variant="subtitle1">
+            Application Questions: {schoolInput.questionCollection}: {questionCollectionName}
+          </Typography>
+          <br />
+          <Button variant="outlined" color="primary" onClick={handleClickOpenQuestionDialog}>
+            Assign/create another Question Collection
+          </Button>
+
+          <QuestionCollectionDialog
+            onClose={handleCloseQuestionDialog}
+            open={openQuestionDialog}
+            selectedCollectionId={schoolInput.questionCollection}
+            selectedName={questionCollectionName}
+            key={schoolInput.questionCollection ?? 0}
+          />
+        </div>
+
         <Button type="submit" variant="contained" color="primary" className={classes.submit}>
           Create
         </Button>

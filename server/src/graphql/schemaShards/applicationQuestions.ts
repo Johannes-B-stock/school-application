@@ -5,15 +5,15 @@ import { AuthorizationError } from 'src/auth/errors';
 
 const typeDefs = gql`
   extend type Query {
-    getApplicationQuestionCollections: [ApplicationQuestionCollection]
+    getApplicationQuestionCollections: [ApplicationQuestionCollection!]
   }
   extend type Mutation {
     createApplicationQuestion(
       input: InputCreateApplicationQuestion!
-    ): ApplicationQuestion
+    ): ApplicationQuestion!
     createApplicationQuestionCollection(
       input: InputCreateApplicationQuestionCollection!
-    ): ApplicationQuestionCollection
+    ): ApplicationQuestionCollection!
   }
 
   input InputCreateApplicationQuestion {
@@ -61,6 +61,7 @@ export default {
     Query: {
       getApplicationQuestionCollections: async (
         _root: any,
+        {}: any,
         context: IContext
       ): Promise<GQL.ApplicationQuestionCollection[]> => {
         const tokenUser = await authenticateContext(context);

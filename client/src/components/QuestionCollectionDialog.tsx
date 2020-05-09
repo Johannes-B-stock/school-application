@@ -15,6 +15,7 @@ import { CircularProgress } from '@material-ui/core';
 import { getCollections } from '../graphql/getCollections';
 import MuiAlert from '@material-ui/lab/Alert';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -43,22 +44,24 @@ const getQuestionCollectionQuery = gql`
 
 export interface QuestionCollectionDialogProps {
   open: boolean;
-  selectedValue: number;
-  onClose: (value: number) => void;
+  selectedCollectionId: number | null | undefined;
+  selectedName: string;
+  onClose: (id: number | null | undefined, name: string) => void;
 }
 
-function QuestionCollectionDialog(props: QuestionCollectionDialogProps) {
+export function QuestionCollectionDialog(props: QuestionCollectionDialogProps) {
   const classes = useStyles();
-  const { onClose, selectedValue, open } = props;
+  const { onClose, selectedCollectionId, selectedName, open } = props;
+  const history = useHistory();
 
   const { loading, error, data } = useQuery<getCollections>(getQuestionCollectionQuery);
 
   const handleClose = () => {
-    onClose(selectedValue);
+    onClose(selectedCollectionId, selectedName);
   };
 
-  const handleListItemClick = (value: number) => {
-    onClose(value);
+  const handleListItemClick = (id: number, name: string) => {
+    onClose(id, name);
   };
   if (loading) {
     return <CircularProgress />;
@@ -79,7 +82,7 @@ function QuestionCollectionDialog(props: QuestionCollectionDialogProps) {
           data.getApplicationQuestionCollections.map(
             (coll) =>
               coll && (
-                <ListItem button onClick={() => handleListItemClick(coll.id)} key={coll.id}>
+                <ListItem button onClick={() => handleListItemClick(coll.id, coll.name)} key={coll.id}>
                   <ListItemAvatar>
                     <Avatar>
                       <PlaylistAddIcon />
@@ -89,7 +92,7 @@ function QuestionCollectionDialog(props: QuestionCollectionDialogProps) {
                 </ListItem>
               ),
           )}
-        <ListItem autoFocus button onClick={() => handleListItemClick(-1)}>
+        <ListItem autoFocus button onClick={() => history.push('/admin/question-collection/create')}>
           <ListItemAvatar>
             <Avatar>
               <AddIcon />

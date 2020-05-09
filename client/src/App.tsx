@@ -21,6 +21,7 @@ import { Admin } from './components/Admin';
 import { EditSchool } from './components/EditSchool';
 import { CreateSchool } from './components/CreateSchool';
 import { AdminSchoolOverview } from './components/AdminSchoolOverview';
+import { CreateQuestionCollection } from './components/CreateQuestionCollection';
 
 //Accessing the address for graphql queries
 const client = new ApolloClient({
@@ -134,6 +135,9 @@ function App() {
                 </Route>
                 <Route path="/admin/school/create">
                   <CreateSchool user={user} />
+                </Route>
+                <Route path="/admin/question-collection/create">
+                  <CreateQuestionCollection user={user} />
                 </Route>
                 <Route path="/school/:id/apply">
                   <Application user={user} />
