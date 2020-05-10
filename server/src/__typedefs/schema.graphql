@@ -1,5 +1,5 @@
 # source: http://localhost:3000/graphql
-# timestamp: Mon May 04 2020 21:46:56 GMT+0200 (GMT+02:00)
+# timestamp: Sat May 09 2020 23:27:15 GMT+0200 (GMT+02:00)
 
 type Address {
   id: Int!
@@ -246,8 +246,8 @@ type Mutation {
   deleteSchoolApplication(input: InputDeleteSchoolApplication!): Boolean
   cancelSchoolApplication(input: InputDeleteSchoolApplication!): SchoolApplication
   acceptApplication(appId: Int!): SchoolApplication
-  createApplicationQuestion(input: InputCreateApplicationQuestion!): ApplicationQuestion
-  createApplicationQuestionCollection(input: InputCreateApplicationQuestionCollection!): ApplicationQuestionCollection
+  createApplicationQuestion(input: InputCreateApplicationQuestion!): ApplicationQuestion!
+  createApplicationQuestionCollection(input: InputCreateApplicationQuestionCollection!): ApplicationQuestionCollection!
   updateAddress(input: InputUpdateAddress!): Address
   createAddress(input: InputCreateAddress!): Address
   deleteAddress(id: Int!): Address
@@ -276,7 +276,7 @@ type Query {
   getSchoolApplications: [SchoolApplication]
   getApplications(schoolId: Int!): [SchoolApplication]
   getMyApplications: [SchoolApplication]
-  getApplicationQuestionCollections: [ApplicationQuestionCollection]
+  getApplicationQuestionCollections: [ApplicationQuestionCollection!]
   getMyAddresses: [Address]
 }
 

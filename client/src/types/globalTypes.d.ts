@@ -21,6 +21,13 @@ export interface InputApplicationAnswer {
   question: string;
 }
 
+export interface InputCreateApplicationQuestionCollection {
+  name: string;
+  description?: string | null;
+  type?: string | null;
+  questions?: (string | null)[] | null;
+}
+
 /**
  *  input to create a new school 
  */

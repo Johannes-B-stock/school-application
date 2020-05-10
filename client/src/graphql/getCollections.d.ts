@@ -23,5 +23,5 @@ export interface getCollections_getApplicationQuestionCollections {
 }
 
 export interface getCollections {
-  getApplicationQuestionCollections: (getCollections_getApplicationQuestionCollections | null)[] | null;
+  getApplicationQuestionCollections: getCollections_getApplicationQuestionCollections[] | null;
 }

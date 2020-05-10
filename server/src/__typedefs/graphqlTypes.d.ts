@@ -38,7 +38,7 @@ declare global {
       getSchoolApplications?: Array<SchoolApplication | null>;
       getApplications?: Array<SchoolApplication | null>;
       getMyApplications?: Array<SchoolApplication | null>;
-      getApplicationQuestionCollections?: Array<ApplicationQuestionCollection | null>;
+      getApplicationQuestionCollections?: Array<ApplicationQuestionCollection>;
       getMyAddresses?: Array<Address | null>;
     }
     
@@ -212,8 +212,8 @@ declare global {
       deleteSchoolApplication?: boolean;
       cancelSchoolApplication?: SchoolApplication;
       acceptApplication?: SchoolApplication;
-      createApplicationQuestion?: ApplicationQuestion;
-      createApplicationQuestionCollection?: ApplicationQuestionCollection;
+      createApplicationQuestion: ApplicationQuestion;
+      createApplicationQuestionCollection: ApplicationQuestionCollection;
       updateAddress?: Address;
       createAddress?: Address;
       deleteAddress?: Address;

@@ -15,6 +15,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import { QuestionCollectionDialog } from './QuestionCollectionDialog';
 
 const currencies = [
   {
@@ -37,7 +38,7 @@ const currencies = [
 
 const useStyles = makeStyles((theme) => ({
   alert: {
-    marginTop: theme.spacing(2),
+    margin: theme.spacing(2),
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -83,36 +84,6 @@ const createSchoolMutation = gql`
     }
   }
 `;
-
-// const getQuestionCollectionQuery = gql`
-//   query getCollections {
-//     getApplicationQuestionCollections {
-//       id
-//       name
-//       description
-//       type
-//       questions {
-//         id
-//         question
-//       }
-//     }
-//   }
-// `;
-
-// const createCollection = gql`
-//   mutation createCollection($input: InputCreateApplicationQuestionCollection) {
-//     createApplicationQuestionCollection(input: $input) {
-//       id
-//       name
-//       description
-//       type
-//       questions {
-//         id
-//         question
-//       }
-//     }
-//   }
-// `;
 
 interface NumberFormatCustomProps {
   inputRef: (instance: NumberFormat | null) => void;
@@ -162,6 +133,21 @@ export function CreateSchool({ user }: { user: User | undefined }) {
   const [createdSchool, setCreatedSchool] = useState<School | undefined>();
   const [schoolInput, setSchoolInput] = useState<InputCreateSchool>(defaultSchoolInput());
   const [newSchoolMutation] = useMutation<createSchool, createSchoolVariables>(createSchoolMutation);
+  const [openQuestionDialog, setOpenQuestionDialog] = useState(false);
+  const [questionCollectionName, setQuestionCollectionName] = useState('');
+
+  const handleClickOpenQuestionDialog = () => {
+    setOpenQuestionDialog(true);
+  };
+
+  const handleCloseQuestionDialog = (id: number | null | undefined, name: string) => {
+    setOpenQuestionDialog(false);
+    setQuestionCollectionName(name);
+    setSchoolInput({
+      ...schoolInput,
+      questionCollection: id,
+    });
+  };
 
   function setInput(event: React.ChangeEvent<HTMLInputElement>): void {
     setSchoolInput({
@@ -479,6 +465,24 @@ export function CreateSchool({ user }: { user: User | undefined }) {
             }}
           />
         </Grid>
+
+        <div>
+          <Typography variant="subtitle1">
+            Application Questions: {schoolInput.questionCollection}: {questionCollectionName}
+          </Typography>
+          <br />
+          <Button variant="outlined" color="primary" onClick={handleClickOpenQuestionDialog}>
+            Assign/create another Question Collection
+          </Button>
+
+          <QuestionCollectionDialog
+            onClose={handleCloseQuestionDialog}
+            open={openQuestionDialog}
+            selectedCollectionId={schoolInput.questionCollection}
+            selectedName={questionCollectionName}
+            key={schoolInput.questionCollection ?? 0}
+          />
+        </div>
 
         <Button type="submit" variant="contained" color="primary" className={classes.submit}>
           Create

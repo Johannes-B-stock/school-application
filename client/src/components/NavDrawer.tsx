@@ -157,7 +157,7 @@ export default function NavDrawer({
   const theme = useTheme();
 
   const currentMenu = drawerItems.find((i) => location.pathname.startsWith(i.route));
-  console.log(location.pathname);
+
   function handleDrawerClose() {
     setDrawerOpen(false);
   }
@@ -189,7 +189,7 @@ export default function NavDrawer({
       <Divider />
       <List>
         {currentMenu.items.map((item) => (
-          <ListItem component={Link} to={item.path} button key={item.label}>
+          <ListItem component={Link} to={item.path} selected={item.path === location.pathname} button key={item.label}>
             <ListItemIcon>
               <Icon>{item.icon}</Icon>
             </ListItemIcon>
