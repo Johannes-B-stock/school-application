@@ -346,20 +346,20 @@ async function createSchool(
   schoolInput: GQL.InputCreateSchool
 ): Promise<Partial<GQL.School>> {
   let dbSchool = null;
-  const cleanSchoolInput = {
+  const { questionCollection, ...cleanSchoolInput } = {
     ...schoolInput,
     startDate: new Date(schoolInput.startDate ?? 0),
     endDate: new Date(schoolInput.endDate ?? 0),
     outreachEndDate: new Date(schoolInput.outreachEndDate ?? 0),
     outreachStartDate: new Date(schoolInput.outreachStartDate ?? 0),
   };
-  if (schoolInput.questionCollection) {
+  if (questionCollection) {
     dbSchool = await prisma.school.create({
       data: {
         ...cleanSchoolInput,
         application_question_collection: {
           connect: {
-            id: schoolInput.questionCollection,
+            id: questionCollection,
           },
         },
       },

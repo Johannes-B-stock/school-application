@@ -64,11 +64,6 @@ const drawerItems: DrawerNav[] = [
         label: 'Schools',
       },
       {
-        icon: 'add_circle',
-        path: '/admin/school/create',
-        label: 'Create new School',
-      },
-      {
         icon: 'description',
         path: '/admin/applications',
         label: 'Applications',
@@ -187,7 +182,7 @@ export default function NavDrawer({
         </IconButton>
       </div>
       <Divider />
-      <List>
+      <List onMouseEnter={() => setDrawerOpen(true)} onMouseLeave={() => setDrawerOpen(false)}>
         {currentMenu.items.map((item) => (
           <ListItem component={Link} to={item.path} selected={item.path === location.pathname} button key={item.label}>
             <ListItemIcon>

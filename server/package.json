@@ -42,7 +42,8 @@
     "start:watch:delay": "wait-on --delay 10000 ./dist/server.js && yarn start:watch",
     "generate-typedefs": "yarn create-schema && yarn create-types",
     "create-schema": "graphql get-schema",
-    "create-types": "graphql-schema-typescript --namespace=GQL --global=true --typePrefix= generate-ts --output=src/__typedefs/graphqlTypes.d.ts src/__typedefs"
+    "create-types": "graphql-schema-typescript --namespace=GQL --global=true --typePrefix= generate-ts --output=src/__typedefs/graphqlTypes.d.ts src/__typedefs",
+    "lint": "tslint *.ts"
   },
   "devDependencies": {
     "@types/express": "^4.17.2",

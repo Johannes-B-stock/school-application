@@ -12,7 +12,8 @@
     "build-client": "lerna run --scope client build && yarn copy-client",
     "copy-client": "shx mkdir -p server/react-app/ && shx cp -r client/build/* server/react-app/",
     "start": "yarn postinstall && lerna run --scope prisma-server start",
-    "start-all": "lerna run start"
+    "start-all": "lerna run start",
+    "lint": "lerna run lint"
   },
   "workspaces": [
     "client",
