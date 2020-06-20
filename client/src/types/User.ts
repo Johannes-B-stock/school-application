@@ -1,6 +1,8 @@
-/* eslint-disable @typescript-eslint/camelcase */
-import { loginUser_loginUser_user } from '../graphql/loginUser';
+import { Role } from './globalTypes';
 
-export interface User extends loginUser_loginUser_user {
+export interface User {
+  id: number;
+  firstName: string | null;
+  role: Role | null;
   token: string;
 }

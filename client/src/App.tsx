@@ -22,17 +22,17 @@ import { EditSchool } from './components/EditSchool';
 import { CreateSchool } from './components/CreateSchool';
 import { AdminSchoolOverview } from './components/AdminSchoolOverview';
 import { CreateQuestionCollection } from './components/CreateQuestionCollection';
+import { getStoredUser } from './auth';
 
 //Accessing the address for graphql queries
 const client = new ApolloClient({
   uri: '/graphql',
   request: (operation) => {
-    const storageUser = localStorage.getItem('user');
-    const storedUser: User = storageUser === null ? undefined : JSON.parse(storageUser);
-    if (storedUser) {
+    const token = localStorage.getItem('token');
+    if (token) {
       operation.setContext({
         headers: {
-          token: storedUser.token,
+          token: token,
         },
       });
     }
@@ -53,7 +53,9 @@ const client = new ApolloClient({
                 //getNewToken(),
               },
             });
-            localStorage.removeItem('user');
+
+            // localStorage.removeItem('token');
+
             // Now, pass the modified operation to the next link
             // in the chain. This effectively intercepts the old
             // failed request, and retries it with a new token
@@ -98,10 +100,9 @@ const useStyles = makeStyles((theme: Theme) =>
 
 function App() {
   const classes = useStyles();
-  const storageUser = localStorage.getItem('user');
-  const storedUser: User = storageUser === null ? undefined : JSON.parse(storageUser);
-  const [user, setUser] = useState<User | undefined>(storedUser);
+  const storedUser: User | undefined = getStoredUser();
 
+  const [user, setUser] = useState<User | undefined>(storedUser);
   return (
     <ThemeProvider theme={theme}>
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />

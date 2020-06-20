@@ -108,7 +108,7 @@ export default function Login({
           ...user.data.loginUser.user,
           token: user.data.loginUser.token,
         };
-        localStorage.setItem('user', JSON.stringify(newUser));
+        localStorage.setItem('token', newUser.token);
         setUser(newUser);
       }
     } catch (e) {

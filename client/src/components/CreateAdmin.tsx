@@ -94,7 +94,7 @@ export function CreateAdmin({ setUser }: { setUser: Dispatch<React.SetStateActio
         ...admin.data.createAdmin.user,
         token: admin.data.createAdmin.token,
       };
-      localStorage.setItem('user', JSON.stringify(newUser));
+      localStorage.setItem('token', admin.data.createAdmin.token);
       setUser(newUser);
     } catch (e) {
       setErrors((err) => [...err, e.toString()]);

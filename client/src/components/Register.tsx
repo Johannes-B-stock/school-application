@@ -114,7 +114,7 @@ export default function Register({
         ...user.data.registerUser.user,
         token: user.data.registerUser.token,
       };
-      localStorage.setItem('user', JSON.stringify(newUser));
+      localStorage.setItem('token', JSON.stringify(newUser.token));
       setUser(newUser);
       setError(undefined);
     } catch (e) {

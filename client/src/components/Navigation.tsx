@@ -78,7 +78,7 @@ export default function Navigation({
 
   function logout() {
     handleClose();
-    localStorage.removeItem('user');
+    localStorage.removeItem('token');
     setUser(undefined);
     resetStore();
   }
