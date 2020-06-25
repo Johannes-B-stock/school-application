@@ -80,6 +80,7 @@ declare global {
       thirdLanguagePro?: number;
       otherLanguage?: string;
       otherLanguagePro?: number;
+      avatarFileName?: string;
       life?: string;
       addresses?: Array<Address | null>;
     }
@@ -192,6 +193,7 @@ declare global {
        *  login as a user 
        */
       loginUser: UserLogin;
+      avatarUpload?: string;
       
       /**
        *  create a new school 
@@ -269,6 +271,11 @@ declare global {
       email: string;
       password: string;
     }
+    
+    /**
+     * The `Upload` scalar type represents a file upload.
+     */
+    export type Upload = any;
     
     /**
      *  input to create a new school 
@@ -440,6 +447,12 @@ declare global {
       schoolApplicationCreated?: SchoolApplication;
     }
     
+    export interface File {
+      filename: string;
+      mimetype: string;
+      encoding: string;
+    }
+    
     /*********************************
      *                               *
      *         TYPE RESOLVERS        *
@@ -463,7 +476,9 @@ declare global {
       ApplicationQuestionCollection?: ApplicationQuestionCollectionTypeResolver;
       Mutation?: MutationTypeResolver;
       UserLogin?: UserLoginTypeResolver;
+      Upload?: GraphQLScalarType;
       Subscription?: SubscriptionTypeResolver;
+      File?: FileTypeResolver;
     }
     export interface QueryTypeResolver<TParent = any> {
       _empty?: QueryTo_emptyResolver<TParent>;
@@ -582,6 +597,7 @@ declare global {
       thirdLanguagePro?: UserToThirdLanguageProResolver<TParent>;
       otherLanguage?: UserToOtherLanguageResolver<TParent>;
       otherLanguagePro?: UserToOtherLanguageProResolver<TParent>;
+      avatarFileName?: UserToAvatarFileNameResolver<TParent>;
       life?: UserToLifeResolver<TParent>;
       addresses?: UserToAddressesResolver<TParent>;
     }
@@ -683,6 +699,10 @@ declare global {
     }
     
     export interface UserToOtherLanguageProResolver<TParent = any, TResult = any> {
+      (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+    }
+    
+    export interface UserToAvatarFileNameResolver<TParent = any, TResult = any> {
       (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
     }
     
@@ -1003,6 +1023,7 @@ declare global {
       registerUser?: MutationToRegisterUserResolver<TParent>;
       updateUser?: MutationToUpdateUserResolver<TParent>;
       loginUser?: MutationToLoginUserResolver<TParent>;
+      avatarUpload?: MutationToAvatarUploadResolver<TParent>;
       createSchool?: MutationToCreateSchoolResolver<TParent>;
       updateSchool?: MutationToUpdateSchoolResolver<TParent>;
       deleteSchool?: MutationToDeleteSchoolResolver<TParent>;
@@ -1052,6 +1073,13 @@ declare global {
     }
     export interface MutationToLoginUserResolver<TParent = any, TResult = any> {
       (parent: TParent, args: MutationToLoginUserArgs, context: any, info: GraphQLResolveInfo): TResult;
+    }
+    
+    export interface MutationToAvatarUploadArgs {
+      file: Upload;
+    }
+    export interface MutationToAvatarUploadResolver<TParent = any, TResult = any> {
+      (parent: TParent, args: MutationToAvatarUploadArgs, context: any, info: GraphQLResolveInfo): TResult;
     }
     
     export interface MutationToCreateSchoolArgs {
@@ -1205,6 +1233,24 @@ declare global {
     export interface SubscriptionToSchoolApplicationCreatedResolver<TParent = any, TResult = any> {
       resolve?: (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo) => TResult;
       subscribe: (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo) => AsyncIterator<TResult>;
+    }
+    
+    export interface FileTypeResolver<TParent = any> {
+      filename?: FileToFilenameResolver<TParent>;
+      mimetype?: FileToMimetypeResolver<TParent>;
+      encoding?: FileToEncodingResolver<TParent>;
+    }
+    
+    export interface FileToFilenameResolver<TParent = any, TResult = any> {
+      (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+    }
+    
+    export interface FileToMimetypeResolver<TParent = any, TResult = any> {
+      (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+    }
+    
+    export interface FileToEncodingResolver<TParent = any, TResult = any> {
+      (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
     }
     
   }

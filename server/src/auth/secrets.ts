@@ -6,13 +6,15 @@ export const hashSalt = process.env.HASH_SALT;
 // a secret for signing with jwt
 export const jwtSecret = process.env.JWT_SECRET;
 
-export function createToken(obj: user) {
+// tslint:disable-next-line: no-shadowed-variable
+export function createToken(user: user) {
   return jsonwebtoken.sign(
     {
-      id: obj.id,
-      firstName: obj.firstName,
-      lastName: obj.lastName,
-      role: obj.role,
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      avatarFileName: user.avatarFileName,
+      role: user.role,
     },
     jwtSecret,
     { expiresIn: '1 day' }

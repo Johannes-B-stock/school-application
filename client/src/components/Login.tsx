@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { useMutation } from 'react-apollo';
 import { History } from 'history';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -63,6 +63,7 @@ const loginMutation = gql`
         id
         firstName
         role
+        avatarFileName
       }
       token
     }

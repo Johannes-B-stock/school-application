@@ -1,5 +1,5 @@
 import React from 'react';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -112,7 +112,11 @@ export function SchoolList({ online, allowEdit }: { online: boolean; allowEdit: 
   }
 
   if (loading) {
-    return <CircularProgress />;
+    return (
+      <Grid container justify="center" className={classes.root}>
+        <CircularProgress />
+      </Grid>
+    );
   }
   if (error) return <span>Error! ${error.message}</span>;
 
@@ -142,11 +146,11 @@ export function SchoolList({ online, allowEdit }: { online: boolean; allowEdit: 
                 <Divider className={classes.divider} light />
               </CardContent>
               <CardActions className={classes.actions}>
-                <Button component={Link} to={'/school/' + school.id + '/apply'} color="primary">
+                <Button component={Link} to={'/school/' + school.id + '/apply'} color="secondary">
                   Apply
                 </Button>
                 {allowEdit && (
-                  <Button component={Link} to={'/admin/school/' + school.id + '/edit'} color="primary">
+                  <Button component={Link} to={'/admin/school/' + school.id + '/edit'} color="secondary">
                     Edit
                   </Button>
                 )}

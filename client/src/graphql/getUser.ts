@@ -15,6 +15,7 @@ export interface getUser_getUser {
   firstName: string | null;
   lastName: string | null;
   fullName: string | null;
+  avatarFileName: string | null;
   role: Role | null;
 }
 

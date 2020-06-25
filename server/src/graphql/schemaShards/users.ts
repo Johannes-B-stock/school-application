@@ -5,8 +5,12 @@ import { hashSalt, createToken } from 'src/auth/secrets';
 import * as bcrypt from 'bcrypt';
 import { user } from '@prisma/client';
 import { AuthorizationError } from 'src/auth/errors';
+import { createWriteStream, unlink } from 'fs';
+import { GraphQLUpload } from 'graphql-upload';
 
 const typeDefs = gql`
+  scalar Upload
+
   extend type Query {
     " get a user's public data"
     getPublicUser(id: Int!): PublicUser
@@ -22,6 +26,7 @@ const typeDefs = gql`
     updateUser(input: InputUpdateUser!): User
     " login as a user "
     loginUser(input: InputLogin!): UserLogin!
+    avatarUpload(file: Upload!): String
   }
 
   " used for logging in "
@@ -98,8 +103,15 @@ const typeDefs = gql`
     thirdLanguagePro: Int
     otherLanguage: String
     otherLanguagePro: Int
+    avatarFileName: String
     life: String
     addresses: [Address]
+  }
+
+  type File {
+    filename: String!
+    mimetype: String!
+    encoding: String!
   }
 
   type UserLogin {
@@ -118,6 +130,7 @@ const typeDefs = gql`
 
 export default {
   resolvers: {
+    Upload: GraphQLUpload,
     Query: {
       // get a user
       getPublicUser: async (
@@ -184,6 +197,42 @@ export default {
         { input }: GQL.MutationToRegisterUserArgs
       ): Promise<GQL.UserLogin> => {
         return registerNewUser(input);
+      },
+      avatarUpload: async (_root, { file }, context: IContext) => {
+        const userAuth = await authenticateContext(context);
+        const { createReadStream, filename } = await file;
+        const stream = createReadStream();
+        const path = `./images/avatars/${userAuth.id}-${filename}`;
+
+        // Store the file in the filesystem.
+        await new Promise((resolve, reject) => {
+          // Create a stream to which the upload will be written.
+          const writeStream = createWriteStream(path);
+
+          // When the upload is fully written, resolve the promise.
+          writeStream.on('finish', resolve);
+
+          // If there's an error writing the file, remove the partially written file
+          // and reject the promise.
+          writeStream.on('error', error => {
+            unlink(path, () => {
+              reject(error);
+            });
+          });
+
+          // In node <= 13, errors are not automatically propagated between piped
+          // streams. If there is an error receiving the upload, destroy the write
+          // stream with the corresponding error.
+          stream.on('error', error => writeStream.destroy(error));
+
+          // Pipe the upload into the write stream.
+          stream.pipe(writeStream);
+        });
+        const updatedUser = await prisma.user.update({
+          where: { id: userAuth.id },
+          data: { avatarFileName: `${userAuth.id}-${filename}` },
+        });
+        return updatedUser.avatarFileName;
       },
     },
   },

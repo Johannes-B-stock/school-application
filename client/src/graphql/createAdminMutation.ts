@@ -6,26 +6,30 @@
 import { InputRegisterUser, Role } from "./../types/globalTypes";
 
 // ====================================================
-// GraphQL mutation operation: registerUser
+// GraphQL mutation operation: createAdminMutation
 // ====================================================
 
-export interface registerUser_registerUser_user {
+export interface createAdminMutation_createAdmin_user {
   __typename: "User";
   id: number;
   firstName: string | null;
   role: Role | null;
+  avatarFileName: string | null;
 }
 
-export interface registerUser_registerUser {
+export interface createAdminMutation_createAdmin {
   __typename: "UserLogin";
-  user: registerUser_registerUser_user;
+  user: createAdminMutation_createAdmin_user;
   token: string;
 }
 
-export interface registerUser {
-  registerUser: registerUser_registerUser;
+export interface createAdminMutation {
+  /**
+   *  register a new user 
+   */
+  createAdmin: createAdminMutation_createAdmin;
 }
 
-export interface registerUserVariables {
+export interface createAdminMutationVariables {
   input: InputRegisterUser;
 }

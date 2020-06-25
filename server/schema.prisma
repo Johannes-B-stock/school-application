@@ -271,26 +271,26 @@ model reference {
 model school {
   accountingName                  String?
   acronym                         String?
-  applicationFee                  Float                            @default(0)
+  applicationFee                  Float                            @default(0.00)
   applicationQuestionsId          Int?
   created                         DateTime?                        @default(now())
   currency                        String?
   description                     String?
   endDate                         DateTime?
-  foodDayStudent                  Float                            @default(0)
+  foodDayStudent                  Float                            @default(0.00)
   hashtag                         String?
   id                              Int                              @default(autoincrement()) @id
   miniOutreachEndDate             DateTime?
-  miniOutreachFee                 Float                            @default(0)
+  miniOutreachFee                 Float                            @default(0.00)
   miniOutreachStartDate           DateTime?
   modified                        DateTime?
   name                            String?
   online                          Boolean?                         @default(true)
   outreachEndDate                 DateTime?
-  outreachFee                     Float                            @default(0)
+  outreachFee                     Float                            @default(0.00)
   outreachStartDate               DateTime?
   schoolEmail                     String?
-  schoolFee                       Float                            @default(0)
+  schoolFee                       Float                            @default(0.00)
   secondary                       Boolean?
   startDate                       DateTime?
   travelNotice                    String?
@@ -334,6 +334,7 @@ model student {
 }
 
 model user {
+  avatarFileName         String?
   avatarSetNum           Int?
   birthday               DateTime?
   created                DateTime?                @default(now())

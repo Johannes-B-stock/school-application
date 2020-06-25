@@ -3,7 +3,7 @@ import { User } from '../types/User';
 import Container from '@material-ui/core/Container';
 import MuiAlert from '@material-ui/lab/Alert';
 import React, { useState, FunctionComponent } from 'react';
-import { gql, ApolloError } from 'apollo-boost';
+import gql from 'graphql-tag';
 import Button from '@material-ui/core/Button';
 import { useMutation, useQuery } from 'react-apollo';
 import { Typography, TextField, Grid, makeStyles, CircularProgress, withStyles } from '@material-ui/core';
@@ -20,6 +20,7 @@ import { getSchool, getSchoolVariables } from '../graphql/getSchool';
 import { InputUpdateSchool } from '../types/globalTypes';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { green } from '@material-ui/core/colors';
+import { ApolloError } from 'apollo-client';
 
 const currencies = [
   {

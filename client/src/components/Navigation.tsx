@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AppBar, Toolbar, IconButton, Typography, Button } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Typography, Button, Avatar } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { User } from '../types/User';
 import NavDrawer from './NavDrawer';
+import config from '../config';
 
 const drawerWidth = 240;
 
@@ -41,6 +42,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     link: {
       margin: theme.spacing(1, 1.5),
+    },
+    avatar: {
+      width: theme.spacing(5),
+      height: theme.spacing(5),
     },
     hide: {
       display: 'none',
@@ -87,7 +92,7 @@ export default function Navigation({
     <div className={classes.root}>
       <AppBar
         position="fixed"
-        color="primary"
+        color="default"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: openDrawer,
         })}
@@ -130,7 +135,11 @@ export default function Navigation({
                 onClick={handleMenu}
                 color="inherit"
               >
-                <AccountCircle />
+                {user?.avatarFileName ? (
+                  <Avatar alt={'test'} src={config.IMAGE_URL + user.avatarFileName} className={classes.avatar} />
+                ) : (
+                  <AccountCircle />
+                )}
               </IconButton>
               <Menu
                 id="menu-appbar"

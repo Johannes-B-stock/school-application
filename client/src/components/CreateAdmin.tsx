@@ -2,7 +2,7 @@ import { User } from '../types/User';
 import MuiAlert from '@material-ui/lab/Alert';
 import React, { useState, Dispatch } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { useMutation } from 'react-apollo';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { Typography, TextField, Button, Avatar, Container } from '@material-ui/core';
@@ -40,6 +40,7 @@ const createAdminGql = gql`
         id
         firstName
         role
+        avatarFileName
       }
       token
     }

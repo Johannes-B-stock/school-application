@@ -14,6 +14,7 @@ export interface loginUser_loginUser_user {
   id: number;
   firstName: string | null;
   role: Role | null;
+  avatarFileName: string | null;
 }
 
 export interface loginUser_loginUser {

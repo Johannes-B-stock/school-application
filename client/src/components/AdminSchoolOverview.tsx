@@ -13,22 +13,22 @@ export function AdminSchoolOverview({ user }: { user: User | undefined }) {
   }
   return (
     <Container component="main" maxWidth="lg">
-      <div style={{ width: '80%' }}>
+      <div style={{ width: '90%' }}>
         <Box display="flex" flexDirection="row-reverse" alignItems="flex-end">
           <Box>
-            <Fab color="primary" aria-label="add" style={{ position: 'fixed' }}>
+            <Fab color="secondary" aria-label="add" style={{ position: 'fixed' }}>
               <IconButton component={Link} to="/admin/school/create">
                 <AddIcon />
               </IconButton>
             </Fab>
           </Box>
         </Box>
-
-        <Typography variant="h5">All Schools that are online:</Typography>
-        <SchoolList online={true} allowEdit={true} />
-        <Typography variant="h5">All Schools that are not yet online:</Typography>
-        <SchoolList online={false} allowEdit={true} />
       </div>
+
+      <Typography variant="h5">All Schools that are online:</Typography>
+      <SchoolList online={true} allowEdit={true} />
+      <Typography variant="h5">All Schools that are not yet online:</Typography>
+      <SchoolList online={false} allowEdit={true} />
     </Container>
   );
 }

@@ -3,7 +3,7 @@ import { User } from '../types/User';
 import Container from '@material-ui/core/Container';
 import MuiAlert from '@material-ui/lab/Alert';
 import React, { useState, FunctionComponent } from 'react';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import Button from '@material-ui/core/Button';
 import { useMutation } from 'react-apollo';
 import { Typography, TextField, Grid, makeStyles } from '@material-ui/core';

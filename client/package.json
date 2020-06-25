@@ -8,10 +8,13 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.47",
     "@material-ui/pickers": "^3.2.10",
+    "@types/apollo-upload-client": "^8.1.3",
     "@types/react-dom": "^16.9.5",
     "@types/react-router-dom": "^5.1.3",
     "apollo": "^2.27.0",
-    "apollo-boost": "^0.4.4",
+    "apollo-cache-inmemory": "^1.6.6",
+    "apollo-client": "^2.6.10",
+    "apollo-upload-client": "^13.0.0",
     "cors": "^2.8.5",
     "date-fns": "^2.12.0",
     "graphql": "^14.4.2",
@@ -19,6 +22,7 @@
     "react": "^16.9.0",
     "react-apollo": "^3.0.1",
     "react-dom": "^16.13.0",
+    "react-images-upload": "^1.2.8",
     "react-number-format": "^4.4.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.1.2",
@@ -30,7 +34,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint . --ext .ts --fix",
-    "generate-client": "npx apollo client:codegen ../graphql --localSchemaFile=../server/src/__typedefs/schema.graphql --target=typescript --globalTypesFile=./src/types/globalTypes.d.ts --tsFileExtension=d.ts"
+    "generate-client": "npx apollo client:codegen ../graphql --localSchemaFile=../server/src/__typedefs/schema.graphql --target=typescript --globalTypesFile=./src/types/globalTypes.ts --tsFileExtension=ts"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -48,6 +52,7 @@
     ]
   },
   "devDependencies": {
+    "@types/dotenv": "^8.2.0",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
     "eslint": "^6.8.0",
@@ -56,6 +61,5 @@
     "eslint-plugin-react": "^7.19.0",
     "prettier": "^2.0.5",
     "shx": "^0.3.2"
-  },
-  "proxy": "http://localhost:3000"
+  }
 }

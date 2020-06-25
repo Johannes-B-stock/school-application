@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { Redirect } from 'react-router-dom';
 import React, { useState } from 'react';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { useParams } from 'react-router-dom';
 import { User } from '../types/User';
 import { useQuery, useMutation } from 'react-apollo';

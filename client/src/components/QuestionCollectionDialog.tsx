@@ -9,7 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import AddIcon from '@material-ui/icons/Add';
 import { blue } from '@material-ui/core/colors';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo';
 import { CircularProgress } from '@material-ui/core';
 import { getCollections } from '../graphql/getCollections';

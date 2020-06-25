@@ -41,6 +41,7 @@ export function handleGraphQLContext(ctx: {
 export function handleGraphQLSubscriptionContext(connectionParams: {
   authToken: string;
 }) {
+  console.log('Subscription!');
   const token = connectionParams.authToken;
   return createContext(token);
 }
@@ -63,7 +64,7 @@ export async function authenticateContext(
     };
   } catch (err) {
     throw new AuthenticationError(
-      'exception when searching user: ' + err.message
+      'exception when authenticating user: ' + err.message
     );
   }
 }

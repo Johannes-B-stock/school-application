@@ -2,7 +2,7 @@ import { User } from '../types/User';
 import MuiAlert from '@material-ui/lab/Alert';
 import React, { Dispatch } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo';
 import { hasAdmin } from '../graphql/hasAdmin';
 import { Container, Typography } from '@material-ui/core';
@@ -40,8 +40,9 @@ export function Admin({
   const errors: string[] = [];
   const { error, data } = useQuery<hasAdmin>(hasAdminQuery);
   const needsAdmin = !(data?.hasAdmin ?? true);
+  console.log(needsAdmin);
 
-  if (user?.role !== 'ADMIN') {
+  if (user && user.role !== 'ADMIN') {
     return (
       <Container component="main" maxWidth="md">
         <div className={classes.root}>

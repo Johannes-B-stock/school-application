@@ -9,6 +9,7 @@ import { rawSchema } from './graphql';
 import { prisma } from './db';
 import express from 'express';
 import path from 'path';
+import { graphqlUploadExpress } from 'graphql-upload';
 
 // handle graphql
 const port = process.env.PORT || 3000;
@@ -35,6 +36,7 @@ const serverConfig: Config = {
   subscriptions: {
     onConnect: handleGraphQLSubscriptionContext,
   },
+  uploads: false,
   introspection: true,
   playground: {
     settings: {
@@ -48,13 +50,16 @@ const serverConfig: Config = {
 const server = new ApolloServer(serverConfig);
 
 const app = express();
-
-// app.use(cors);
+app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }));
 server.applyMiddleware({ app });
-app.use(express.static('public'));
+app.use(express.static('images'));
 app.use(express.static('react-app'));
 
 app.get('*', (req, res) => {
+  if (req.path.startsWith('/images/')) {
+    res.sendFile(path.resolve(req.path.substr(1, req.path.length - 1)));
+    return;
+  }
   res.sendFile(path.resolve('react-app', 'index.html'));
 });
 

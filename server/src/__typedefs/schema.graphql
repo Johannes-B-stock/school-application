@@ -1,5 +1,5 @@
 # source: http://localhost:3000/graphql
-# timestamp: Sat May 09 2020 23:27:15 GMT+0200 (GMT+02:00)
+# timestamp: Thu Jun 25 2020 22:33:23 GMT+0200 (GMT+02:00)
 
 type Address {
   id: Int!
@@ -41,6 +41,12 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
 8601 standard for representation of dates and times using the Gregorian calendar.
 """
 scalar DateTime
+
+type File {
+  filename: String!
+  mimetype: String!
+  encoding: String!
+}
 
 """ input to add a staff """
 input InputAddStaff {
@@ -230,6 +236,7 @@ type Mutation {
 
   """ login as a user """
   loginUser(input: InputLogin!): UserLogin!
+  avatarUpload(file: Upload!): String
 
   """ create a new school """
   createSchool(input: InputCreateSchool!): School
@@ -339,6 +346,9 @@ type Subscription {
   schoolApplicationCreated: SchoolApplication
 }
 
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
 """ a type defining a user  """
 type User {
   id: Int!
@@ -366,6 +376,7 @@ type User {
   thirdLanguagePro: Int
   otherLanguage: String
   otherLanguagePro: Int
+  avatarFileName: String
   life: String
   addresses: [Address]
 }
