@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Button, Avatar } from '@material-ui/core';
+import gql from 'graphql-tag';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import { useQuery } from 'react-apollo';
 import MenuIcon from '@material-ui/icons/Menu';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useState } from 'react';
@@ -11,8 +12,22 @@ import clsx from 'clsx';
 import { User } from '../types/User';
 import NavDrawer from './NavDrawer';
 import config from '../config';
+import { getUser } from '../graphql/getUser';
 
 const drawerWidth = 240;
+
+const userQuery = gql`
+  query getUser {
+    getUser {
+      id
+      firstName
+      lastName
+      fullName
+      avatarFileName
+      role
+    }
+  }
+`;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -68,6 +83,12 @@ export default function Navigation({
   const open = Boolean(anchorEl);
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [hasDrawer, setHasDrawer] = useState<boolean>(false);
+  const [avatar, setAvatar] = useState<string | null | undefined>(user?.avatarFileName);
+  const { data } = useQuery<getUser>(userQuery);
+
+  if (user && data?.getUser && avatar !== data.getUser.avatarFileName) {
+    setAvatar(data.getUser.avatarFileName);
+  }
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -135,11 +156,7 @@ export default function Navigation({
                 onClick={handleMenu}
                 color="inherit"
               >
-                {user?.avatarFileName ? (
-                  <Avatar alt={'test'} src={config.IMAGE_URL + user.avatarFileName} className={classes.avatar} />
-                ) : (
-                  <AccountCircle />
-                )}
+                <Avatar src={config.IMAGE_URL + avatar} className={classes.avatar} />
               </IconButton>
               <Menu
                 id="menu-appbar"

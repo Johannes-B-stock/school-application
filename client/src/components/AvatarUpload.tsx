@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import gql from 'graphql-tag';
 import { useMutation, useApolloClient } from 'react-apollo';
-import { Button, Avatar, makeStyles, createStyles, Theme } from '@material-ui/core';
+import { Button, Avatar, makeStyles, createStyles, Theme, useTheme, useMediaQuery } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
       fontSize: '15px',
       margin: 'auto',
     },
+    dialog: {},
     dialogContent: {
       alignItems: 'center',
       justifyContent: 'center',
@@ -42,6 +43,8 @@ export function AvatarUpload({
   image: string;
   setImage: React.Dispatch<React.SetStateAction<string>>;
 }) {
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const classes = useStyles();
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>();
@@ -83,11 +86,19 @@ export function AvatarUpload({
   // }
 
   return (
-    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+    <Dialog
+      fullScreen={fullScreen}
+      fullWidth={true}
+      maxWidth={'sm'}
+      open={open}
+      onClose={handleClose}
+      className={classes.dialog}
+      aria-labelledby="form-dialog-title"
+    >
       <DialogTitle id="form-dialog-title">Upload Profile Picture</DialogTitle>
       <form onSubmit={onFormSubmit}>
-        <DialogContent className={classes.dialogContent}>
-          <Avatar alt={'test'} src={preview ? preview : config.IMAGE_URL + image} className={classes.large} />
+        <DialogContent dividers className={classes.dialogContent}>
+          <Avatar src={preview ? preview : config.IMAGE_URL + image} className={classes.large} />
           <ImageUploader
             withIcon={true}
             buttonText="Choose image"

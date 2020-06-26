@@ -5,8 +5,9 @@ import { hashSalt, createToken } from 'src/auth/secrets';
 import * as bcrypt from 'bcrypt';
 import { user } from '@prisma/client';
 import { AuthorizationError } from 'src/auth/errors';
-import { createWriteStream, unlink } from 'fs';
+import { createWriteStream, unlink, existsSync, mkdirSync } from 'fs';
 import { GraphQLUpload } from 'graphql-upload';
+import path from 'path';
 
 const typeDefs = gql`
   scalar Upload
@@ -202,12 +203,16 @@ export default {
         const userAuth = await authenticateContext(context);
         const { createReadStream, filename } = await file;
         const stream = createReadStream();
-        const path = `./images/avatars/${userAuth.id}-${filename}`;
-
+        const folder = 'images/avatars/';
+        const imagePath = `./${folder}${userAuth.id}-${filename}`;
+        const absolutePath = path.resolve(process.cwd(), folder);
+        if (!existsSync(absolutePath)) {
+          mkdirSync(absolutePath, { recursive: true });
+        }
         // Store the file in the filesystem.
         await new Promise((resolve, reject) => {
           // Create a stream to which the upload will be written.
-          const writeStream = createWriteStream(path);
+          const writeStream = createWriteStream(imagePath);
 
           // When the upload is fully written, resolve the promise.
           writeStream.on('finish', resolve);
@@ -215,7 +220,7 @@ export default {
           // If there's an error writing the file, remove the partially written file
           // and reject the promise.
           writeStream.on('error', error => {
-            unlink(path, () => {
+            unlink(imagePath, () => {
               reject(error);
             });
           });

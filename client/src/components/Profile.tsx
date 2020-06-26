@@ -125,18 +125,15 @@ export function Profile({ user }: { user: User | undefined }) {
         ) : (
           <div className={classes.grid}>
             <IconButton className={classes.imageContainer} onClick={handleClickOpen}>
-              {image?.length > 0 ? (
-                <Avatar alt={'test'} src={config.IMAGE_URL + image} className={classes.large} />
-              ) : (
-                <Avatar className={classes.large} color="secondary">
-                  {user?.firstName?.charAt(0) ?? ''}
-                </Avatar>
-              )}
+              <Avatar src={config.IMAGE_URL + image} className={classes.large} />
             </IconButton>
             <AvatarUpload open={open} setOpen={setOpen} image={image} setImage={setImage} />
+            <br />
             <Typography variant="h4" gutterBottom className={classes.autoMargin}>
               Hello {user?.firstName}!
             </Typography>
+            <br />
+            <br />
             <Typography variant="body1" gutterBottom>
               This is your profile page. Here you can edit your information.
             </Typography>

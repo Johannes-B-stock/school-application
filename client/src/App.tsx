@@ -47,11 +47,11 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 function App() {
+  const client = createApolloClient();
   const classes = useStyles();
   const storedUser: User | undefined = getStoredUser();
-  const client = createApolloClient();
-
   const [user, setUser] = useState<User | undefined>(storedUser);
+
   return (
     <ThemeProvider theme={theme}>
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
