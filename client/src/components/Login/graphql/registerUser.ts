@@ -3,13 +3,13 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { InputLogin, Role } from "./../types/globalTypes";
+import { InputRegisterUser, Role } from "./../../../types/globalTypes";
 
 // ====================================================
-// GraphQL mutation operation: loginUser
+// GraphQL mutation operation: registerUser
 // ====================================================
 
-export interface loginUser_loginUser_user {
+export interface registerUser_registerUser_user {
   __typename: "User";
   id: number;
   firstName: string | null;
@@ -17,19 +17,16 @@ export interface loginUser_loginUser_user {
   avatarFileName: string | null;
 }
 
-export interface loginUser_loginUser {
+export interface registerUser_registerUser {
   __typename: "UserLogin";
-  user: loginUser_loginUser_user;
+  user: registerUser_registerUser_user;
   token: string;
 }
 
-export interface loginUser {
-  /**
-   *  login as a user 
-   */
-  loginUser: loginUser_loginUser;
+export interface registerUser {
+  registerUser: registerUser_registerUser;
 }
 
-export interface loginUserVariables {
-  input: InputLogin;
+export interface registerUserVariables {
+  input: InputRegisterUser;
 }

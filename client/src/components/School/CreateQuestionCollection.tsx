@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { User } from '../types/User';
+import { User } from '../../types/User';
 import Container from '@material-ui/core/Container';
 import MuiAlert from '@material-ui/lab/Alert';
 import React, { useState } from 'react';
@@ -12,8 +12,8 @@ import {
   createQuestionCollection_createApplicationQuestionCollection as QuestionCollection,
   createQuestionCollectionVariables,
   createQuestionCollection,
-} from '../graphql/createQuestionCollection';
-import { InputCreateApplicationQuestionCollection } from '../types/globalTypes';
+} from './graphql/createQuestionCollection';
+import { InputCreateApplicationQuestionCollection } from '../../types/globalTypes';
 
 const useStyles = makeStyles((theme) => ({
   alert: {

@@ -1,8 +1,8 @@
-import { User } from '../types/User';
+import { User } from '../../types/User';
 import React from 'react';
 import { Container, Typography, Fab, IconButton } from '@material-ui/core';
-import { NoAdminAlert } from './NoAdminAlert';
-import { SchoolList } from './SchoolList';
+import { NoAdminAlert } from '../NoAdminAlert';
+import { SchoolList } from '../School/SchoolList';
 import { Link } from 'react-router-dom';
 import AddIcon from '@material-ui/icons/Add';
 import Box from '@material-ui/core/Box';

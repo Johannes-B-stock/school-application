@@ -16,9 +16,9 @@ import gql from 'graphql-tag';
 import { useMutation } from 'react-apollo';
 import { History } from 'history';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { loginUser, loginUserVariables } from '../graphql/loginUser';
+import { loginUser, loginUserVariables } from './graphql/loginUser';
 import MuiAlert from '@material-ui/lab/Alert';
-import { User } from '../types/User';
+import { User } from '../../types/User';
 
 function Copyright() {
   return (

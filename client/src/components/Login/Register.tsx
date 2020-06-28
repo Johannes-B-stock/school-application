@@ -12,9 +12,9 @@ import Container from '@material-ui/core/Container';
 import gql from 'graphql-tag';
 import { useMutation } from 'react-apollo';
 import { History } from 'history';
-import { User } from '../types/User';
+import { User } from '../../types/User';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { registerUserVariables, registerUser } from '../graphql/registerUser';
+import { registerUserVariables, registerUser } from './graphql/registerUser';
 import MuiAlert from '@material-ui/lab/Alert';
 
 function Copyright(): React.ReactElement {

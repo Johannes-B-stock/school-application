@@ -12,7 +12,7 @@ import { lightGreen, lightBlue, deepOrange, red } from '@material-ui/core/colors
 import { Link } from 'react-router-dom';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
-import { getSchools, getSchoolsVariables } from '../graphql/getSchools';
+import { getSchools, getSchoolsVariables } from './graphql/getSchools';
 import { CircularProgress } from '@material-ui/core';
 
 const getSchoolsQuery = gql`

@@ -106,6 +106,34 @@ export interface InputUpdateSchool {
   questionCollection?: number | null;
 }
 
+/**
+ *  used for updating an existing user 
+ */
+export interface InputUpdateUser {
+  id: number;
+  firstName?: string | null;
+  lastName?: string | null;
+  gender?: string | null;
+  marriage?: string | null;
+  maritalStatusDate?: any | null;
+  spouseName?: string | null;
+  children?: number | null;
+  birthday?: any | null;
+  website?: string | null;
+  youtube?: string | null;
+  facebook?: string | null;
+  talents?: string | null;
+  firstLanguage?: string | null;
+  nativeLanguage?: string | null;
+  secondLanguage?: string | null;
+  secondLanguagePro?: number | null;
+  thirdLanguage?: string | null;
+  thirdLanguagePro?: number | null;
+  otherLanguage?: string | null;
+  otherLanguagePro?: number | null;
+  life?: string | null;
+}
+
 //==============================================================
 // END Enums and Input Objects
 //==============================================================

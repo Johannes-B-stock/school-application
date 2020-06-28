@@ -5,9 +5,9 @@ import { Button, Avatar, makeStyles, createStyles, Theme, useTheme, useMediaQuer
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import config from '../config';
+import config from '../../config';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { uploadAvatar, uploadAvatarVariables } from '../graphql/uploadAvatar';
+import { uploadAvatar, uploadAvatarVariables } from './graphql/uploadAvatar';
 import ImageUploader from 'react-images-upload';
 
 const UPLOAD_AVATAR = gql`

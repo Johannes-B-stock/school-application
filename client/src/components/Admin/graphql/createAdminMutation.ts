@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { InputRegisterUser, Role } from "./../types/globalTypes";
+import { InputRegisterUser, Role } from "./../../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: createAdminMutation

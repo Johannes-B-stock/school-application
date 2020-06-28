@@ -1,26 +1,27 @@
 import React, { useState } from 'react';
 import './App.css';
-import { SchoolList } from './components/SchoolList';
+import { SchoolList } from './components/School/SchoolList';
 import { ApolloProvider } from 'react-apollo';
-import Navigation from './components/Navigation';
+import Navigation from './components/Navigation/Navigation';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider, makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { grey, blueGrey } from '@material-ui/core/colors';
-import Login from './components/Login';
-import Register from './components/Register';
+import Login from './components/Login/Login';
+import Register from './components/Login/Register';
 import { createBrowserHistory } from 'history';
-import { Profile } from './components/Profile';
+import { Profile } from './components/User/Profile';
 import { User } from './types/User';
-import { Application } from './components/Application';
+import { Application } from './components/User/Application';
 // import CssBaseline from '@material-ui/core/CssBaseline';
-import { Admin } from './components/Admin';
-import { EditSchool } from './components/EditSchool';
-import { CreateSchool } from './components/CreateSchool';
-import { AdminSchoolOverview } from './components/AdminSchoolOverview';
-import { CreateQuestionCollection } from './components/CreateQuestionCollection';
+import { Admin } from './components/Admin/Admin';
+import { EditSchool } from './components/School/EditSchool';
+import { CreateSchool } from './components/School/CreateSchool';
+import { AdminSchoolOverview } from './components/Admin/AdminSchoolOverview';
+import { CreateQuestionCollection } from './components/School/CreateQuestionCollection';
 import { getStoredUser } from './auth';
 import { ApolloClient } from 'apollo-client';
 import { createApolloClient } from './ApolloClient';
+import { EditProfile } from './components/User/EditProfile';
 
 function logout(client: ApolloClient<unknown>) {
   client.resetStore();
@@ -77,6 +78,9 @@ function App() {
                 <div className={classes.rootWithDrawer}>
                   <Route path="/profile" exact>
                     <Profile user={user} />
+                  </Route>
+                  <Route path="/profile/edit" exact>
+                    <EditProfile user={user} />
                   </Route>
                   <Route path="/admin/schools" exact>
                     <AdminSchoolOverview user={user} />

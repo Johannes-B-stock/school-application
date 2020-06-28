@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { InputUpdateSchool } from "./../types/globalTypes";
+import { InputUpdateSchool } from "./../../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: updateSchool

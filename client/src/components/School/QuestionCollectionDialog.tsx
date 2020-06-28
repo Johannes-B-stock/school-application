@@ -12,7 +12,7 @@ import { blue } from '@material-ui/core/colors';
 import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo';
 import { CircularProgress } from '@material-ui/core';
-import { getCollections } from '../graphql/getCollections';
+import { getCollections } from './graphql/getCollections';
 import MuiAlert from '@material-ui/lab/Alert';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import { useHistory } from 'react-router-dom';

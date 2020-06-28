@@ -1,10 +1,10 @@
-import { User } from '../types/User';
+import { User } from '../../types/User';
 import MuiAlert from '@material-ui/lab/Alert';
 import React, { Dispatch } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo';
-import { hasAdmin } from '../graphql/hasAdmin';
+import { hasAdmin } from './graphql/hasAdmin';
 import { Container, Typography } from '@material-ui/core';
 import { CreateAdmin } from './CreateAdmin';
 

@@ -34,7 +34,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint . --ext .ts --fix",
-    "generate-client": "npx apollo client:codegen ../graphql --localSchemaFile=../server/src/__typedefs/schema.graphql --target=typescript --globalTypesFile=./src/types/globalTypes.ts --tsFileExtension=ts"
+    "generate-client": "npx apollo client:codegen graphql --localSchemaFile=../server/src/__typedefs/schema.graphql --target=typescript --globalTypesFile=./src/types/globalTypes.ts --tsFileExtension=ts --includes src/components/**/*"
   },
   "eslintConfig": {
     "extends": "react-app"

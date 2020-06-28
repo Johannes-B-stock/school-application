@@ -9,10 +9,10 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
-import { User } from '../types/User';
+import { User } from '../../types/User';
 import NavDrawer from './NavDrawer';
-import config from '../config';
-import { getUser } from '../graphql/getUser';
+import config from '../../config';
+import { getUser } from './graphql/getUser';
 
 const drawerWidth = 240;
 

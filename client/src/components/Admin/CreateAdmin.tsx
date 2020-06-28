@@ -1,4 +1,4 @@
-import { User } from '../types/User';
+import { User } from '../../types/User';
 import MuiAlert from '@material-ui/lab/Alert';
 import React, { useState, Dispatch } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
@@ -6,9 +6,9 @@ import gql from 'graphql-tag';
 import { useMutation } from 'react-apollo';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { Typography, TextField, Button, Avatar, Container } from '@material-ui/core';
-import { createAdminMutation } from '../graphql/createAdminMutation';
-import { registerUserVariables } from '../graphql/registerUser';
-import { InputRegisterUser } from '../types/globalTypes';
+import { createAdminMutation } from './graphql/createAdminMutation';
+import { registerUserVariables } from '../Login/graphql/registerUser';
+import { InputRegisterUser } from '../../types/globalTypes';
 
 const useStyles = makeStyles((theme) => ({
   alert: {

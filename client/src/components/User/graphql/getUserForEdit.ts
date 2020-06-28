@@ -3,22 +3,22 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { Role } from "./../types/globalTypes";
-
 // ====================================================
-// GraphQL query operation: getUser
+// GraphQL query operation: getUserForEdit
 // ====================================================
 
-export interface getUser_getUser {
+export interface getUserForEdit_getUser {
   __typename: "User";
   id: number;
   firstName: string | null;
   lastName: string | null;
   fullName: string | null;
   avatarFileName: string | null;
-  role: Role | null;
+  gender: string | null;
+  birthday: any | null;
+  email: string;
 }
 
-export interface getUser {
-  getUser: getUser_getUser | null;
+export interface getUserForEdit {
+  getUser: getUserForEdit_getUser | null;
 }

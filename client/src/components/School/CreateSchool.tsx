@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { User } from '../types/User';
+import { User } from '../../types/User';
 import Container from '@material-ui/core/Container';
 import MuiAlert from '@material-ui/lab/Alert';
 import React, { useState, FunctionComponent } from 'react';
@@ -7,8 +7,8 @@ import gql from 'graphql-tag';
 import Button from '@material-ui/core/Button';
 import { useMutation } from 'react-apollo';
 import { Typography, TextField, Grid, makeStyles } from '@material-ui/core';
-import { createSchoolVariables, createSchool, createSchool_createSchool as School } from '../graphql/createSchool';
-import { InputCreateSchool } from '../types/globalTypes';
+import { createSchoolVariables, createSchool, createSchool_createSchool as School } from './graphql/createSchool';
+import { InputCreateSchool } from '../../types/globalTypes';
 import NumberFormat from 'react-number-format';
 // import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';

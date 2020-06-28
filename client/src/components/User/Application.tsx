@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import React, { useState } from 'react';
 import gql from 'graphql-tag';
 import { useParams } from 'react-router-dom';
-import { User } from '../types/User';
+import { User } from '../../types/User';
 import { useQuery, useMutation } from 'react-apollo';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -12,12 +12,12 @@ import {
   getSchoolInfoVariables,
   getSchoolInfo,
   getSchoolInfo_getSchoolInfoForApplication_questions,
-} from '../graphql/getSchoolInfo';
+} from './graphql/getSchoolInfo';
 import TextField from '@material-ui/core/TextField';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { createApplication, createApplicationVariables } from '../graphql/createApplication';
+import { createApplication, createApplicationVariables } from './graphql/createApplication';
 import { GraphQLError } from 'graphql';
 import Typography from '@material-ui/core/Typography';
 

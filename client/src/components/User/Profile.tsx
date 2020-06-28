@@ -6,26 +6,27 @@ import TextField from '@material-ui/core/TextField';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useQuery } from 'react-apollo';
 import MuiAlert from '@material-ui/lab/Alert';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { getUser } from '../graphql/getUser';
-import { User } from '../types/User';
+import { User } from '../../types/User';
 import Typography from '@material-ui/core/Typography';
-import { Avatar } from '@material-ui/core';
+import { Avatar, Button } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
-import config from '../config';
-// import { Edit } from '@material-ui/icons';
+import config from '../../config';
 import { AvatarUpload } from './AvatarUpload';
+import { getUserForProfile } from './graphql/getUserForProfile';
 
 const userQuery = gql`
-  query getUser {
+  query getUserForProfile {
     getUser {
       id
       firstName
       lastName
       fullName
       avatarFileName
-      role
+      gender
+      birthday
+      email
     }
   }
 `;
@@ -82,13 +83,16 @@ const useStyles = makeStyles((theme: Theme) =>
       transition: '.3s ease',
       backgroundColor: 'white',
     },
+    editButton: {
+      margin: theme.spacing(3, 0, 2),
+    },
   }),
 );
 
 export function Profile({ user }: { user: User | undefined }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const { loading, error, data } = useQuery<getUser>(userQuery);
+  const { loading, error, data } = useQuery<getUserForProfile>(userQuery);
   const [image, setImage] = React.useState(data?.getUser?.avatarFileName ?? '');
 
   const handleClickOpen = () => {
@@ -140,21 +144,34 @@ export function Profile({ user }: { user: User | undefined }) {
             <TextField
               label="First Name"
               id="margin-none"
+              disabled
               defaultValue={data?.getUser?.firstName}
               className={classes.textField}
             />
             <TextField
               label="Last Name"
               id="margin-none"
+              disabled
               defaultValue={data?.getUser?.lastName}
               className={classes.textField}
             />
             <TextField
               label="Full Name"
               id="margin-none"
+              disabled
               defaultValue={data?.getUser?.fullName}
               className={classes.textField}
             />
+
+            <Button
+              component={Link}
+              to={'/profile/edit'}
+              variant="contained"
+              color="primary"
+              className={classes.editButton}
+            >
+              Edit
+            </Button>
           </div>
         )}
         <CssBaseline />

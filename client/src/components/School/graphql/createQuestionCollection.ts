@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { InputCreateApplicationQuestionCollection } from "./../types/globalTypes";
+import { InputCreateApplicationQuestionCollection } from "./../../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: createQuestionCollection

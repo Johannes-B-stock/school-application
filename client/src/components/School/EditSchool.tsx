@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { User } from '../types/User';
+import { User } from '../../types/User';
 import Container from '@material-ui/core/Container';
 import MuiAlert from '@material-ui/lab/Alert';
 import React, { useState, FunctionComponent } from 'react';
@@ -14,10 +14,10 @@ import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { updateSchool, updateSchoolVariables } from '../graphql/updateSchool';
+import { updateSchool, updateSchoolVariables } from './graphql/updateSchool';
 import { useParams } from 'react-router-dom';
-import { getSchool, getSchoolVariables } from '../graphql/getSchool';
-import { InputUpdateSchool } from '../types/globalTypes';
+import { getSchool, getSchoolVariables } from './graphql/getSchool';
+import { InputUpdateSchool } from '../../types/globalTypes';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { green } from '@material-ui/core/colors';
 import { ApolloError } from 'apollo-client';
