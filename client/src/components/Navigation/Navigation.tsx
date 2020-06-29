@@ -125,7 +125,7 @@ export default function Navigation({
       >
         <Toolbar>
           <img
-            src="http://localhost:3000/images/university_icon-blue-green.png"
+            src={`${config.API_URL}/university_icon-blue-green.png`}
             alt="icon"
             style={{ width: '40px', margin: '0px 15px' }}
           />
