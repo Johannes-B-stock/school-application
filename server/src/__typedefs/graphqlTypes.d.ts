@@ -243,6 +243,7 @@ declare global {
       id: number;
       firstName?: string;
       lastName?: string;
+      fullName?: string;
       gender?: string;
       marriage?: string;
       maritalStatusDate?: DateTime;

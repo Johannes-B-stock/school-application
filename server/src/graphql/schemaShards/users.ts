@@ -49,6 +49,7 @@ const typeDefs = gql`
     id: Int!
     firstName: String
     lastName: String
+    fullName: String
     gender: String
     marriage: String
     maritalStatusDate: Date
@@ -198,6 +199,25 @@ export default {
         { input }: GQL.MutationToRegisterUserArgs
       ): Promise<GQL.UserLogin> => {
         return registerNewUser(input);
+      },
+      updateUser: async (
+        _root: any,
+        { input }: GQL.MutationToUpdateUserArgs,
+        context: IContext
+      ) => {
+        const userAuth = await authenticateContext(context);
+        if (userAuth.id !== input.id && userAuth.role !== GQL.Role.ADMIN) {
+          throw new AuthenticationError('No Admin!');
+        }
+        const updatedUser = await prisma.user.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            ...input,
+          },
+        });
+        return updatedUser;
       },
       avatarUpload: async (_root, { file }, context: IContext) => {
         const userAuth = await authenticateContext(context);

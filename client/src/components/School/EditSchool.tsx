@@ -182,9 +182,7 @@ export function EditSchool({ user }: { user: User | undefined }) {
 
   if (data?.getSchoolInfoForApplication && !schoolToUpdate.id) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { __typename, ...cleanSchoolToUpdate } = data?.getSchoolInfoForApplication;
-    console.log(cleanSchoolToUpdate.online);
-
+    const { __typename, ...cleanSchoolToUpdate } = data.getSchoolInfoForApplication;
     setSchoolToUpdate({ ...cleanSchoolToUpdate });
   }
 
@@ -215,6 +213,7 @@ export function EditSchool({ user }: { user: User | undefined }) {
       return { ...school };
     });
   }
+
   async function handleSubmit(event: React.FormEvent): Promise<void> {
     event.preventDefault();
     setErrors([]);

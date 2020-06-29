@@ -1,5 +1,5 @@
 # source: http://localhost:3000/graphql
-# timestamp: Thu Jun 25 2020 22:33:23 GMT+0200 (GMT+02:00)
+# timestamp: Mon Jun 29 2020 22:46:56 GMT+0200 (GMT+02:00)
 
 type Address {
   id: Int!
@@ -203,6 +203,7 @@ input InputUpdateUser {
   id: Int!
   firstName: String
   lastName: String
+  fullName: String
   gender: String
   marriage: String
   maritalStatusDate: DateTime

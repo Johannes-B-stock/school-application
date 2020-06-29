@@ -143,23 +143,31 @@ export function Profile({ user }: { user: User | undefined }) {
             </Typography>
             <TextField
               label="First Name"
-              id="margin-none"
+              id="firstName"
               disabled
               defaultValue={data?.getUser?.firstName}
               className={classes.textField}
             />
             <TextField
               label="Last Name"
-              id="margin-none"
+              id="lastName"
               disabled
               defaultValue={data?.getUser?.lastName}
               className={classes.textField}
             />
             <TextField
               label="Full Name"
-              id="margin-none"
+              id="fullName"
               disabled
               defaultValue={data?.getUser?.fullName}
+              className={classes.textField}
+            />
+
+            <TextField
+              label="Birthday"
+              id="birthday"
+              disabled
+              defaultValue={new Date(data?.getUser?.birthday).toLocaleDateString()}
               className={classes.textField}
             />
 

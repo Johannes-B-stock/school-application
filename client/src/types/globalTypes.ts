@@ -113,6 +113,7 @@ export interface InputUpdateUser {
   id: number;
   firstName?: string | null;
   lastName?: string | null;
+  fullName?: string | null;
   gender?: string | null;
   marriage?: string | null;
   maritalStatusDate?: any | null;
