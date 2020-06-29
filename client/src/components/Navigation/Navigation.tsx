@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { AppBar, Toolbar, IconButton, Typography, Button, Avatar } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Typography, Button, Avatar, useMediaQuery } from '@material-ui/core';
 import gql from 'graphql-tag';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { useQuery } from 'react-apollo';
-import MenuIcon from '@material-ui/icons/Menu';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+// import MenuIcon from '@material-ui/icons/Menu';
+import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
@@ -65,6 +65,9 @@ const useStyles = makeStyles((theme: Theme) =>
     hide: {
       display: 'none',
     },
+    iconButton: {
+      padding: '6px',
+    },
   }),
 );
 
@@ -80,9 +83,11 @@ export default function Navigation({
   const classes = useStyles();
   const loggedIn = user !== undefined;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const theme = useTheme();
+  const smallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const open = Boolean(anchorEl);
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
-  const [hasDrawer, setHasDrawer] = useState<boolean>(false);
+  // const [hasDrawer, setHasDrawer] = useState<boolean>(false);
   const [avatar, setAvatar] = useState<string | null | undefined>(user?.avatarFileName);
   const { data } = useQuery<getUser>(userQuery);
 
@@ -94,9 +99,9 @@ export default function Navigation({
     setAnchorEl(event.currentTarget);
   };
 
-  const handleDrawerOpen = () => {
-    setOpenDrawer(true);
-  };
+  // const handleDrawerOpen = () => {
+  //   setOpenDrawer(true);
+  // };
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -119,34 +124,26 @@ export default function Navigation({
         })}
       >
         <Toolbar>
-          {hasDrawer && (
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              onClick={handleDrawerOpen}
-              className={clsx(classes.menuButton, {
-                [classes.hide]: openDrawer,
-              })}
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
+          <img
+            src="http://localhost:3000/images/university_icon-blue-green.png"
+            style={{ width: '40px', margin: '0px 15px' }}
+          />
 
           <Typography variant="h6" className={classes.title}>
             School Application
           </Typography>
-          <nav>
-            <Button component={Link} to="/home" color="inherit" className={classes.link}>
-              Home
-            </Button>
-            {user && user?.role === 'ADMIN' && (
-              <Button component={Link} color="inherit" to="/admin" className={classes.link}>
-                Admin
+          {!smallScreen && (
+            <nav>
+              <Button component={Link} to="/home" color="inherit" className={classes.link}>
+                Home
               </Button>
-            )}
-          </nav>
-
+              {user && user?.role === 'ADMIN' && (
+                <Button component={Link} color="inherit" to="/admin" className={classes.link}>
+                  Admin
+                </Button>
+              )}
+            </nav>
+          )}
           {loggedIn ? (
             <div>
               <IconButton
@@ -154,6 +151,7 @@ export default function Navigation({
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
                 onClick={handleMenu}
+                className={classes.iconButton}
                 color="inherit"
               >
                 <Avatar src={config.IMAGE_URL + avatar} className={classes.avatar} />
@@ -192,7 +190,7 @@ export default function Navigation({
           )}
         </Toolbar>
       </AppBar>
-      <NavDrawer drawerOpen={openDrawer} setDrawerOpen={setOpenDrawer} setHasDrawer={setHasDrawer} />
+      {loggedIn && <NavDrawer drawerOpen={openDrawer} setDrawerOpen={setOpenDrawer} /*setHasDrawer={setHasDrawer}*/ />}
     </div>
   );
 }

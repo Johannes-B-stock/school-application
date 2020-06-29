@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IconButton } from '@material-ui/core';
+import { IconButton, useMediaQuery } from '@material-ui/core';
 import { Link, useLocation } from 'react-router-dom';
 import Drawer from '@material-ui/core/Drawer';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -94,12 +94,6 @@ const useStyles = makeStyles((theme: Theme) =>
         duration: theme.transitions.duration.enteringScreen,
       }),
     },
-    menuButton: {
-      marginRight: 36,
-    },
-    hide: {
-      display: 'none',
-    },
     drawer: {
       width: drawerWidth,
       flexShrink: 0,
@@ -141,26 +135,22 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function NavDrawer({
   drawerOpen,
   setDrawerOpen,
-  setHasDrawer,
 }: {
   drawerOpen: boolean;
   setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setHasDrawer: React.Dispatch<React.SetStateAction<boolean>>;
 }): React.ReactElement {
   const location = useLocation();
   const classes = useStyles();
   const theme = useTheme();
-
+  const smallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const currentMenu = drawerItems.find((i) => location.pathname.startsWith(i.route));
 
   function handleDrawerClose() {
     setDrawerOpen(false);
   }
-  if (!currentMenu) {
-    setHasDrawer(false);
+  if (!currentMenu && !smallScreen) {
     return <span></span>;
   }
-  setHasDrawer(true);
 
   return (
     <Drawer
@@ -182,16 +172,43 @@ export default function NavDrawer({
         </IconButton>
       </div>
       <Divider />
-      <List onMouseEnter={() => setDrawerOpen(true)} onMouseLeave={() => setDrawerOpen(false)}>
-        {currentMenu.items.map((item) => (
-          <ListItem component={Link} to={item.path} selected={item.path === location.pathname} button key={item.label}>
-            <ListItemIcon>
-              <Icon>{item.icon}</Icon>
-            </ListItemIcon>
-            <ListItemText primary={item.label} />
-          </ListItem>
-        ))}
-      </List>
+      {smallScreen && (
+        <span>
+          <List component="nav" onMouseEnter={() => setDrawerOpen(true)} onMouseLeave={() => setDrawerOpen(false)}>
+            <ListItem component={Link} to="/home" selected={'/home' === location.pathname} button key="home">
+              <ListItemIcon>
+                <Icon>home</Icon>
+              </ListItemIcon>
+              <ListItemText primary="Home" />
+            </ListItem>
+            <ListItem component={Link} to="/admin" selected={'/admin' === location.pathname} button key="admin">
+              <ListItemIcon>
+                <Icon>supervisor_account_icon</Icon>
+              </ListItemIcon>
+              <ListItemText primary="Admin" />
+            </ListItem>
+          </List>
+          <Divider />
+        </span>
+      )}
+      {currentMenu && (
+        <List component="nav" onMouseEnter={() => setDrawerOpen(true)} onMouseLeave={() => setDrawerOpen(false)}>
+          {currentMenu.items.map((item) => (
+            <ListItem
+              component={Link}
+              to={item.path}
+              selected={item.path === location.pathname}
+              button
+              key={item.label}
+            >
+              <ListItemIcon>
+                <Icon>{item.icon}</Icon>
+              </ListItemIcon>
+              <ListItemText primary={item.label} />
+            </ListItem>
+          ))}
+        </List>
+      )}
     </Drawer>
   );
 }

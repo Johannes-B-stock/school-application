@@ -12,6 +12,7 @@ import { User } from '../../types/User';
 import { Button } from '@material-ui/core';
 import { InputUpdateUser } from '../../types/globalTypes';
 import { getUserForEdit } from './graphql/getUserForEdit';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { updateUserVariables, updateUser } from './graphql/updateUser';
 
 const editUserMutation = gql`
